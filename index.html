@@ -59,56 +59,80 @@
 </nav>
 
 <header id="start" class="hero" data-scrub>
-  <div class="hero-pin">
-    <div class="grid-overlay" aria-hidden="true"></div>
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow" data-t="hero.eyebrow">Digitale Lösungen für Unternehmen</p>
-        <h1 class="stage-h1">
-          <span class="stage-line stage-line-a"><span data-t="hero.titel1">Wir bauen keine Websites.</span></span>
-          <span class="stage-line stage-line-b"><em data-t="hero.titel2">Wir bauen Systeme.</em></span>
-        </h1>
-        <p class="lead" data-t="hero.lead">Internetpräsenzen, Shopsysteme und individuelle Firmenmodule – hochwertig gestaltet, sauber strukturiert und darauf ausgelegt, Abläufe zu vereinfachen, Vertrauen aufzubauen und Kunden besser zu führen.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#berater"><span data-t="hero.cta1">Kostenlosen Projekt-Check starten</span></a>
-          <a class="btn btn-ghost" href="module.html"><span data-t="hero.cta2">Alle Module &amp; Preise</span></a>
-        </div>
-        <div class="proof">
-          <div class="proof-item"><b data-t="proof1a">Individuell</b><span data-t="proof1b">statt Baukasten-Look</span></div>
-          <div class="proof-item"><b data-t="proof2a">Modular</b><span data-t="proof2b">später erweiterbar</span></div>
-          <div class="proof-item"><b data-t="proof3a">Business-first</b><span data-t="proof3b">Funktion vor Spielerei</span></div>
-        </div>
-        <p class="locus readout">Eckernförde · Schleswig-Holstein · Bundesweit</p>
-      </div>
+  <div class="hero-pin" id="heroPin">
+    <canvas class="hero-canvas" id="heroCanvas"></canvas>
 
-      <div class="hero-visual" aria-hidden="true">
-        <div class="core-field">
-          <div class="core">
-            <span class="core-ring"></span>
-            <span class="core-ring core-ring-2"></span>
-            <span class="core-ring core-ring-3"></span>
-            <div class="core-label">
-              <span class="readout">System Core</span>
-              <b>HD // 01</b>
-            </div>
-          </div>
-          <div class="mod-chip" style="--tx:-16vw;--ty:-15vh;--rot:-7deg"><span class="mod-chip-num">01</span>WEBSITE</div>
-          <div class="mod-chip" style="--tx:16vw;--ty:-17vh;--rot:6deg"><span class="mod-chip-num">02</span>SHOP</div>
-          <div class="mod-chip" style="--tx:-18vw;--ty:10vh;--rot:5deg"><span class="mod-chip-num">03</span>CRM</div>
-          <div class="mod-chip" style="--tx:0vw;--ty:20vh;--rot:-3deg"><span class="mod-chip-num">04</span>AUTOMATION</div>
-          <div class="mod-chip" style="--tx:18vw;--ty:11vh;--rot:-6deg"><span class="mod-chip-num">05</span>KI</div>
-        </div>
-        <p class="stage-statement">
-          <span class="statement-line">Ein System.</span>
-          <span class="statement-line"><em>Mehr Wirkung.</em></span>
-        </p>
-      </div>
+    <!-- Ersatzdarstellung: wird gezeigt, solange bzw. falls keine 3D-Szene
+         läuft (kein WebGL, kleiner Bildschirm, reduzierte Bewegung).
+         Bewusst gestaltet – nie eine leere Fläche. -->
+    <div class="ersatz" aria-hidden="true">
+      <span class="ersatz-kern"></span>
+      <span class="ersatz-ring"></span>
+      <span class="ersatz-ring ersatz-ring-2"></span>
+      <span class="ersatz-ring ersatz-ring-3"></span>
+      <span class="ersatz-platte" style="--w:0deg"></span>
+      <span class="ersatz-platte" style="--w:72deg"></span>
+      <span class="ersatz-platte" style="--w:144deg"></span>
+      <span class="ersatz-platte" style="--w:216deg"></span>
+      <span class="ersatz-platte" style="--w:288deg"></span>
     </div>
+
+    <!-- Beschriftung der Bauteile. Position wird von der 3D-Szene
+         nachgezogen, damit die Labels wirklich am Objekt hängen. -->
+    <div class="bauteile" aria-hidden="true">
+      <span class="bauteil" data-bauteil>Website</span>
+      <span class="bauteil" data-bauteil>Shop</span>
+      <span class="bauteil" data-bauteil>CRM</span>
+      <span class="bauteil" data-bauteil>Automation</span>
+      <span class="bauteil" data-bauteil>KI</span>
+    </div>
+
+    <div class="wrap hero-buehne">
+      <p class="eyebrow hero-eyebrow" data-t="hero.eyebrow">Digitale Lösungen für Unternehmen</p>
+      <h1 class="hero-h1">
+        <span class="hero-zeile hero-zeile-1"><span data-t="hero.titel1">Wir bauen keine Websites.</span></span>
+        <span class="hero-zeile hero-zeile-2"><em data-t="hero.titel2">Wir bauen Systeme.</em></span>
+      </h1>
+      <p class="hero-schluss">
+        <span class="statement-line">Ein System.</span>
+        <span class="statement-line"><em>Mehr Wirkung.</em></span>
+      </p>
+      <p class="readout hero-ort">Eckernförde · Schleswig-Holstein · Bundesweit</p>
+    </div>
+
     <div class="scroll-cue" aria-hidden="true"><span></span>Scroll</div>
   </div>
 </header>
 
 <main id="main">
+
+<!-- Landung nach der 3D-Eröffnung: hier kommt die Seite zur Ruhe und liefert
+     zum ersten Mal Fließtext, Einordnung und die beiden Wege weiter. -->
+<section id="einstieg" class="einstieg" aria-labelledby="einstieg-h">
+  <div class="wrap einstieg-grid">
+    <div data-reveal>
+      <h2 id="einstieg-h" class="einstieg-h" data-t="hero.lead">Internetpräsenzen, Shopsysteme und individuelle Firmenmodule – hochwertig gestaltet, sauber strukturiert und darauf ausgelegt, Abläufe zu vereinfachen, Vertrauen aufzubauen und Kunden besser zu führen.</h2>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#berater"><span data-t="hero.cta1">Kostenlosen Projekt-Check starten</span></a>
+        <a class="btn btn-ghost" href="module.html"><span data-t="hero.cta2">Alle Module &amp; Preise</span></a>
+      </div>
+    </div>
+    <dl class="merkmale" data-reveal>
+      <div class="merkmal">
+        <dt data-t="proof1a">Individuell</dt>
+        <dd data-t="proof1b">statt Baukasten-Look</dd>
+      </div>
+      <div class="merkmal">
+        <dt data-t="proof2a">Modular</dt>
+        <dd data-t="proof2b">später erweiterbar</dd>
+      </div>
+      <div class="merkmal">
+        <dt data-t="proof3a">Business-first</dt>
+        <dd data-t="proof3b">Funktion vor Spielerei</dd>
+      </div>
+    </dl>
+  </div>
+</section>
 
 <section id="leistungen" aria-labelledby="leistungen-h">
   <div class="wrap">
@@ -233,17 +257,54 @@
         <p class="scene-sub">Nicht andersherum.</p>
         <p class="scene-body">CRM, Angebots- und Rechnungssysteme, Terminverwaltung mit Kalender-Synchronisierung, Fahrtenbuch, Serviceprozesse, Auftragsstatus oder interne Dashboards – exakt dort, wo Standardsoftware zu starr wird. Auf Wunsch auf einem eigenen Server, den wir vermitteln und einrichten.</p>
       </div>
-      <div class="dock-field" aria-hidden="true">
-        <div class="dock-hub"><span class="readout">System</span></div>
-        <div class="dock-chip" data-reveal style="--dx:1">CRM</div>
-        <div class="dock-chip" data-reveal style="--dx:2">Angebote</div>
-        <div class="dock-chip" data-reveal style="--dx:3">Rechnungen</div>
-        <div class="dock-chip" data-reveal style="--dx:4">Termine</div>
-        <div class="dock-chip" data-reveal style="--dx:5">Service</div>
-        <div class="dock-chip" data-reveal style="--dx:6">Fahrtenbuch</div>
-        <div class="dock-chip" data-reveal style="--dx:7">Dashboard</div>
-      </div>
       <p class="scene-cta" data-reveal><a class="btn btn-primary" href="module.html">47 Module entdecken<span class="arrow" aria-hidden="true">→</span></a></p>
+    </div>
+  </div>
+</section>
+
+<!-- Einzelne Funktionen werden zu einer Oberfläche. Greift die Geschichte
+     der 3D-Eröffnung noch einmal auf – hier aber ohne WebGL, nur mit
+     Scroll-Fortschritt und CSS-Transforms. -->
+<section id="zusammenspiel" class="fusion" data-scrub aria-labelledby="fusion-h">
+  <div class="fusion-pin">
+    <div class="wrap fusion-inhalt">
+      <p class="kicker">Zusammenspiel</p>
+      <h2 id="fusion-h" class="fusion-h">
+        <span class="statement-line">Einzelne Funktionen.</span>
+        <span class="statement-line"><em>Ein System.</em></span>
+      </h2>
+      <div class="fusion-flaeche">
+        <div class="fusion-rahmen" aria-hidden="true">
+          <span class="fusion-leiste"></span>
+        </div>
+        <!-- --tx/--ty = Platz im fertigen Raster, --fx/--fy/--fr = Streuung
+             davor. Der Scrollfortschritt fährt die Streuung auf null. -->
+        <div class="fusion-teil" style="--tx:18%;--ty:28%;--fx:-120%;--fy:-70%;--fr:-9deg">
+          <span class="fusion-titel">CRM</span>
+          <span class="fusion-zeile w70"></span><span class="fusion-zeile w45"></span>
+        </div>
+        <div class="fusion-teil" style="--tx:50%;--ty:28%;--fx:30%;--fy:-115%;--fr:7deg">
+          <span class="fusion-titel">Angebote</span>
+          <span class="fusion-zeile w60"></span><span class="fusion-zeile w50 akzent"></span>
+        </div>
+        <div class="fusion-teil" style="--tx:82%;--ty:28%;--fx:135%;--fy:-60%;--fr:11deg">
+          <span class="fusion-titel">Rechnungen</span>
+          <span class="fusion-zeile w55 akzent"></span><span class="fusion-zeile w65"></span>
+        </div>
+        <div class="fusion-teil" style="--tx:18%;--ty:72%;--fx:-140%;--fy:65%;--fr:8deg">
+          <span class="fusion-titel">Termine</span>
+          <span class="fusion-zeile w50"></span><span class="fusion-zeile w70"></span>
+        </div>
+        <div class="fusion-teil" style="--tx:50%;--ty:72%;--fx:-15%;--fy:120%;--fr:-6deg">
+          <span class="fusion-titel">Service</span>
+          <span class="fusion-zeile w65"></span><span class="fusion-zeile w40 akzent"></span>
+        </div>
+        <div class="fusion-teil" style="--tx:82%;--ty:72%;--fx:125%;--fy:70%;--fr:-10deg">
+          <span class="fusion-titel">Dashboard</span>
+          <span class="fusion-zeile w70"></span><span class="fusion-zeile w55"></span>
+        </div>
+      </div>
+      <p class="fusion-fuss">Sechs Bereiche, eine Datenbasis: Wer den Kunden anruft, sieht Angebot, Rechnung, Termin und Servicefall in einer Ansicht.</p>
     </div>
   </div>
 </section>
@@ -522,7 +583,15 @@
 
 <section id="kontakt" aria-labelledby="kontakt-h">
   <div class="wrap">
-    <p class="scene-num center final-eyebrow" data-reveal>Was soll einfacher werden?</p>
+    <!-- Ruhiger Abschluss: fast leerer Screen, eine Frage, ein Weg. -->
+    <div class="abschluss" data-reveal>
+      <p class="abschluss-frage">
+        <span class="statement-line">Was soll</span>
+        <span class="statement-line"><em>einfacher werden?</em></span>
+      </p>
+      <p class="abschluss-text">Beschreiben Sie uns nicht die Software.<br>Beschreiben Sie uns das Problem.</p>
+      <p class="abschluss-cta"><a class="btn btn-primary btn-gross" href="#contactForm">Projekt starten<span class="arrow" aria-hidden="true">↗</span></a></p>
+    </div>
     <div class="contact">
       <div class="panel" data-reveal>
         <p class="kicker" data-t="kontakt.kicker">Kontakt</p>

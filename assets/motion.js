@@ -45,9 +45,24 @@
         el.style.setProperty("--p", "1");
         el.style.setProperty("--spread", "0");
         el.classList.add("is-settled");
+        /* Abschnitt 0 = Ruhezustand: die Textstufen werden nicht durchlaufen,
+           sondern alle Kernaussagen stehen gleichzeitig und dauerhaft da. */
+        if (el.id === "start") el.dataset.abschnitt = "0";
       });
     } else {
       var ticking = false;
+
+      /* Grenzen der sieben Hero-Abschnitte (siehe Kopf von hero3d.js).
+         Der Abschnitt steuert nur die Textchoreografie – das 3D rechnet
+         mit dem stufenlosen Wert weiter. */
+      var ABSCHNITTE = [0.10, 0.28, 0.44, 0.56, 0.70, 0.86];
+
+      var abschnittVon = function (p) {
+        for (var i = 0; i < ABSCHNITTE.length; i++) {
+          if (p < ABSCHNITTE[i]) return i + 1;
+        }
+        return ABSCHNITTE.length + 1;
+      };
 
       var update = function () {
         ticking = false;
@@ -62,6 +77,13 @@
           var spread = p < .5 ? p / .5 : (1 - p) / .5;
           spread = spread < 0 ? 0 : spread > 1 ? 1 : spread;
           el.style.setProperty("--spread", spread.toFixed(4));
+
+          /* Nur die Hero-Bühne bekommt Abschnittsnummern, und nur bei
+             Wechsel – DOM-Schreibzugriffe pro Bild wären Verschwendung. */
+          if (el.id === "start") {
+            var a = String(abschnittVon(p));
+            if (el.dataset.abschnitt !== a) el.dataset.abschnitt = a;
+          }
         });
       };
 
@@ -87,4 +109,51 @@
   } else {
     scenes.forEach(function (el) { el.classList.add("is-active"); });
   }
+
+  /* --- 3D-Systemkern (optionale Aufwertung) --------------------------------
+     Three.js liegt lokal im Projekt, ist aber rund 750 kB groß. Deshalb wird
+     es nur geladen, wenn die Szene auch etwas bringt:
+       · WebGL ist vorhanden
+       · der Bildschirm ist breit genug (auf dem Handy erzählt die CSS-Ebene
+         die Geschichte, ohne Akku und Datenvolumen zu kosten)
+       · der Besucher hat keine reduzierte Bewegung angefordert
+       · der Rechner meldet nicht ausdrücklich wenig Kerne
+     Schlägt irgendetwas davon fehl, bleibt die CSS-Variante stehen – die
+     Seite ist ohne 3D vollständig verständlich.
+     ------------------------------------------------------------------------ */
+  (function () {
+    var canvas = document.getElementById("heroCanvas");
+    var buehne = document.getElementById("start");
+    if (!canvas || !buehne || reduceMotion) return;
+    if (window.innerWidth < 981) return;
+
+    /* Sparmodus für schwächere Geräte: weniger Partikel, gröbere Ringe,
+       kein Antialiasing, Pixelverhältnis 1. Die Szene bleibt dieselbe. */
+    var kerne = navigator.hardwareConcurrency || 4;
+    var speicher = typeof navigator.deviceMemory === "number" ? navigator.deviceMemory : null;
+    var sparsam = kerne <= 4 || (speicher !== null && speicher <= 4);
+    if (kerne <= 2) return;   /* darunter lohnt WebGL nicht mehr */
+
+    /* WebGL-Test vor dem Laden: sonst lädt der Browser 750 kB für nichts. */
+    var kannWebgl = false;
+    try {
+      var pruefLeinwand = document.createElement("canvas");
+      kannWebgl = !!(window.WebGLRenderingContext &&
+        (pruefLeinwand.getContext("webgl2") || pruefLeinwand.getContext("webgl")));
+    } catch (e) {
+      kannWebgl = false;
+    }
+    if (!kannWebgl) return;
+
+    import("./hero3d.js")
+      .then(function (modul) {
+        modul.default(canvas, buehne, { sparsam: sparsam });
+        /* Erst jetzt die Ersatzdarstellung ausblenden – vorher wäre bei
+           einem Fehler eine leere Fläche zu sehen. */
+        document.documentElement.classList.add("hat-3d");
+      })
+      .catch(function () {
+        /* Bewusst still: die CSS-Ebene ist bereits sichtbar und ausreichend. */
+      });
+  })();
 })();

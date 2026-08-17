@@ -97,23 +97,12 @@ footer .brand-mark{width:30px;height:30px;border-radius:8px}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 
-/* Hero -------------------------------------------------------------------- */
-.hero{padding:88px 0 76px;position:relative}
-.hero:before{content:"";position:absolute;inset:0;z-index:-1;
-  background:radial-gradient(ellipse 70% 60% at 75% 15%,rgba(111,163,255,.07),transparent 70%)}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+/* Hero – Grundbausteine ---------------------------------------------------- */
 .eyebrow{display:inline-flex;align-items:center;gap:9px;text-transform:uppercase;letter-spacing:.14em;
   font-size:.72rem;font-weight:800;color:var(--accent);margin:0}
 .eyebrow:before{content:"";width:26px;height:2px;background:var(--accent);border-radius:2px}
-.hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.6rem,6vw,5.4rem);line-height:1.02;
-  letter-spacing:-.035em;margin:18px 0 24px}
-.hero h1 em{font-style:normal;color:var(--accent)}
 .lead{max-width:640px;color:var(--ink-soft);font-size:1.1rem;line-height:1.75}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
-.proof{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px}
-.proof-item{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 18px;flex:1 1 150px}
-.proof-item b{display:block;font-size:1rem;color:var(--accent)}
-.proof-item span{font-size:.83rem;color:var(--ink-soft)}
 
 /* Sektionen --------------------------------------------------------------- */
 section{padding:80px 0}
@@ -1214,71 +1203,134 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
   letter-spacing:-.02em;font-size:clamp(1.7rem,5vw,3.2rem);color:var(--ink-soft);text-align:center;
   margin:0 0 10px;line-height:1.05}
 
-/* ---------------------------------------------------------------------------
-   Hero-Bühne: gepinnte Kopfzeile, die sich beim Scrollen in Systembauteile
-   zerlegt (Section 01 → 02). --p läuft 0→1 über die gesamte Bühnenhöhe,
-   --spread ist eine Dreiecksfunktion (0→1→0), die den Höhepunkt der
-   Montage in der Mitte der Bühne markiert.
-   ------------------------------------------------------------------------- */
-.hero{position:relative;padding:0;min-height:300vh;overflow:clip}
-.hero:before{content:"";position:absolute;inset:0;z-index:-1;
-  background:radial-gradient(ellipse 70% 55% at 75% 18%,var(--accent-soft),transparent 70%)}
-.hero-pin{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));
-  display:flex;flex-direction:column;justify-content:center;overflow:hidden}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;
-  position:relative;z-index:1}
-.hero-copy{position:relative;z-index:2}
+/* ==========================================================================
+   HERO – die 3D-Eröffnung
+   --------------------------------------------------------------------------
+   Die Bühne ist absichtlich sehr hoch (520vh). Der Canvas bleibt sticky und
+   füllt den Bildschirm; die Scrollstrecke ist damit die Zeitachse der Szene.
+   Sichtbar ist immer nur EINE Aussage – der Rest gehört dem Objekt.
+   Die Abschnittsnummer setzt assets/motion.js als data-abschnitt.
+   ========================================================================== */
+.hero{position:relative;padding:0;min-height:520vh;background:#050506}
+.hero-pin{position:sticky;top:0;height:100vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center}
 
-.stage-h1{display:grid;margin:18px 0 24px}
-.stage-line{grid-area:1/1;margin:0;font-family:var(--serif);font-weight:800;
-  font-size:clamp(2.5rem,6vw,5.1rem);line-height:.98;letter-spacing:-.035em;text-transform:uppercase}
-.stage-line em{font-style:normal;color:var(--accent)}
-.stage-line-a{opacity:calc(1 - var(--p,0) * 6);transform:translateY(calc(var(--p,0) * -16px))}
-.stage-line-b{opacity:calc((var(--p,0) - .12) * 6);transform:translateY(calc((1 - var(--p,0)) * 16px))}
+/* Canvas füllt die ganze Bühne – das Objekt ist der Hauptdarsteller. */
+.hero-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
+  opacity:0;transition:opacity 1.4s ease-out;z-index:1}
+.hat-3d .hero-canvas{opacity:1}
 
-.hero-visual{position:relative;height:560px;z-index:1}
-.core-field{position:relative;height:100%;display:grid;place-items:center}
-.core{width:180px;height:180px;border-radius:50%;border:1px solid var(--accent-line);
-  background:radial-gradient(circle at 32% 26%,rgba(111,163,255,.18),transparent 62%),var(--panel);
-  display:grid;place-items:center;position:relative;box-shadow:var(--glow);z-index:2}
-.core-ring{position:absolute;inset:-26px;border-radius:50%;border:1px solid var(--line-bright);opacity:.5}
-.core-ring-2{inset:-58px;opacity:.32;animation:hd-spin 42s linear infinite}
-.core-ring-3{inset:-92px;opacity:.16;border-style:dashed;animation:hd-spin 75s linear infinite reverse}
-@keyframes hd-spin{to{transform:rotate(360deg)}}
-.core-label{display:grid;gap:5px;text-align:center}
-.core-label b{font-family:var(--mono);font-size:.86rem;letter-spacing:.05em;color:var(--ink)}
+/* Vignette: hält den Blick in der Mitte und trennt Text vom Objekt. */
+.hero-pin:after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse 78% 78% at 50% 50%,transparent 55%,rgba(5,5,6,.55) 100%)}
 
-.mod-chip{position:absolute;left:50%;top:50%;display:inline-flex;align-items:center;gap:8px;
-  padding:10px 16px;border-radius:12px;border:1px solid var(--line-bright);background:var(--panel-raised);
-  font-family:var(--mono);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);
-  box-shadow:var(--shadow);white-space:nowrap;z-index:1;pointer-events:none;
-  transform:translate(-50%,-50%)
-    translate(calc(var(--tx,0px) * var(--spread,0)),calc(var(--ty,0px) * var(--spread,0)))
-    rotate(calc(var(--rot,0deg) * var(--spread,0)))
-    scale(calc(.72 + .28 * var(--spread,0)));
-  opacity:calc(.16 + .84 * var(--spread,0))}
-.mod-chip-num{color:var(--accent);font-weight:700}
+.hero-buehne{position:relative;z-index:3;text-align:center;pointer-events:none}
+.hero-buehne a{pointer-events:auto}
 
-.stage-statement{position:absolute;inset:0;display:grid;place-items:center;text-align:center;
-  margin:0;pointer-events:none;z-index:3;opacity:var(--spread,0)}
-.stage-statement .statement-line{font-size:clamp(1.5rem,3.8vw,2.9rem)}
+/* --- Textstufen --------------------------------------------------------
+   Alle Stufen liegen übereinander; nur die zum Abschnitt passende ist zu
+   sehen. Übergänge laufen über opacity/transform, also GPU-freundlich. */
+.hero-h1{display:grid;margin:0}
+.hero-zeile{grid-area:1/1;margin:0;font-family:var(--serif);font-weight:800;
+  font-size:clamp(2.4rem,7vw,6.4rem);line-height:.95;letter-spacing:-.04em;
+  text-transform:uppercase;opacity:0;transform:translateY(14px);
+  transition:opacity 1s cubic-bezier(.2,.65,.25,1),transform 1s cubic-bezier(.2,.65,.25,1)}
+.hero-zeile em{font-style:normal;color:var(--accent)}
 
-.scroll-cue{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
+.hero-schluss{margin:0;position:absolute;left:0;right:0;top:50%;transform:translateY(-40%);
+  opacity:0;transition:opacity 1s ease-out,transform 1s cubic-bezier(.2,.65,.25,1)}
+.hero-schluss .statement-line{font-size:clamp(1.6rem,4.4vw,3.4rem)}
+
+.hero-eyebrow,.hero-ort{opacity:0;transition:opacity .8s ease-out}
+.hero-eyebrow{position:absolute;left:50%;top:-72px;transform:translateX(-50%)}
+.hero-ort{position:absolute;left:50%;bottom:-84px;transform:translateX(-50%);white-space:nowrap}
+
+/* Abschnitt 1+2: die Behauptung. */
+[data-abschnitt="1"] .hero-zeile-1,
+[data-abschnitt="2"] .hero-zeile-1{opacity:1;transform:none}
+[data-abschnitt="1"] .hero-eyebrow,
+[data-abschnitt="1"] .hero-ort{opacity:1}
+/* Abschnitt 3–5 gehören dem Objekt: kein Fließtext. */
+/* Abschnitt 6: die Auflösung. */
+[data-abschnitt="6"] .hero-zeile-2{opacity:1;transform:none}
+/* Abschnitt 7: der Übergang in die Seite. */
+[data-abschnitt="7"] .hero-schluss{opacity:1;transform:translateY(-50%)}
+/* Abschnitt 0 = reduzierte Bewegung: alles ruhig und gleichzeitig sichtbar. */
+[data-abschnitt="0"] .hero-h1{display:block}
+[data-abschnitt="0"] .hero-zeile{opacity:1;transform:none;display:block}
+[data-abschnitt="0"] .hero-eyebrow,
+[data-abschnitt="0"] .hero-ort{opacity:1}
+[data-abschnitt="0"] .hero-schluss{display:none}
+
+/* --- Bauteil-Beschriftung ---------------------------------------------
+   Position wird von hero3d.js aus der 3D-Szene projiziert. Ohne 3D bleiben
+   die Labels unsichtbar (die Ersatzdarstellung benennt die Module selbst). */
+.bauteile{position:absolute;inset:0;z-index:3;pointer-events:none}
+.bauteil{position:absolute;left:0;top:0;opacity:0;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);white-space:nowrap;
+  padding:5px 11px;border:1px solid var(--line-bright);border-radius:99px;
+  background:rgba(9,10,13,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  transition:opacity .5s ease-out}
+
+/* --- Scrollhinweis ---------------------------------------------------- */
+.scroll-cue{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);
   display:flex;flex-direction:column;align-items:center;gap:9px;font-family:var(--mono);
-  font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
-  opacity:calc(1 - var(--p,0) * 6);z-index:2}
+  font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);
+  opacity:0;transition:opacity .8s ease-out;z-index:4}
+[data-abschnitt="1"] .scroll-cue{opacity:1}
 .scroll-cue span{width:1px;height:26px;background:linear-gradient(var(--accent),transparent);
   animation:hd-cue 1.8s ease-in-out infinite}
 @keyframes hd-cue{0%{transform:scaleY(.3);transform-origin:top}
   50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(.3);transform-origin:bottom}}
 
-/* Endzustand ohne Bewegung (prefers-reduced-motion) ------------------------ */
-[data-scrub].is-settled .stage-line-a{opacity:0}
-[data-scrub].is-settled .stage-line-b{opacity:1;transform:none}
-[data-scrub].is-settled .mod-chip{opacity:1;
-  transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rot,0deg))}
-[data-scrub].is-settled .stage-statement{opacity:1}
-[data-scrub].is-settled .scroll-cue{display:none}
+/* ==========================================================================
+   Ersatzdarstellung ohne WebGL
+   Eine bewusst gestaltete CSS-Komposition: Kern, Ringe, fünf Platten auf
+   einem Ring. Kein Platzhalter, sondern eine ruhige zweite Fassung.
+   ========================================================================== */
+.ersatz{position:absolute;left:50%;top:50%;width:min(70vh,560px);aspect-ratio:1;
+  transform:translate(-50%,-50%);z-index:1;transition:opacity .6s ease-out}
+.hat-3d .ersatz{opacity:0}
+.ersatz-kern{position:absolute;left:50%;top:50%;width:22%;aspect-ratio:1;
+  transform:translate(-50%,-50%) rotate(calc(var(--p,0) * 180deg));
+  background:radial-gradient(circle at 34% 28%,rgba(111,163,255,.3),transparent 62%),
+    linear-gradient(150deg,#3c414d,#14161b);
+  border:1px solid var(--accent-line);box-shadow:var(--glow);
+  clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.ersatz-ring{position:absolute;left:50%;top:50%;width:46%;aspect-ratio:1;border-radius:50%;
+  border:1px solid var(--line-bright);opacity:.5;
+  transform:translate(-50%,-50%) rotateX(72deg) rotate(calc(var(--p,0) * 120deg))}
+.ersatz-ring-2{width:66%;opacity:.3;
+  transform:translate(-50%,-50%) rotateX(64deg) rotateY(24deg) rotate(calc(var(--p,0) * -90deg))}
+.ersatz-ring-3{width:86%;opacity:.16;border-style:dashed;
+  transform:translate(-50%,-50%) rotateX(76deg) rotateY(-30deg) rotate(calc(var(--p,0) * 60deg))}
+/* Die fünf Platten wandern mit --p vom Kern nach außen. */
+.ersatz-platte{position:absolute;left:50%;top:50%;width:15%;height:20%;
+  border:1px solid var(--line-bright);border-radius:4px;
+  background:linear-gradient(160deg,rgba(60,65,77,.9),rgba(9,10,13,.95));
+  box-shadow:var(--shadow);
+  transform:translate(-50%,-50%) rotate(var(--w,0deg))
+    translateY(calc(-14% - var(--p,0) * 150%)) rotate(calc(var(--w,0deg) * -1))}
+.ersatz-platte:after{content:"";position:absolute;left:14%;right:14%;bottom:12%;height:2px;
+  background:var(--accent);opacity:.55}
+
+/* ==========================================================================
+   Landung nach der 3D-Eröffnung
+   ========================================================================== */
+.einstieg{padding:120px 0 96px;border-bottom:1px solid var(--line)}
+.einstieg-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:64px;align-items:start}
+.einstieg-h{font-family:var(--serif);font-weight:600;font-size:clamp(1.3rem,2.4vw,2rem);
+  line-height:1.45;letter-spacing:-.015em;margin:0;color:var(--ink)}
+.merkmale{margin:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.merkmal{padding:18px 0;border-bottom:1px solid var(--line)}
+.merkmal dt{font-family:var(--mono);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 4px}
+.merkmal dd{margin:0;font-size:.92rem;color:var(--ink-soft)}
+@media(max-width:980px){
+  .einstieg{padding:72px 0 64px}
+  .einstieg-grid{grid-template-columns:1fr;gap:36px}
+}
 
 /* ---------------------------------------------------------------------------
    Nummerierte Szenen (Internetpräsenzen / Shop-Systeme) -------------------- */
@@ -1300,10 +1352,13 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
 
 /* Technische UI-Panels (Website- und Shop-Mockups) ------------------------- */
 .panel-tech{position:relative}
+/* overflow bleibt sichtbar, damit die Marker über den Rahmenrand hinausragen
+   können; die Ecken werden stattdessen an der Kopfzeile selbst gerundet. */
 .tech-frame{border:1px solid var(--line);border-radius:18px;background:var(--panel);
-  box-shadow:var(--shadow-lg);overflow:hidden;position:relative}
+  box-shadow:var(--shadow-lg);position:relative}
 .tech-bar{height:42px;display:flex;align-items:center;gap:8px;padding:0 16px;
-  border-bottom:1px solid var(--line);background:var(--panel-soft)}
+  border-bottom:1px solid var(--line);background:var(--panel-soft);
+  border-radius:17px 17px 0 0}
 .tech-bar .dot{background:var(--line-bright)}
 .tech-url{margin-left:auto}
 .tech-body{padding:24px}
@@ -1379,10 +1434,100 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
   .ablauf-timeline .erklaer-karte:after{display:none}
 }
 
+/* ==========================================================================
+   Zusammenspiel: aus sechs Bereichen wird eine Oberfläche
+   --------------------------------------------------------------------------
+   Zweite Auflage der Hero-Geschichte, diesmal ohne WebGL. Die Teile starten
+   verstreut und gekippt und rasten mit steigendem --p in ein gemeinsames
+   Raster ein. Alles nur über transform/opacity.
+   ========================================================================== */
+.fusion{padding:0;min-height:260vh;position:relative}
+.fusion-pin{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));
+  display:flex;align-items:center;overflow:hidden}
+.fusion-inhalt{width:min(var(--max),calc(100% - 46px));text-align:center}
+.fusion-h{margin:10px 0 0}
+.fusion-h .statement-line{font-size:clamp(1.6rem,4vw,3rem)}
+
+.fusion-flaeche{position:relative;height:min(52vh,420px);margin:42px auto 0;
+  max-width:920px;perspective:1200px}
+/* Der gemeinsame Rahmen erscheint erst, wenn die Teile eingerastet sind. */
+.fusion-rahmen{position:absolute;left:50%;top:50%;width:100%;height:100%;
+  transform:translate(-50%,-50%);border:1px solid var(--line);border-radius:16px;
+  background:var(--panel);box-shadow:var(--shadow-lg);
+  opacity:calc((var(--p,0) - .45) * 2.6);
+  transition:opacity .2s linear}
+.fusion-leiste{position:absolute;left:0;right:0;top:0;height:38px;
+  border-bottom:1px solid var(--line);background:var(--panel-soft);border-radius:15px 15px 0 0}
+
+/* Jedes Teil sitzt auf seinem Zielplatz im Raster (--tx/--ty) und ist um
+   die Streuung (--fx/--fy/--fr) davon weggeschoben. Der Faktor (1 - p)
+   fährt die Streuung auf null – dann rastet das Raster ein. */
+.fusion-teil{position:absolute;left:var(--tx,50%);top:var(--ty,50%);width:29%;min-height:96px;
+  padding:14px 16px;border:1px solid var(--line-bright);border-radius:12px;
+  background:linear-gradient(160deg,var(--panel-raised),var(--panel));
+  box-shadow:var(--shadow);text-align:left;display:grid;gap:8px;align-content:start;
+  --fp:calc(1 - var(--p,0));
+  transform:translate(-50%,-50%)
+    translate(calc(var(--fx,0%) * var(--fp)),calc(var(--fy,0%) * var(--fp)))
+    rotate(calc(var(--fr,0deg) * var(--fp)))
+    translateZ(calc(var(--fp) * -70px))}
+.fusion-titel{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent)}
+.fusion-zeile{height:8px;border-radius:4px;background:var(--line-bright)}
+.fusion-zeile.akzent{background:var(--accent);opacity:.5}
+.fusion-zeile.w40{width:40%}.fusion-zeile.w45{width:45%}.fusion-zeile.w50{width:50%}
+.fusion-zeile.w55{width:55%}.fusion-zeile.w60{width:60%}.fusion-zeile.w65{width:65%}
+.fusion-zeile.w70{width:70%}
+.fusion-fuss{margin:34px auto 0;max-width:60ch;color:var(--ink-soft);font-size:.95rem;
+  opacity:calc((var(--p,0) - .6) * 2.5)}
+
+@media(max-width:980px){
+  /* Ohne die lange Scrollstrecke: die Teile stehen direkt im Raster. */
+  .fusion{min-height:auto}
+  .fusion-pin{position:static;height:auto;padding:64px 0}
+  .fusion-flaeche{height:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;
+    perspective:none;max-width:none}
+  .fusion-rahmen{display:none}
+  .fusion-teil{position:static;width:auto;transform:none;margin:0;min-height:0}
+  .fusion-fuss{opacity:1}
+}
+@media(max-width:560px){
+  .fusion-flaeche{grid-template-columns:1fr}
+}
+
+/* ==========================================================================
+   Abschluss: fast leerer Screen
+   ========================================================================== */
+.abschluss{text-align:center;padding:40px 0 72px;max-width:56ch;margin:0 auto}
+.abschluss-frage{margin:0 0 26px}
+.abschluss-frage .statement-line{font-size:clamp(1.9rem,5.4vw,4rem)}
+.abschluss-text{margin:0 0 34px;color:var(--ink-soft);font-size:1.05rem;line-height:1.7}
+.abschluss-cta{margin:0}
+.btn-gross{padding:20px 34px;font-size:1rem;letter-spacing:.02em}
+
 /* Sitewide Reveal-Szenen (data-reveal / data-scene) ------------------------ */
 [data-reveal]{opacity:0;transform:translateY(20px);
   transition:opacity .7s cubic-bezier(.2,.65,.25,1),transform .7s cubic-bezier(.2,.65,.25,1)}
 [data-reveal].is-in{opacity:1;transform:none}
+
+/* Räumliche Tiefe für die Szenen-Mockups ----------------------------------
+   Die UI-Panels kommen leicht aus dem Raum gekippt herein und richten sich
+   beim Erscheinen aus – als würde das Bauteil in die Ebene einrasten.
+   Rein per CSS-Transform, also kein zweiter WebGL-Kontext und kein
+   messbarer Aufwand. Der Elternknoten braucht die Perspektive. */
+.scene-visual{perspective:1400px;perspective-origin:50% 50%}
+.scene-visual .tech-frame{
+  transform:rotateY(-9deg) rotateX(3.5deg) translateZ(-40px);
+  transform-origin:50% 50%;
+  transition:transform 1.1s cubic-bezier(.2,.65,.25,1)}
+.scene-grid-rev .scene-visual .tech-frame{transform:rotateY(9deg) rotateX(3.5deg) translateZ(-40px)}
+.scene.is-active .scene-visual .tech-frame{transform:none}
+
+/* Der Modul-Ring bekommt ebenfalls Tiefe: die Bauteile sitzen gestaffelt
+   im Raum, statt flach nebeneinander. */
+.dock-field{perspective:1100px}
+.dock-field .dock-chip{transform:translateY(16px) translateZ(calc(var(--dx,0) * -14px))}
+.dock-field .dock-chip.is-in{transform:translateZ(calc(var(--dx,0) * -14px))}
 
 /* Responsive: Bühne und Szenen vereinfachen --------------------------------
    Unterhalb 980px wird die gepinnte Scroll-Montage bewusst abgeschaltet
@@ -1415,13 +1560,26 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
   .statement-line{font-size:clamp(1.9rem,9vw,3rem)}
 }
 @media(prefers-reduced-motion:reduce){
-  .core-ring-2,.core-ring-3,.scroll-cue span,.ki-scan span:before{animation:none!important}
-  .stage-line-a{opacity:0}
-  .stage-line-b{opacity:1;transform:none}
-  .mod-chip{opacity:1;
-    transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rot,0deg))}
-  .stage-statement{opacity:1}
+  .scroll-cue span,.ki-scan span:before{animation:none!important}
   .scroll-cue{display:none}
-  .dock-chip{opacity:1;transform:none;transition:none}
+  /* Hero: kurze, ruhige Bühne statt 520vh Scrollstrecke. */
+  .hero{min-height:auto}
+  .hero-pin{position:static;height:auto;padding:100px 0 120px}
+  .hero-pin:after{display:none}
+  .hero-zeile{opacity:1;transform:none;transition:none}
+  .bauteil{display:none}
+  .ersatz{position:relative;left:auto;top:auto;transform:none;margin:56px auto 0}
+  .ersatz-kern,.ersatz-ring,.ersatz-ring-2,.ersatz-ring-3,.ersatz-platte{transition:none}
+  /* Zusammenspiel: fertiges Raster, keine Einrast-Bewegung. */
+  .fusion{min-height:auto}
+  .fusion-pin{position:static;height:auto;padding:64px 0}
+  .fusion-flaeche{height:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;perspective:none}
+  .fusion-rahmen{display:none}
+  .fusion-teil{position:static;width:auto;transform:none!important;min-height:0}
+  .fusion-fuss{opacity:1}
+  /* !important, weil die räumlichen Regeln oben über einen Elternselektor
+     laufen und damit sonst spezifischer wären als dieser Override. */
+  .dock-field .dock-chip,.dock-chip{opacity:1;transform:none!important;transition:none}
+  .scene-visual .tech-frame{transform:none!important;transition:none}
   [data-reveal]{opacity:1;transform:none}
 }
