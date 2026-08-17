@@ -14,6 +14,7 @@ Web-Verzeichnis hochladen – fertig.
     assets/site-config.js >>> HIER ALLE FIRMENDATEN EINTRAGEN <<<
     assets/style.css      Gestaltung
     assets/main.js        Navigation, Module, Projekt-Check, Formular
+    assets/motion.js      Scroll-Choreografie der Startseite (Reveal, Systemmontage)
     assets/modules.js     Modulkatalog inkl. Kauf- und Mietpreise
     assets/module-demos.js Beispielansichten der Module
     assets/module-page.js Katalogseite: Filter, Auswahl, Kostenschätzung
