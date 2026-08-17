@@ -22,6 +22,42 @@
 <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/style.css">
+<script>
+/* Absichtlich inline im <head> und nicht in assets/motion.js: die Frage, ob
+   die 3D-Bühne der Startseite überhaupt laufen kann, muss VOR dem ersten
+   Layout entschieden sein. Die Bühne ist 520vh hoch – würde diese Höhe erst
+   nachträglich per JavaScript wegfallen, würde der gesamte Inhalt darunter
+   sichtbar nach oben springen (Layout Shift). Das Skript setzt daher nur eine
+   Klasse und ein Flag; geladen wird hier nichts. */
+(function () {
+  var ok = true;
+  try {
+    var mm = window.matchMedia;
+    if (mm && mm("(prefers-reduced-motion: reduce)").matches) ok = false;
+    if (ok && window.innerWidth < 981) ok = false;
+    if (ok && (navigator.hardwareConcurrency || 4) <= 2) ok = false;
+    if (ok) {
+      var pruef = document.createElement("canvas");
+      var gl = pruef.getContext("webgl2") || pruef.getContext("webgl");
+      if (!gl) {
+        ok = false;
+      } else {
+        /* Fällt der Browser auf einen Software-Rasterizer zurück, läuft die
+           Szene mit deutlich unter 30 Bildern je Sekunde – dann ist die
+           ruhige CSS-Fassung die bessere Erfahrung. */
+        var info = gl.getExtension("WEBGL_debug_renderer_info");
+        var name = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : "";
+        if (/swiftshader|llvmpipe|software|basic render/i.test(name)) ok = false;
+      }
+    }
+  } catch (e) {
+    ok = false;
+  }
+  if (window.HD_FORCE_3D) ok = true;   /* Schalter für Tests und Aufnahmen */
+  window.HD_3D_OK = ok;
+  if (!ok) document.documentElement.className += " kein-3d";
+})();
+</script>
 <script defer src="assets/i18n-texte.js"></script>
 <script defer src="assets/site-config.js"></script>
 <script type="application/ld+json">
@@ -58,7 +94,10 @@
   </div>
 </nav>
 
-<header id="start" class="hero" data-scrub>
+<!-- data-abschnitt="0" ist der Ruhezustand: alle Kernaussagen stehen
+     gleichzeitig. Erst wenn die 3D-Szene läuft, übernimmt assets/motion.js
+     die Abschnittsnummern und macht daraus die Scroll-Choreografie. -->
+<header id="start" class="hero" data-scrub data-abschnitt="0">
   <div class="hero-pin" id="heroPin">
     <canvas class="hero-canvas" id="heroCanvas"></canvas>
 
@@ -279,27 +318,27 @@
         </div>
         <!-- --tx/--ty = Platz im fertigen Raster, --fx/--fy/--fr = Streuung
              davor. Der Scrollfortschritt fährt die Streuung auf null. -->
-        <div class="fusion-teil" style="--tx:18%;--ty:28%;--fx:-120%;--fy:-70%;--fr:-9deg">
+        <div class="fusion-teil" style="--tx:18%;--ty:28%;--fx:-88%;--fy:-58%;--fr:-9deg">
           <span class="fusion-titel">CRM</span>
           <span class="fusion-zeile w70"></span><span class="fusion-zeile w45"></span>
         </div>
-        <div class="fusion-teil" style="--tx:50%;--ty:28%;--fx:30%;--fy:-115%;--fr:7deg">
+        <div class="fusion-teil" style="--tx:50%;--ty:28%;--fx:24%;--fy:-92%;--fr:7deg">
           <span class="fusion-titel">Angebote</span>
           <span class="fusion-zeile w60"></span><span class="fusion-zeile w50 akzent"></span>
         </div>
-        <div class="fusion-teil" style="--tx:82%;--ty:28%;--fx:135%;--fy:-60%;--fr:11deg">
+        <div class="fusion-teil" style="--tx:82%;--ty:28%;--fx:96%;--fy:-52%;--fr:11deg">
           <span class="fusion-titel">Rechnungen</span>
           <span class="fusion-zeile w55 akzent"></span><span class="fusion-zeile w65"></span>
         </div>
-        <div class="fusion-teil" style="--tx:18%;--ty:72%;--fx:-140%;--fy:65%;--fr:8deg">
+        <div class="fusion-teil" style="--tx:18%;--ty:72%;--fx:-96%;--fy:56%;--fr:8deg">
           <span class="fusion-titel">Termine</span>
           <span class="fusion-zeile w50"></span><span class="fusion-zeile w70"></span>
         </div>
-        <div class="fusion-teil" style="--tx:50%;--ty:72%;--fx:-15%;--fy:120%;--fr:-6deg">
+        <div class="fusion-teil" style="--tx:50%;--ty:72%;--fx:-12%;--fy:95%;--fr:-6deg">
           <span class="fusion-titel">Service</span>
           <span class="fusion-zeile w65"></span><span class="fusion-zeile w40 akzent"></span>
         </div>
-        <div class="fusion-teil" style="--tx:82%;--ty:72%;--fx:125%;--fy:70%;--fr:-10deg">
+        <div class="fusion-teil" style="--tx:82%;--ty:72%;--fx:92%;--fy:60%;--fr:-10deg">
           <span class="fusion-titel">Dashboard</span>
           <span class="fusion-zeile w70"></span><span class="fusion-zeile w55"></span>
         </div>

@@ -1211,17 +1211,37 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
    Sichtbar ist immer nur EINE Aussage – der Rest gehört dem Objekt.
    Die Abschnittsnummer setzt assets/motion.js als data-abschnitt.
    ========================================================================== */
-.hero{position:relative;padding:0;min-height:520vh;background:#050506}
-.hero-pin{position:sticky;top:0;height:100vh;overflow:hidden;
-  display:flex;align-items:center;justify-content:center}
+/* Standardfall = OHNE 3D: eine kurze, ruhige, statische Bühne. Nur wenn die
+   3D-Szene wirklich läuft (Klasse hat-3d), wird daraus die lange gepinnte
+   Scrollstrecke. So entsteht ohne WebGL nie eine 520vh lange Leerstelle. */
+.hero{position:relative;padding:0;min-height:auto;background:#050506}
+.hero-pin{position:static;height:auto;overflow:hidden;padding:88px 0 104px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+/* Die lange Bühne wird per Media Query reserviert, nicht per JavaScript –
+   damit steht sie schon beim ersten Layout und der Inhalt darunter springt
+   nie (kein Layout Shift). Kann die Szene nicht laufen (kein WebGL, Software-
+   Rasterizer, zu wenig Kerne), setzt assets/motion.js die Klasse kein-3d und
+   die Bühne fällt auf die kurze, statische Fassung zurück.
+   hat-3d kommt erst, wenn wirklich gerendert wird, und schaltet ausschließlich
+   Sichtbarkeit um – also nichts, was Layout kostet. */
+@media(min-width:981px){
+  html:not(.kein-3d) .hero{min-height:520vh}
+  html:not(.kein-3d) .hero-pin{position:sticky;top:0;height:100vh;padding:0}
+  /* Auch die Ersatzgrafik wird gleich mittig gelegt: sonst würde sie beim
+     Umschalten aus dem Textfluss herausfallen und alles verschieben. */
+  html:not(.kein-3d) .ersatz{position:absolute;left:50%;top:50%;margin:0;
+    width:min(70vh,560px);transform:translate(-50%,-50%);pointer-events:none}
+}
 
 /* Canvas füllt die ganze Bühne – das Objekt ist der Hauptdarsteller. */
 .hero-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   opacity:0;transition:opacity 1.4s ease-out;z-index:1}
 .hat-3d .hero-canvas{opacity:1}
 
-/* Vignette: hält den Blick in der Mitte und trennt Text vom Objekt. */
-.hero-pin:after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+/* Vignette nur mit 3D: sie soll das Objekt rahmen, nicht leeren Grund. */
+.hat-3d .hero-pin:after{content:"";position:absolute;inset:0;z-index:2;
+  pointer-events:none;
   background:radial-gradient(ellipse 78% 78% at 50% 50%,transparent 55%,rgba(5,5,6,.55) 100%)}
 
 .hero-buehne{position:relative;z-index:3;text-align:center;pointer-events:none}
@@ -1255,12 +1275,23 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
 [data-abschnitt="6"] .hero-zeile-2{opacity:1;transform:none}
 /* Abschnitt 7: der Übergang in die Seite. */
 [data-abschnitt="7"] .hero-schluss{opacity:1;transform:translateY(-50%)}
-/* Abschnitt 0 = reduzierte Bewegung: alles ruhig und gleichzeitig sichtbar. */
-[data-abschnitt="0"] .hero-h1{display:block}
-[data-abschnitt="0"] .hero-zeile{opacity:1;transform:none;display:block}
+/* Abschnitt 0 = Ruhezustand (kein 3D / reduzierte Bewegung): beide Zeilen
+   stehen gleichzeitig, etwas kleiner, und die Komposition rückt unter den
+   Text – so ist die Aussage vollständig, ohne Scroll-Choreografie. */
+[data-abschnitt="0"] .hero-h1{display:block;text-wrap:balance}
+[data-abschnitt="0"] .hero-zeile{opacity:1;transform:none;display:block;
+  font-size:clamp(1.9rem,5vw,4.2rem);line-height:1}
+/* inline-flex beibehalten: die Punkt-/Strich-Marker der beiden Elemente
+   entstehen über ::before und brauchen die Flex-Ausrichtung. Zentriert
+   werden sie über text-align der Bühne. */
 [data-abschnitt="0"] .hero-eyebrow,
-[data-abschnitt="0"] .hero-ort{opacity:1}
+[data-abschnitt="0"] .hero-ort{opacity:1;position:static;transform:none;
+  display:inline-flex}
+[data-abschnitt="0"] .hero-eyebrow{margin:0 0 22px}
+[data-abschnitt="0"] .hero-ort{margin:26px 0 0}
 [data-abschnitt="0"] .hero-schluss{display:none}
+[data-abschnitt="0"] .ersatz{order:2}
+[data-abschnitt="0"] .hero-buehne{order:1}
 
 /* --- Bauteil-Beschriftung ---------------------------------------------
    Position wird von hero3d.js aus der 3D-Szene projiziert. Ohne 3D bleiben
@@ -1289,8 +1320,11 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
    Eine bewusst gestaltete CSS-Komposition: Kern, Ringe, fünf Platten auf
    einem Ring. Kein Platzhalter, sondern eine ruhige zweite Fassung.
    ========================================================================== */
-.ersatz{position:absolute;left:50%;top:50%;width:min(70vh,560px);aspect-ratio:1;
-  transform:translate(-50%,-50%);z-index:1;transition:opacity .6s ease-out}
+/* Steht im normalen Fluss unter dem Text (kurze Bühne). Auf großen Schirmen
+   liegt sie mittig (siehe Media Query oben) und wird ausgeblendet, sobald
+   die 3D-Szene übernimmt. */
+.ersatz{position:relative;width:min(58vw,380px);aspect-ratio:1;margin:46px auto 0;
+  z-index:1;transition:opacity .6s ease-out}
 .hat-3d .ersatz{opacity:0}
 .ersatz-kern{position:absolute;left:50%;top:50%;width:22%;aspect-ratio:1;
   transform:translate(-50%,-50%) rotate(calc(var(--p,0) * 180deg));
@@ -1305,13 +1339,14 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
   transform:translate(-50%,-50%) rotateX(64deg) rotateY(24deg) rotate(calc(var(--p,0) * -90deg))}
 .ersatz-ring-3{width:86%;opacity:.16;border-style:dashed;
   transform:translate(-50%,-50%) rotateX(76deg) rotateY(-30deg) rotate(calc(var(--p,0) * 60deg))}
-/* Die fünf Platten wandern mit --p vom Kern nach außen. */
+/* Die fünf Platten sitzen fest auf ihrem Ring. Ohne die lange Scrollstrecke
+   gibt es hier bewusst keine Bewegung – eine ruhige, fertige Komposition. */
 .ersatz-platte{position:absolute;left:50%;top:50%;width:15%;height:20%;
   border:1px solid var(--line-bright);border-radius:4px;
   background:linear-gradient(160deg,rgba(60,65,77,.9),rgba(9,10,13,.95));
   box-shadow:var(--shadow);
   transform:translate(-50%,-50%) rotate(var(--w,0deg))
-    translateY(calc(-14% - var(--p,0) * 150%)) rotate(calc(var(--w,0deg) * -1))}
+    translateY(-165%) rotate(calc(var(--w,0deg) * -1))}
 .ersatz-platte:after{content:"";position:absolute;left:14%;right:14%;bottom:12%;height:2px;
   background:var(--accent);opacity:.55}
 
@@ -1445,11 +1480,11 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
 .fusion-pin{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));
   display:flex;align-items:center;overflow:hidden}
 .fusion-inhalt{width:min(var(--max),calc(100% - 46px));text-align:center}
-.fusion-h{margin:10px 0 0}
-.fusion-h .statement-line{font-size:clamp(1.6rem,4vw,3rem)}
+.fusion-h{margin:8px 0 0}
+.fusion-h .statement-line{font-size:clamp(1.4rem,3.2vw,2.4rem)}
 
-.fusion-flaeche{position:relative;height:min(52vh,420px);margin:42px auto 0;
-  max-width:920px;perspective:1200px}
+.fusion-flaeche{position:relative;height:min(44vh,340px);margin:30px auto 0;
+  max-width:900px;perspective:1200px}
 /* Der gemeinsame Rahmen erscheint erst, wenn die Teile eingerastet sind. */
 .fusion-rahmen{position:absolute;left:50%;top:50%;width:100%;height:100%;
   transform:translate(-50%,-50%);border:1px solid var(--line);border-radius:16px;
@@ -1478,7 +1513,7 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
 .fusion-zeile.w40{width:40%}.fusion-zeile.w45{width:45%}.fusion-zeile.w50{width:50%}
 .fusion-zeile.w55{width:55%}.fusion-zeile.w60{width:60%}.fusion-zeile.w65{width:65%}
 .fusion-zeile.w70{width:70%}
-.fusion-fuss{margin:34px auto 0;max-width:60ch;color:var(--ink-soft);font-size:.95rem;
+.fusion-fuss{margin:24px auto 0;max-width:60ch;color:var(--ink-soft);font-size:.92rem;
   opacity:calc((var(--p,0) - .6) * 2.5)}
 
 @media(max-width:980px){

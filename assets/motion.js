@@ -37,6 +37,10 @@
     }
   }
 
+  /* Wird true, sobald die 3D-Szene wirklich läuft. Erst dann bekommt die
+     Hero-Bühne ihre Abschnittsnummern (siehe unten). */
+  var heroSzenen = false;
+
   /* --- Scroll-Fortschritt (Sticky-Assembling-Sequenzen) -------------------- */
   var scrubEls = Array.prototype.slice.call(document.querySelectorAll("[data-scrub]"));
   if (scrubEls.length) {
@@ -78,9 +82,11 @@
           spread = spread < 0 ? 0 : spread > 1 ? 1 : spread;
           el.style.setProperty("--spread", spread.toFixed(4));
 
-          /* Nur die Hero-Bühne bekommt Abschnittsnummern, und nur bei
-             Wechsel – DOM-Schreibzugriffe pro Bild wären Verschwendung. */
-          if (el.id === "start") {
+          /* Abschnittsnummern nur, wenn die 3D-Szene läuft – ohne sie ist die
+             Bühne kurz und statisch, da wäre eine Choreografie sinnlos.
+             Und nur bei Wechsel: DOM-Schreibzugriffe pro Bild wären
+             Verschwendung. */
+          if (el.id === "start" && heroSzenen) {
             var a = String(abschnittVon(p));
             if (el.dataset.abschnitt !== a) el.dataset.abschnitt = a;
           }
@@ -111,49 +117,48 @@
   }
 
   /* --- 3D-Systemkern (optionale Aufwertung) --------------------------------
-     Three.js liegt lokal im Projekt, ist aber rund 750 kB groß. Deshalb wird
-     es nur geladen, wenn die Szene auch etwas bringt:
-       · WebGL ist vorhanden
-       · der Bildschirm ist breit genug (auf dem Handy erzählt die CSS-Ebene
-         die Geschichte, ohne Akku und Datenvolumen zu kosten)
-       · der Besucher hat keine reduzierte Bewegung angefordert
-       · der Rechner meldet nicht ausdrücklich wenig Kerne
-     Schlägt irgendetwas davon fehl, bleibt die CSS-Variante stehen – die
-     Seite ist ohne 3D vollständig verständlich.
+     Ob die Szene laufen darf, wurde bereits im Inline-Skript im <head> von
+     index.html entschieden (window.HD_3D_OK) – dort muss es passieren, weil
+     die Bühnenhöhe vor dem ersten Layout feststehen muss. Hier wird die
+     Entscheidung nur noch ausgeführt.
+
+     Three.js liegt lokal im Projekt, ist aber rund 750 kB groß und wird
+     deshalb ausschließlich dynamisch geladen. Ohne 3D bleibt die gestaltete
+     CSS-Fassung stehen – die Seite ist vollständig ohne sie verständlich.
      ------------------------------------------------------------------------ */
   (function () {
+    var wurzel = document.documentElement;
     var canvas = document.getElementById("heroCanvas");
     var buehne = document.getElementById("start");
     if (!canvas || !buehne || reduceMotion) return;
-    if (window.innerWidth < 981) return;
+    if (window.HD_3D_OK !== true) return;
 
     /* Sparmodus für schwächere Geräte: weniger Partikel, gröbere Ringe,
        kein Antialiasing, Pixelverhältnis 1. Die Szene bleibt dieselbe. */
     var kerne = navigator.hardwareConcurrency || 4;
     var speicher = typeof navigator.deviceMemory === "number" ? navigator.deviceMemory : null;
     var sparsam = kerne <= 4 || (speicher !== null && speicher <= 4);
-    if (kerne <= 2) return;   /* darunter lohnt WebGL nicht mehr */
 
-    /* WebGL-Test vor dem Laden: sonst lädt der Browser 750 kB für nichts. */
-    var kannWebgl = false;
-    try {
-      var pruefLeinwand = document.createElement("canvas");
-      kannWebgl = !!(window.WebGLRenderingContext &&
-        (pruefLeinwand.getContext("webgl2") || pruefLeinwand.getContext("webgl")));
-    } catch (e) {
-      kannWebgl = false;
-    }
-    if (!kannWebgl) return;
+    /* Die Textchoreografie wird sofort aktiviert – noch vor dem asynchronen
+       Import. Würde sie erst danach umschalten, änderten sich Schriftgrößen
+       und Positionen mitten im Layout, und das zählte als Layout Shift. */
+    heroSzenen = true;
+    buehne.dataset.abschnitt = "1";
 
     import("./hero3d.js")
       .then(function (modul) {
         modul.default(canvas, buehne, { sparsam: sparsam });
-        /* Erst jetzt die Ersatzdarstellung ausblenden – vorher wäre bei
-           einem Fehler eine leere Fläche zu sehen. */
-        document.documentElement.classList.add("hat-3d");
+        /* hat-3d schaltet nur Sichtbarkeit um: Canvas ein, Ersatzgrafik aus.
+           Kein Layout, damit kein Sprung entsteht. */
+        wurzel.classList.add("hat-3d");
       })
       .catch(function () {
-        /* Bewusst still: die CSS-Ebene ist bereits sichtbar und ausreichend. */
+        /* Bewusst still: die CSS-Fassung ist bereits gestaltet und
+           vollständig. Nur die reservierte Bühnenhöhe wird zurückgenommen,
+           damit keine leere Scrollstrecke stehen bleibt. */
+        heroSzenen = false;
+        wurzel.classList.add("kein-3d");
+        buehne.dataset.abschnitt = "0";
       });
   })();
 })();
