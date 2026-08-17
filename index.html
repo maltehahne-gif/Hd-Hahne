@@ -51,62 +51,60 @@
       <a href="#ueber-uns" data-t="nav.ueberuns">Über uns</a>
       <a href="#kontakt" data-t="nav.kontakt">Kontakt</a>
     </div>
-    <a class="btn btn-primary" href="#berater" data-t="nav.cta">Projekt starten</a>
+    <a class="btn btn-primary nav-cta" href="#berater"><span data-t="nav.cta">Projekt starten</span><span class="arrow" aria-hidden="true">↗</span></a>
     <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="navlinks">
       <span class="visually-hidden">Menü öffnen</span><i aria-hidden="true"></i>
     </button>
   </div>
 </nav>
 
-<header id="start" class="hero">
-  <div class="wrap hero-grid">
-    <div class="reveal">
-      <p class="eyebrow" data-t="hero.eyebrow">Digitale Lösungen für Unternehmen</p>
-      <h1><span data-t="hero.titel1">Wir bauen keine Websites.</span> <em data-t="hero.titel2">Wir bauen Systeme.</em></h1>
-      <p class="lead" data-t="hero.lead">Internetpräsenzen, Shopsysteme und individuelle Firmenmodule – hochwertig gestaltet, sauber strukturiert und darauf ausgelegt, Abläufe zu vereinfachen, Vertrauen aufzubauen und Kunden besser zu führen.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#berater" data-t="hero.cta1">Kostenlosen Projekt-Check starten</a>
-        <a class="btn btn-ghost" href="module.html" data-t="hero.cta2">Alle Module &amp; Preise</a>
+<header id="start" class="hero" data-scrub>
+  <div class="hero-pin">
+    <div class="grid-overlay" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow" data-t="hero.eyebrow">Digitale Lösungen für Unternehmen</p>
+        <h1 class="stage-h1">
+          <span class="stage-line stage-line-a"><span data-t="hero.titel1">Wir bauen keine Websites.</span></span>
+          <span class="stage-line stage-line-b"><em data-t="hero.titel2">Wir bauen Systeme.</em></span>
+        </h1>
+        <p class="lead" data-t="hero.lead">Internetpräsenzen, Shopsysteme und individuelle Firmenmodule – hochwertig gestaltet, sauber strukturiert und darauf ausgelegt, Abläufe zu vereinfachen, Vertrauen aufzubauen und Kunden besser zu führen.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#berater"><span data-t="hero.cta1">Kostenlosen Projekt-Check starten</span></a>
+          <a class="btn btn-ghost" href="module.html"><span data-t="hero.cta2">Alle Module &amp; Preise</span></a>
+        </div>
+        <div class="proof">
+          <div class="proof-item"><b data-t="proof1a">Individuell</b><span data-t="proof1b">statt Baukasten-Look</span></div>
+          <div class="proof-item"><b data-t="proof2a">Modular</b><span data-t="proof2b">später erweiterbar</span></div>
+          <div class="proof-item"><b data-t="proof3a">Business-first</b><span data-t="proof3b">Funktion vor Spielerei</span></div>
+        </div>
+        <p class="locus readout">Eckernförde · Schleswig-Holstein · Bundesweit</p>
       </div>
-      <div class="proof">
-        <div class="proof-item"><b data-t="proof1a">Individuell</b><span data-t="proof1b">statt Baukasten-Look</span></div>
-        <div class="proof-item"><b data-t="proof2a">Modular</b><span data-t="proof2b">später erweiterbar</span></div>
-        <div class="proof-item"><b data-t="proof3a">Business-first</b><span data-t="proof3b">Funktion vor Spielerei</span></div>
-      </div>
-    </div>
 
-    <div class="visual reveal" aria-hidden="true">
-      <div class="frame">
-        <div class="screen">
-          <div class="screen-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
-          <div class="dash">
-            <div class="sidebar">
-              <div class="side-line active"></div><div class="side-line"></div><div class="side-line"></div>
-              <div class="side-line"></div><div class="side-line"></div>
-            </div>
-            <div class="mainpane">
-              <div class="metric-row">
-                <div class="mini"><small>Anfragen</small><b>28</b></div>
-                <div class="mini"><small>Projekte</small><b>12</b></div>
-                <div class="mini"><small>Quote</small><b>43 %</b></div>
-              </div>
-              <div class="chart">
-                <svg viewBox="0 0 500 160" preserveAspectRatio="none" role="presentation">
-                  <polyline points="0,132 65,118 120,126 180,92 240,101 310,66 375,74 440,34 500,42"
-                    fill="none" stroke="#0e6f7a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="table">
-                <div class="row"><b>Neue Projektanfrage</b><span>Website + CRM</span><span class="status">Heute</span></div>
-                <div class="row"><b>Angebot freigegeben</b><span>Shop-System</span><span class="status">Aktiv</span></div>
-                <div class="row"><b>Modul erweitert</b><span>Serviceportal</span><span class="status">Fertig</span></div>
-              </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="core-field">
+          <div class="core">
+            <span class="core-ring"></span>
+            <span class="core-ring core-ring-2"></span>
+            <span class="core-ring core-ring-3"></span>
+            <div class="core-label">
+              <span class="readout">System Core</span>
+              <b>HD // 01</b>
             </div>
           </div>
+          <div class="mod-chip" style="--tx:-16vw;--ty:-15vh;--rot:-7deg"><span class="mod-chip-num">01</span>WEBSITE</div>
+          <div class="mod-chip" style="--tx:16vw;--ty:-17vh;--rot:6deg"><span class="mod-chip-num">02</span>SHOP</div>
+          <div class="mod-chip" style="--tx:-18vw;--ty:10vh;--rot:5deg"><span class="mod-chip-num">03</span>CRM</div>
+          <div class="mod-chip" style="--tx:0vw;--ty:20vh;--rot:-3deg"><span class="mod-chip-num">04</span>AUTOMATION</div>
+          <div class="mod-chip" style="--tx:18vw;--ty:11vh;--rot:-6deg"><span class="mod-chip-num">05</span>KI</div>
         </div>
+        <p class="stage-statement">
+          <span class="statement-line">Ein System.</span>
+          <span class="statement-line"><em>Mehr Wirkung.</em></span>
+        </p>
       </div>
-      <div class="floating"><small>Digitale Plattform</small><b>Ein System. Mehr Wirkung.</b></div>
     </div>
+    <div class="scroll-cue" aria-hidden="true"><span></span>Scroll</div>
   </div>
 </header>
 
@@ -114,48 +112,48 @@
 
 <section id="leistungen" aria-labelledby="leistungen-h">
   <div class="wrap">
-    <div class="section-head reveal">
+    <div class="section-head" data-reveal>
       <div><p class="kicker" data-t="leist.kicker">Leistungen</p><h2 id="leistungen-h" data-t="leist.titel">Digitalisierung mit Substanz.</h2></div>
       <p data-t="leist.lead">Die Website ist nur die sichtbare Oberfläche. Der eigentliche Wert entsteht dort, wo Design, Prozesse, Daten und Kundenführung sauber zusammenspielen.</p>
     </div>
-    <div class="services">
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">◗</div>
+  </div>
+
+  <div class="scene" data-scene>
+    <div class="wrap scene-grid">
+      <div class="scene-text" data-reveal>
+        <p class="scene-num"><b>01</b></p>
         <h3 data-t="leist1.t">Internetpräsenzen</h3>
+        <p class="scene-sub">Nicht einfach online sein. Professionell wirken.</p>
         <p>Hochwertige Unternehmensseiten mit klarer Nutzerführung, responsivem Design, Kontaktstrecken, Terminlogik und einer Positionierung, die professionell wirkt.</p>
         <p class="more">Mehr Wirkung</p>
-      </article>
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">▤</div>
-        <h3 data-t="leist2.t">Shopsysteme</h3>
-        <p>Produktwelten, Checkout, Bestellprozesse, Rechnungslogik und individuelle Produktkonfigurationen – übersichtlich für Kunden und effizient für Ihr Unternehmen.</p>
-        <p class="more">Mehr verkaufen</p>
-      </article>
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">▦</div>
-        <h3 data-t="leist3.t">Firmenmodule</h3>
-        <p>CRM, Angebots- und Rechnungssysteme, Terminverwaltung mit Kalender-Synchronisierung, Fahrtenbuch, Serviceprozesse, Auftragsstatus oder interne Dashboards – exakt dort, wo Standardsoftware zu starr wird. Auf Wunsch auf einem eigenen Server, den wir vermitteln und einrichten.</p>
-        <p class="more">Abläufe vereinfachen</p>
-      </article>
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">◎</div>
-        <h3 data-t="leist4.t">Sichtbarkeit bei Google</h3>
-        <p>Eine Website nützt nur, wenn sie gefunden wird. Wir melden Ihre Seite bei den Suchmaschinen an, richten Ihr Google Unternehmensprofil ein und legen die Grundlagen, damit Sie in Ihrer Region auftauchen.</p>
-        <p class="more">Gefunden werden</p>
-      </article>
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">✦</div>
-        <h3 data-t="leist5.t">KI-Lösungen</h3>
-        <p>Intelligente Kundenassistenten, Wissenssysteme, Produktempfehlungen und interne KI-Werkzeuge. Nicht als Showeffekt, sondern mit klarem betrieblichem Nutzen.</p>
-        <p class="more">KI sinnvoll einsetzen</p>
-      </article>
+      </div>
+      <div class="scene-visual panel-tech" aria-hidden="true">
+        <div class="tech-frame">
+          <div class="tech-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="readout tech-url">hd-hahne.de</span></div>
+          <div class="tech-body">
+            <div class="tech-nav"><span></span><span></span><span></span></div>
+            <div class="tech-hero">
+              <span class="tech-line w60"></span>
+              <span class="tech-line w40 accent"></span>
+              <span class="tech-line w80 dim"></span>
+            </div>
+            <div class="tech-cols">
+              <div class="tech-card"></div>
+              <div class="tech-card"></div>
+              <div class="tech-card"></div>
+            </div>
+          </div>
+          <span class="tech-marker tm1">Kontaktstrecke</span>
+          <span class="tech-marker tm2">Terminlogik</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="domain-teaser" aria-labelledby="domteaser-h">
   <div class="wrap">
-    <div class="teaser reveal">
+    <div class="teaser" data-reveal>
       <div>
         <p class="kicker">Wunschdomain</p>
         <h2 id="domteaser-h">Ist Ihre Wunschadresse noch frei?</h2>
@@ -163,7 +161,7 @@
         <div class="dom-box dom-box-schlank" data-domain-suche></div>
       </div>
       <div class="teaser-preis">
-        <b>10–30 €</b>
+        <b>10–30 €</b>
         <span>Registrierung im Jahr,<br>direkt beim Anbieter</span>
         <a class="btn btn-ghost" href="module.html#domain">Worauf achten?</a>
       </div>
@@ -171,16 +169,50 @@
   </div>
 </section>
 
+<section id="shopsysteme" aria-labelledby="shop-h">
+  <div class="scene" data-scene>
+    <div class="wrap scene-grid scene-grid-rev">
+      <div class="scene-visual panel-tech" aria-hidden="true">
+        <div class="tech-frame">
+          <div class="tech-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="readout tech-url">shop.hd-hahne.de</span></div>
+          <div class="tech-body">
+            <div class="tech-cols tech-cols-shop">
+              <div class="tech-card"><span class="tech-line w60"></span><span class="tech-line w30 accent"></span></div>
+              <div class="tech-card"><span class="tech-line w60"></span><span class="tech-line w30 accent"></span></div>
+              <div class="tech-card"><span class="tech-line w60"></span><span class="tech-line w30 accent"></span></div>
+              <div class="tech-card"><span class="tech-line w60"></span><span class="tech-line w30 accent"></span></div>
+            </div>
+            <div class="tech-checkout">
+              <span class="tech-step done">Produkt</span>
+              <span class="tech-step done">Warenkorb</span>
+              <span class="tech-step active">Checkout</span>
+              <span class="tech-step">Rechnung</span>
+            </div>
+          </div>
+          <span class="tech-marker tm1">Konfiguration</span>
+        </div>
+      </div>
+      <div class="scene-text" data-reveal>
+        <p class="scene-num"><b>02</b></p>
+        <h3 id="shop-h" data-t="leist2.t">Shopsysteme</h3>
+        <p class="scene-sub">Vom Produkt bis zur Rechnung.</p>
+        <p>Produktwelten, Checkout, Bestellprozesse, Rechnungslogik und individuelle Produktkonfigurationen – übersichtlich für Kunden und effizient für Ihr Unternehmen.</p>
+        <p class="more">Mehr verkaufen</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="sichtbar-teaser" aria-labelledby="teaser-h">
   <div class="wrap">
-    <div class="teaser reveal">
+    <div class="teaser" data-reveal>
       <div>
-        <p class="kicker">Häufig unterschätzt</p>
+        <p class="kicker" data-t="leist4.t">Sichtbarkeit bei Google</p>
         <h2 id="teaser-h">Was nützt die schönste Website, wenn niemand sie findet?</h2>
         <p>Wer heute einen Betrieb sucht, tippt ihn ins Handy – und ruft einen der ersten Treffer an. Eine neue Website steht dort zunächst nicht: Suchmaschinen kennen sie schlicht noch nicht. Wir melden Ihre Seite an, richten Ihr Google Unternehmensprofil ein und sorgen dafür, dass Sie zu den Begriffen auftauchen, die Ihre Kunden tatsächlich eingeben.</p>
       </div>
       <div class="teaser-preis">
-        <b>499 €</b>
+        <b>499 €</b>
         <span>einmalig, netto</span>
         <a class="btn btn-primary" href="module.html#sichtbarkeit">Warum das wichtig ist</a>
       </div>
@@ -188,35 +220,125 @@
   </div>
 </section>
 
+<section id="firmenmodule" aria-labelledby="firmenmodule-h">
+  <div class="scene scene-dock" data-scene>
+    <div class="wrap">
+      <div class="scene-head-center" data-reveal>
+        <p class="scene-num center"><b>03</b></p>
+        <h3 id="firmenmodule-h" data-t="leist3.t">Firmenmodule</h3>
+        <p class="statement-block statement-block-mid">
+          <span class="statement-line">Software, die sich</span>
+          <span class="statement-line">Ihrem Betrieb <em>anpasst.</em></span>
+        </p>
+        <p class="scene-sub">Nicht andersherum.</p>
+        <p class="scene-body">CRM, Angebots- und Rechnungssysteme, Terminverwaltung mit Kalender-Synchronisierung, Fahrtenbuch, Serviceprozesse, Auftragsstatus oder interne Dashboards – exakt dort, wo Standardsoftware zu starr wird. Auf Wunsch auf einem eigenen Server, den wir vermitteln und einrichten.</p>
+      </div>
+      <div class="dock-field" aria-hidden="true">
+        <div class="dock-hub"><span class="readout">System</span></div>
+        <div class="dock-chip" data-reveal style="--dx:1">CRM</div>
+        <div class="dock-chip" data-reveal style="--dx:2">Angebote</div>
+        <div class="dock-chip" data-reveal style="--dx:3">Rechnungen</div>
+        <div class="dock-chip" data-reveal style="--dx:4">Termine</div>
+        <div class="dock-chip" data-reveal style="--dx:5">Service</div>
+        <div class="dock-chip" data-reveal style="--dx:6">Fahrtenbuch</div>
+        <div class="dock-chip" data-reveal style="--dx:7">Dashboard</div>
+      </div>
+      <p class="scene-cta" data-reveal><a class="btn btn-primary" href="module.html">47 Module entdecken<span class="arrow" aria-hidden="true">→</span></a></p>
+    </div>
+  </div>
+</section>
+
+<section id="showcase" aria-labelledby="showcase-h">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <div>
+        <p class="kicker">Interaktiver Showcase</p>
+        <h2 id="showcase-h" class="statement-block statement-block-small">
+          <span class="statement-line">Nicht erklären.</span>
+          <span class="statement-line"><em>Ausprobieren.</em></span>
+        </h2>
+      </div>
+      <div>
+        <p>Unsere Module laufen wirklich. Diese Ansichten zeigen echte Bildschirme mit erfundenen Beispieldaten – auf der Demoseite können Sie jedes Modul selbst bedienen. Klicken Sie sich links durch die Bereiche.</p>
+        <p style="margin-top:18px"><a class="btn btn-primary" href="demo.html">Alle Demos öffnen<span class="arrow" aria-hidden="true">↗</span></a> <a class="btn btn-ghost" href="anleitung.html">Anleitungen</a> <a class="btn btn-ghost" href="module.html">Preise</a></p>
+      </div>
+    </div>
+    <div class="demo-wrap" data-reveal>
+      <div class="tabs" role="tablist" aria-label="Beispielmodule" aria-orientation="vertical">
+        <button class="tab" role="tab" id="tab-crm" aria-controls="demoScreen" aria-selected="true" data-demo="crm" type="button"><span class="tab-num">01</span>CRM / Kundenverwaltung<span>Kunden, Vorgänge, Wiedervorlagen</span></button>
+        <button class="tab" role="tab" id="tab-invoice" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="invoice" type="button"><span class="tab-num">02</span>Angebote &amp; Rechnungen<span>Status, Dokumente, Zahlung</span></button>
+        <button class="tab" role="tab" id="tab-service" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="service" type="button"><span class="tab-num">03</span>Service &amp; Termine<span>Planung, Wartung, Nachverfolgung</span></button>
+        <button class="tab" role="tab" id="tab-kalender" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="kalender" type="button"><span class="tab-num">04</span>Kalender &amp; Sync<span>Automatisch im Smartphone-Kalender</span></button>
+        <button class="tab" role="tab" id="tab-fahrtenbuch" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="fahrtenbuch" type="button"><span class="tab-num">05</span>Fahrtenbuch<span>Fahrten, Kilometer, Zuordnung</span></button>
+        <button class="tab" role="tab" id="tab-shop" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="shop" type="button"><span class="tab-num">06</span>Shop &amp; Bestellungen<span>Produkte, Orders, Versand</span></button>
+      </div>
+      <div class="demo-screen" id="demoScreen" role="tabpanel" tabindex="0" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section id="ki" aria-labelledby="ki-h">
+  <div class="scene scene-ki" data-scene>
+    <div class="wrap scene-grid">
+      <div class="scene-text" data-reveal>
+        <p class="kicker" data-t="leist5.t">KI-Lösungen</p>
+        <h3 id="ki-h" class="statement-block">
+          <span class="statement-line">KI.</span>
+          <span class="statement-line"><em>Aber nur, wenn sie</em></span>
+          <span class="statement-line"><em>etwas bringt.</em></span>
+        </h3>
+        <p>Intelligente Kundenassistenten, Wissenssysteme, Produktempfehlungen und interne KI-Werkzeuge. Nicht als Showeffekt, sondern mit klarem betrieblichem Nutzen.</p>
+        <ul class="checklist">
+          <li>Kundenanfragen beantworten</li>
+          <li>internes Wissen durchsuchen</li>
+          <li>Produkte empfehlen</li>
+          <li>Mitarbeiter unterstützen</li>
+          <li>Prozesse automatisieren</li>
+        </ul>
+      </div>
+      <div class="scene-visual panel-tech" aria-hidden="true">
+        <div class="tech-frame tech-frame-ki">
+          <div class="tech-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="readout tech-url">Assistenzmodul</span></div>
+          <div class="tech-body">
+            <div class="ki-line ki-in">Wie lange dauert die Einrichtung eines CRM-Moduls?</div>
+            <div class="ki-line ki-out">Im Schnitt 2–3 Wochen, abhängig vom Datenumfang. Quelle: Modulkatalog §CRM.</div>
+            <div class="ki-scan"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="statement">
   <div class="wrap">
-    <blockquote class="reveal">„Gute Digitalisierung beginnt nicht mit Software. Sie beginnt mit der Frage: <em>Was soll einfacher, schneller oder besser werden?</em>“</blockquote>
+    <blockquote data-reveal>„Gute Digitalisierung beginnt nicht mit Software. Sie beginnt mit der Frage: <em>Was soll einfacher, schneller oder besser werden?</em>“</blockquote>
   </div>
 </div>
 
 <section id="ablauf" aria-labelledby="ablauf-h">
   <div class="wrap">
-    <div class="section-head reveal">
+    <div class="section-head" data-reveal>
       <div><p class="kicker" data-t="ablauf.kicker">So läuft es ab</p><h2 id="ablauf-h" data-t="ablauf.titel">In vier Schritten zum fertigen System.</h2></div>
       <p>Sie müssen sich vorab nicht in Technik einarbeiten. Wir beginnen bei Ihrem Arbeitsalltag und erklären jeden Schritt in normaler Sprache – Fachbegriffe übersetzen wir, statt sie vorauszusetzen.</p>
     </div>
-    <div class="erklaer erklaer-vier">
-      <article class="erklaer-karte reveal">
+    <div class="erklaer erklaer-vier ablauf-timeline">
+      <article class="erklaer-karte" data-reveal>
         <div class="erklaer-nr" aria-hidden="true">1</div>
         <h3 data-t="ablauf1.t">Gespräch</h3>
         <p>Sie erzählen, was im Alltag hakt. Kein Lastenheft nötig – ein Telefonat von 20 Minuten reicht für den Anfang. Kostenlos und unverbindlich.</p>
       </article>
-      <article class="erklaer-karte reveal">
+      <article class="erklaer-karte" data-reveal>
         <div class="erklaer-nr" aria-hidden="true">2</div>
         <h3 data-t="ablauf2.t">Angebot</h3>
         <p>Sie bekommen einen Festpreis mit klarer Liste, was enthalten ist und was nicht. Keine Stundenzettel, keine Überraschung am Ende.</p>
       </article>
-      <article class="erklaer-karte reveal">
+      <article class="erklaer-karte" data-reveal>
         <div class="erklaer-nr" aria-hidden="true">3</div>
         <h3 data-t="ablauf3.t">Umsetzung</h3>
         <p>Wir bauen und zeigen zwischendurch den Stand. Sie sagen, was passt und was nicht – ändern lässt sich alles, solange es noch im Bau ist.</p>
       </article>
-      <article class="erklaer-karte reveal">
+      <article class="erklaer-karte" data-reveal>
         <div class="erklaer-nr" aria-hidden="true">4</div>
         <h3 data-t="ablauf4.t">Einweisung</h3>
         <p>Wir übernehmen Ihre vorhandenen Daten und zeigen dem Team, wie es geht. Danach bleiben wir erreichbar – auch für die Frage, die man sich nicht zu stellen traut.</p>
@@ -225,17 +347,48 @@
   </div>
 </section>
 
+<section id="ueber-uns" aria-labelledby="ueberuns-h">
+  <div class="wrap">
+    <p class="statement-block statement-block-small" data-reveal>
+      <span class="statement-line">Kein Vertrieb.</span>
+      <span class="statement-line">Keine Zwischenstationen.</span>
+      <span class="statement-line"><em>Zwei Entwickler.</em></span>
+    </p>
+    <div class="section-head" data-reveal>
+      <div><p class="kicker" data-t="ueberuns.kicker">Über uns</p><h2 id="ueberuns-h" data-t="ueberuns.titel">Zwei Entwickler aus Eckernförde.</h2></div>
+      <p data-t="ueberuns.lead">Hahne Digital wird von Björn Hahne und Malte Hahne geführt. Wir entwickeln, betreuen und beraten selbst – ohne Zwischenstationen und ohne Vertrieb dazwischen.</p>
+    </div>
+    <div class="erklaer erklaer-zwei">
+      <article class="erklaer-karte" data-reveal>
+        <div class="erklaer-nr" aria-hidden="true">BH</div>
+        <h3>Björn Hahne</h3>
+        <p>Gesellschafter und Ansprechpartner bei Hahne Digital. Erreichbar telefonisch, per E-Mail oder über das Kontaktformular.</p>
+      </article>
+      <article class="erklaer-karte" data-reveal>
+        <div class="erklaer-nr" aria-hidden="true">MH</div>
+        <h3>Malte Hahne</h3>
+        <p>Gesellschafter und Ansprechpartner bei Hahne Digital. Erreichbar telefonisch, per E-Mail oder über das Kontaktformular.</p>
+      </article>
+    </div>
+    <div class="ueberuns-info" data-reveal>
+      <p><b>Sitz in Eckernförde:</b> <span data-site="adresse">Schiffbrücke 5, 24340 Eckernförde</span>. Von dort aus arbeiten wir bundesweit – Entwicklung findet ohnehin am Rechner statt, Abstimmungen laufen per Telefon oder Videokonferenz. Termine vor Ort sind in Schleswig-Holstein und Hamburg unkompliziert möglich.</p>
+      <p><b>Wie ein Projekt abläuft:</b> vier Schritte von Gespräch bis Einweisung, ohne Lastenheft und ohne versteckte Kosten – nachzulesen weiter oben unter <a href="#ablauf">Ablauf</a>.</p>
+      <p class="ueberuns-referenzen">Referenzprojekte und Kundenstimmen veröffentlichen wir, sobald abgeschlossene Projekte mit Zustimmung der jeweiligen Kunden vorliegen. Bis dahin verzichten wir bewusst auf erfundene Beispiele – die Beispielansichten der Module sind daher ausdrücklich als Musterdaten gekennzeichnet.</p>
+    </div>
+  </div>
+</section>
+
 <section id="pakete" aria-labelledby="pakete-h">
   <div class="wrap">
-    <div class="section-head reveal">
+    <div class="section-head" data-reveal>
       <div><p class="kicker" data-t="pakete.kicker">Pakete</p><h2 id="pakete-h" data-t="pakete.titel">Ein klarer Einstieg.</h2></div>
       <p>Keine künstlich aufgeblähten Pakete. Der Umfang wird am tatsächlichen Nutzen ausgerichtet und kann später modular erweitert werden.</p>
     </div>
     <div class="packages">
-      <article class="package reveal">
+      <article class="package" data-reveal>
         <p class="label" data-t="p1.label">Start</p>
         <h3>Business Website</h3>
-        <p class="price">ab 990 € <small>einmalig</small></p>
+        <p class="price">ab 990 € <small>einmalig</small></p>
         <p data-t="p1.desc">Für Unternehmen, die professionell auftreten und Anfragen besser führen möchten.</p>
         <ul class="checklist">
           <li>individuelles Premium-Design</li>
@@ -246,10 +399,10 @@
         </ul>
         <a class="btn btn-ghost" href="#kontakt" data-t="btn.anfragen">Projekt anfragen</a>
       </article>
-      <article class="package featured reveal">
+      <article class="package featured" data-reveal>
         <p class="label" data-t="p2.label">Empfohlen</p>
         <h3>Business System</h3>
-        <p class="price">ab 2.490 € <small>einmalig</small></p>
+        <p class="price">ab 2.490 € <small>einmalig</small></p>
         <p data-t="p2.desc">Website plus individuell abgestimmtes Firmenmodul für einen echten Prozessvorteil.</p>
         <ul class="checklist">
           <li>alles aus Business Website</li>
@@ -260,7 +413,7 @@
         </ul>
         <a class="btn btn-primary" href="#berater" data-t="btn.check">Projekt-Check starten</a>
       </article>
-      <article class="package reveal">
+      <article class="package" data-reveal>
         <p class="label" data-t="p3.label">Individuell</p>
         <h3>Digital Platform</h3>
         <p class="price">nach Bedarf</p>
@@ -275,15 +428,15 @@
         <a class="btn btn-ghost" href="#kontakt" data-t="btn.konzept">Konzept besprechen</a>
       </article>
     </div>
-    <p class="price-note reveal" data-site="preishinweis">Alle Preise verstehen sich netto zzgl. der gesetzlichen Umsatzsteuer.</p>
+    <p class="price-note" data-reveal data-site="preishinweis">Alle Preise verstehen sich netto zzgl. der gesetzlichen Umsatzsteuer.</p>
   </div>
 </section>
 
 <section id="server-hinweis" aria-labelledby="serverhinweis-h">
   <div class="wrap">
-    <div class="teaser teaser-server reveal">
+    <div class="teaser teaser-server" data-reveal>
       <div class="teaser-preis teaser-preis-links">
-        <b>899 €</b>
+        <b>899 €</b>
         <span>einmalig, netto</span>
         <a class="btn btn-ghost" href="module.html#server">Wann sich das lohnt</a>
       </div>
@@ -291,38 +444,15 @@
         <p class="kicker">Eigener Server</p>
         <h2 id="serverhinweis-h">Ihr System auf einer Maschine, die Ihnen allein gehört.</h2>
         <p>Normales Hosting teilen sich viele Kunden. Sobald echte Betriebsdaten im Spiel sind – Kunden, Aufträge, Arbeitszeiten – oder mehrere Module zusammenarbeiten, wird ein eigener Server sinnvoll. Wir klären den Bedarf, vermitteln einen passenden Anbieter in Deutschland und richten alles betriebsbereit ein: Absicherung, Zertifikate, Postfächer, Sicherungen und Überwachung.</p>
-        <p class="teaser-fein"><b>Der Vertrag läuft auf Ihren Namen.</b> Zugang und Daten gehören Ihnen, die Servermiete zahlen Sie direkt an den Anbieter – meist 15 bis 60 € im Monat. Wir verdienen an der Einrichtung, nicht an einem Aufschlag.</p>
+        <p class="teaser-fein"><b>Der Vertrag läuft auf Ihren Namen.</b> Zugang und Daten gehören Ihnen, die Servermiete zahlen Sie direkt an den Anbieter – meist 15 bis 60 € im Monat. Wir verdienen an der Einrichtung, nicht an einem Aufschlag.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<section id="module" aria-labelledby="module-h">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><p class="kicker">Beispielmodule</p><h2 id="module-h">So kann Ihr System arbeiten.</h2></div>
-      <div>
-        <p>Damit Sie nicht raten müssen: Diese Ansichten zeigen echte Bildschirme mit erfundenen Beispieldaten – und auf der Demoseite können Sie jedes Modul selbst bedienen. Klicken Sie sich links durch die Bereiche – so ungefähr würde Ihr System im Alltag aussehen.</p>
-        <p style="margin-top:18px"><a class="btn btn-primary" href="demo.html">Alle 47 Module ausprobieren</a> <a class="btn btn-ghost" href="anleitung.html">Anleitungen</a> <a class="btn btn-ghost" href="module.html">Preise</a></p>
-      </div>
-    </div>
-    <div class="demo-wrap">
-      <div class="tabs reveal" role="tablist" aria-label="Beispielmodule" aria-orientation="vertical">
-        <button class="tab" role="tab" id="tab-crm" aria-controls="demoScreen" aria-selected="true" data-demo="crm" type="button">CRM / Kundenverwaltung<span>Kunden, Vorgänge, Wiedervorlagen</span></button>
-        <button class="tab" role="tab" id="tab-invoice" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="invoice" type="button">Angebote &amp; Rechnungen<span>Status, Dokumente, Zahlung</span></button>
-        <button class="tab" role="tab" id="tab-service" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="service" type="button">Service &amp; Termine<span>Planung, Wartung, Nachverfolgung</span></button>
-        <button class="tab" role="tab" id="tab-kalender" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="kalender" type="button">Kalender &amp; Sync<span>Automatisch im Smartphone-Kalender</span></button>
-        <button class="tab" role="tab" id="tab-fahrtenbuch" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="fahrtenbuch" type="button">Fahrtenbuch<span>Fahrten, Kilometer, Zuordnung</span></button>
-        <button class="tab" role="tab" id="tab-shop" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="shop" type="button">Shop &amp; Bestellungen<span>Produkte, Orders, Versand</span></button>
-      </div>
-      <div class="demo-screen reveal" id="demoScreen" role="tabpanel" tabindex="0" aria-live="polite"></div>
     </div>
   </div>
 </section>
 
 <section id="berater" aria-labelledby="berater-h">
   <div class="wrap">
-    <div class="advisor reveal">
+    <div class="advisor" data-reveal>
       <div class="advisor-grid">
         <div>
           <p class="kicker">Projekt-Check</p>
@@ -390,36 +520,11 @@
   </div>
 </section>
 
-<section id="ueber-uns" aria-labelledby="ueberuns-h">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><p class="kicker" data-t="ueberuns.kicker">Über uns</p><h2 id="ueberuns-h" data-t="ueberuns.titel">Zwei Entwickler aus Eckernförde.</h2></div>
-      <p data-t="ueberuns.lead">Hahne Digital wird von Björn Hahne und Malte Hahne geführt. Wir entwickeln, betreuen und beraten selbst – ohne Zwischenstationen und ohne Vertrieb dazwischen.</p>
-    </div>
-    <div class="erklaer erklaer-zwei">
-      <article class="erklaer-karte reveal">
-        <div class="erklaer-nr" aria-hidden="true">BH</div>
-        <h3>Björn Hahne</h3>
-        <p>Gesellschafter und Ansprechpartner bei Hahne Digital. Erreichbar telefonisch, per E-Mail oder über das Kontaktformular.</p>
-      </article>
-      <article class="erklaer-karte reveal">
-        <div class="erklaer-nr" aria-hidden="true">MH</div>
-        <h3>Malte Hahne</h3>
-        <p>Gesellschafter und Ansprechpartner bei Hahne Digital. Erreichbar telefonisch, per E-Mail oder über das Kontaktformular.</p>
-      </article>
-    </div>
-    <div class="ueberuns-info reveal">
-      <p><b>Sitz in Eckernförde:</b> <span data-site="adresse">Schiffbrücke 5, 24340 Eckernförde</span>. Von dort aus arbeiten wir bundesweit – Entwicklung findet ohnehin am Rechner statt, Abstimmungen laufen per Telefon oder Videokonferenz. Termine vor Ort sind in Schleswig-Holstein und Hamburg unkompliziert möglich.</p>
-      <p><b>Wie ein Projekt abläuft:</b> vier Schritte von Gespräch bis Einweisung, ohne Lastenheft und ohne versteckte Kosten – nachzulesen weiter oben unter <a href="#ablauf">Ablauf</a>.</p>
-      <p class="ueberuns-referenzen">Referenzprojekte und Kundenstimmen veröffentlichen wir, sobald abgeschlossene Projekte mit Zustimmung der jeweiligen Kunden vorliegen. Bis dahin verzichten wir bewusst auf erfundene Beispiele – die Beispielansichten der Module sind daher ausdrücklich als Musterdaten gekennzeichnet.</p>
-    </div>
-  </div>
-</section>
-
 <section id="kontakt" aria-labelledby="kontakt-h">
   <div class="wrap">
+    <p class="scene-num center final-eyebrow" data-reveal>Was soll einfacher werden?</p>
     <div class="contact">
-      <div class="panel reveal">
+      <div class="panel" data-reveal>
         <p class="kicker" data-t="kontakt.kicker">Kontakt</p>
         <h2 id="kontakt-h" data-t="kontakt.titel">Beschreiben Sie nicht die Software. Beschreiben Sie das Problem.</h2>
         <p style="color:var(--ink-soft)">Daraus lässt sich wesentlich besser ableiten, welche Lösung technisch und wirtschaftlich sinnvoll ist.</p>
@@ -438,7 +543,7 @@
         </div>
       </div>
 
-      <form class="panel reveal" id="contactForm" novalidate>
+      <form class="panel" data-reveal id="contactForm" novalidate>
         <div class="field">
           <label for="name" data-t="form.name">Name / Firma</label>
           <input id="name" name="name" autocomplete="organization" placeholder="Max Mustermann / Muster GmbH" required>
@@ -521,6 +626,7 @@
 <script defer src="assets/modules.js"></script>
 <script defer src="assets/domain.js"></script>
 <script defer src="assets/main.js"></script>
+<script defer src="assets/motion.js"></script>
 <script defer src="assets/assistant-data.js"></script>
 <script defer src="assets/assistant-lernen.js"></script>
 <script defer src="assets/privatsphaere.js"></script>

@@ -31,7 +31,7 @@
   --shadow:0 18px 44px rgba(0,0,0,.45);
   --shadow-lg:0 30px 80px rgba(0,0,0,.6);
   --glow:0 0 0 1px var(--accent-line),0 0 32px rgba(111,163,255,.16);
-  --radius:22px;--max:1240px;
+  --radius:22px;--max:1240px;--nav-h:80px;
   --serif:"Inter","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
   --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --mono:ui-monospace,"SFMono-Regular","Roboto Mono","Berkeley Mono",Consolas,"Liberation Mono",monospace;
@@ -556,6 +556,7 @@ body.nav-open{overflow:hidden}
 @media(max-width:640px){
   .wrap{width:min(var(--max),calc(100% - 28px))}
   .navin{height:68px}
+  :root{--nav-h:68px}
   .nav .btn-primary{display:none}
   .frame{padding:8px;border-radius:18px}
   .floating{position:relative;right:auto;bottom:auto;width:100%;margin-top:12px}
@@ -1209,3 +1210,255 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before{left:auto;right:0
 .modul-preis b,.price,.zahl b,.demo-preisbox b,.rechner-zeile b,.modell-preis b,
 .sicht-betrag,.teaser-preis b,.demo-kpi b,.anl-fakten span,.vgl-zeile span:last-child,
 .rechner-liste li span:last-child,.demo-eintrag span{white-space:nowrap}
+
+/* ==========================================================================
+   Startseite – Systemwelt (Hero-Montage, nummerierte Szenen, Showcase)
+   Reine transform/opacity-Animationen, gesteuert über CSS-Variablen, die
+   assets/motion.js aus der Scrollposition ableitet (--p, --spread).
+   ========================================================================== */
+
+/* Dezentes technisches Raster im Hintergrund ------------------------------ */
+.grid-overlay{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.7;
+  background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(ellipse 65% 60% at 50% 32%,#000 35%,transparent 82%);
+  mask-image:radial-gradient(ellipse 65% 60% at 50% 32%,#000 35%,transparent 82%)}
+
+/* Pfeil-Mikrointeraktion für Aktionslinks --------------------------------- */
+.arrow{display:inline-block;margin-left:9px;transition:transform .2s}
+.btn:hover .arrow,a:hover>.arrow{transform:translate(3px,-3px)}
+.nav-cta{gap:0}
+
+/* Technische Statuszeile ("Readout") -------------------------------------- */
+.readout{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);display:inline-flex;align-items:center;gap:9px}
+.readout:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft);flex:0 0 auto}
+.locus{margin-top:24px}
+
+/* Große Statement-Zeilen (Systemsatz, KI, Über uns, Final-CTA) ------------ */
+.statement-block{margin:0 0 16px;text-align:center}
+.statement-line{display:block;font-family:var(--serif);font-weight:800;letter-spacing:-.035em;
+  line-height:.98;text-transform:uppercase;font-size:clamp(2.1rem,6.6vw,5rem)}
+.statement-line em{font-style:normal;color:var(--accent)}
+.statement-block-small .statement-line{font-size:clamp(1.7rem,4.4vw,3rem)}
+.statement-block-mid{text-align:inherit}
+.statement-block-mid .statement-line{font-size:clamp(1.5rem,3.4vw,2.4rem);text-transform:none;
+  font-weight:700;letter-spacing:-.02em}
+.section-head .statement-block,.section-head .statement-block-small{text-align:left;margin:6px 0 0}
+.scene-text .statement-block{text-align:left;margin:10px 0 16px}
+.scene-num.final-eyebrow{font-family:var(--serif);font-weight:800;text-transform:uppercase;
+  letter-spacing:-.02em;font-size:clamp(1.7rem,5vw,3.2rem);color:var(--ink-soft);text-align:center;
+  margin:0 0 10px;line-height:1.05}
+
+/* ---------------------------------------------------------------------------
+   Hero-Bühne: gepinnte Kopfzeile, die sich beim Scrollen in Systembauteile
+   zerlegt (Section 01 → 02). --p läuft 0→1 über die gesamte Bühnenhöhe,
+   --spread ist eine Dreiecksfunktion (0→1→0), die den Höhepunkt der
+   Montage in der Mitte der Bühne markiert.
+   ------------------------------------------------------------------------- */
+.hero{position:relative;padding:0;min-height:300vh;overflow:clip}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(ellipse 70% 55% at 75% 18%,var(--accent-soft),transparent 70%)}
+.hero-pin{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));
+  display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;
+  position:relative;z-index:1}
+.hero-copy{position:relative;z-index:2}
+
+.stage-h1{display:grid;margin:18px 0 24px}
+.stage-line{grid-area:1/1;margin:0;font-family:var(--serif);font-weight:800;
+  font-size:clamp(2.5rem,6vw,5.1rem);line-height:.98;letter-spacing:-.035em;text-transform:uppercase}
+.stage-line em{font-style:normal;color:var(--accent)}
+.stage-line-a{opacity:calc(1 - var(--p,0) * 6);transform:translateY(calc(var(--p,0) * -16px))}
+.stage-line-b{opacity:calc((var(--p,0) - .12) * 6);transform:translateY(calc((1 - var(--p,0)) * 16px))}
+
+.hero-visual{position:relative;height:560px;z-index:1}
+.core-field{position:relative;height:100%;display:grid;place-items:center}
+.core{width:180px;height:180px;border-radius:50%;border:1px solid var(--accent-line);
+  background:radial-gradient(circle at 32% 26%,rgba(111,163,255,.18),transparent 62%),var(--panel);
+  display:grid;place-items:center;position:relative;box-shadow:var(--glow);z-index:2}
+.core-ring{position:absolute;inset:-26px;border-radius:50%;border:1px solid var(--line-bright);opacity:.5}
+.core-ring-2{inset:-58px;opacity:.32;animation:hd-spin 42s linear infinite}
+.core-ring-3{inset:-92px;opacity:.16;border-style:dashed;animation:hd-spin 75s linear infinite reverse}
+@keyframes hd-spin{to{transform:rotate(360deg)}}
+.core-label{display:grid;gap:5px;text-align:center}
+.core-label b{font-family:var(--mono);font-size:.86rem;letter-spacing:.05em;color:var(--ink)}
+
+.mod-chip{position:absolute;left:50%;top:50%;display:inline-flex;align-items:center;gap:8px;
+  padding:10px 16px;border-radius:12px;border:1px solid var(--line-bright);background:var(--panel-raised);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);
+  box-shadow:var(--shadow);white-space:nowrap;z-index:1;pointer-events:none;
+  transform:translate(-50%,-50%)
+    translate(calc(var(--tx,0px) * var(--spread,0)),calc(var(--ty,0px) * var(--spread,0)))
+    rotate(calc(var(--rot,0deg) * var(--spread,0)))
+    scale(calc(.72 + .28 * var(--spread,0)));
+  opacity:calc(.16 + .84 * var(--spread,0))}
+.mod-chip-num{color:var(--accent);font-weight:700}
+
+.stage-statement{position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+  margin:0;pointer-events:none;z-index:3;opacity:var(--spread,0)}
+.stage-statement .statement-line{font-size:clamp(1.5rem,3.8vw,2.9rem)}
+
+.scroll-cue{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:9px;font-family:var(--mono);
+  font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  opacity:calc(1 - var(--p,0) * 6);z-index:2}
+.scroll-cue span{width:1px;height:26px;background:linear-gradient(var(--accent),transparent);
+  animation:hd-cue 1.8s ease-in-out infinite}
+@keyframes hd-cue{0%{transform:scaleY(.3);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(.3);transform-origin:bottom}}
+
+/* Endzustand ohne Bewegung (prefers-reduced-motion) ------------------------ */
+[data-scrub].is-settled .stage-line-a{opacity:0}
+[data-scrub].is-settled .stage-line-b{opacity:1;transform:none}
+[data-scrub].is-settled .mod-chip{opacity:1;
+  transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rot,0deg))}
+[data-scrub].is-settled .stage-statement{opacity:1}
+[data-scrub].is-settled .scroll-cue{display:none}
+
+/* ---------------------------------------------------------------------------
+   Nummerierte Szenen (Internetpräsenzen / Shop-Systeme) -------------------- */
+.scene{padding:96px 0;position:relative}
+#shopsysteme .scene,#ki .scene{background:var(--panel-soft);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.scene-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.scene-grid-rev{display:grid}
+.scene-num{font-family:var(--mono);font-size:.85rem;letter-spacing:.14em;color:var(--ink-faint);
+  margin:0 0 16px;text-transform:uppercase}
+.scene-num b{color:var(--accent);font-weight:700;font-size:1.15rem}
+.scene-num.center{text-align:center}
+.scene-text h3{font-family:var(--serif);font-weight:800;font-size:clamp(2rem,4.6vw,3.4rem);
+  letter-spacing:-.03em;line-height:1;margin:0 0 10px;text-transform:uppercase}
+.scene-sub{font-size:1.12rem;color:var(--ink);font-weight:600;margin:0 0 16px}
+.scene-text>p:not(.scene-sub){color:var(--ink-soft)}
+.scene-text .more{display:inline-block;margin-top:18px;color:var(--accent);font-weight:700;
+  font-size:.82rem;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase}
+
+/* Technische UI-Panels (Website- und Shop-Mockups) ------------------------- */
+.panel-tech{position:relative}
+.tech-frame{border:1px solid var(--line);border-radius:18px;background:var(--panel);
+  box-shadow:var(--shadow-lg);overflow:hidden;position:relative}
+.tech-bar{height:42px;display:flex;align-items:center;gap:8px;padding:0 16px;
+  border-bottom:1px solid var(--line);background:var(--panel-soft)}
+.tech-bar .dot{background:var(--line-bright)}
+.tech-url{margin-left:auto}
+.tech-body{padding:24px}
+.tech-nav{display:flex;gap:10px;margin-bottom:22px}
+.tech-nav span{width:44px;height:8px;border-radius:4px;background:var(--line-bright)}
+.tech-hero{display:grid;gap:11px;margin-bottom:24px}
+.tech-line{height:12px;border-radius:4px;background:var(--line-bright)}
+.tech-line.w30{width:30%}.tech-line.w40{width:40%}.tech-line.w60{width:60%}.tech-line.w80{width:80%}
+.tech-line.accent{background:var(--accent);opacity:.55}
+.tech-line.dim{background:var(--line-soft)}
+.tech-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tech-card{height:72px;border-radius:10px;border:1px solid var(--line);background:var(--panel-soft)}
+.tech-cols-shop{grid-template-columns:repeat(2,1fr);gap:10px}
+.tech-cols-shop .tech-card{height:auto;padding:14px;display:grid;gap:9px}
+.tech-checkout{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}
+.tech-step{font-family:var(--mono);font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;
+  padding:7px 13px;border-radius:99px;border:1px solid var(--line);color:var(--ink-faint)}
+.tech-step.done{color:var(--accent);border-color:var(--accent-line)}
+.tech-step.active{background:var(--accent);color:#080808;border-color:var(--accent);font-weight:700}
+.tech-marker{position:absolute;font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-faint);background:var(--panel);border:1px solid var(--line);
+  border-radius:99px;padding:5px 12px;box-shadow:var(--shadow);white-space:nowrap}
+.tm1{top:-14px;right:26px}
+.tm2{bottom:-14px;left:26px}
+
+/* Firmenmodule – zentrale Andockszene -------------------------------------- */
+.scene-dock{text-align:center}
+.scene-head-center{max-width:720px;margin:0 auto 52px}
+.scene-head-center h3{font-family:var(--serif);font-weight:800;font-size:clamp(2rem,4.6vw,3.2rem);
+  letter-spacing:-.03em;line-height:1;margin:0 0 22px;text-transform:uppercase}
+.scene-body{max-width:640px;margin:18px auto 0;color:var(--ink-soft)}
+.dock-field{position:relative;min-height:280px;display:flex;flex-wrap:wrap;align-items:center;
+  justify-content:center;gap:16px;max-width:900px;margin:0 auto}
+.dock-hub{width:104px;height:104px;border-radius:50%;border:1px solid var(--accent-line);
+  background:var(--panel-raised);display:grid;place-items:center;box-shadow:var(--glow)}
+.dock-chip{padding:12px 20px;border:1px solid var(--line);background:var(--panel);border-radius:99px;
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-soft);opacity:0;transform:translateY(16px);
+  transition:opacity .5s cubic-bezier(.2,.65,.25,1),transform .5s cubic-bezier(.2,.65,.25,1);
+  transition-delay:calc(var(--dx,0) * 60ms)}
+.dock-chip.is-in{opacity:1;transform:none}
+.scene-cta{margin-top:48px}
+
+/* KI-Szene ------------------------------------------------------------------ */
+.scene-ki .scene-text .kicker{margin-bottom:14px}
+.tech-frame-ki .tech-body{padding:24px;display:flex;flex-direction:column;gap:12px}
+.ki-line{max-width:84%;padding:13px 16px;border-radius:14px;font-size:.86rem;line-height:1.55}
+.ki-in{background:var(--panel-soft);border:1px solid var(--line);align-self:flex-start}
+.ki-out{background:var(--accent-soft);border:1px solid var(--accent-line);color:var(--ink);
+  align-self:flex-end}
+.ki-scan{display:flex;gap:6px;margin-top:4px}
+.ki-scan span{height:3px;flex:1;background:var(--line-bright);border-radius:3px;overflow:hidden;
+  position:relative}
+.ki-scan span:before{content:"";position:absolute;inset:0;background:var(--accent);
+  animation:hd-scan 2.4s ease-in-out infinite}
+.ki-scan span:nth-child(2):before{animation-delay:.25s}
+.ki-scan span:nth-child(3):before{animation-delay:.5s}
+@keyframes hd-scan{0%,100%{transform:scaleX(0);transform-origin:left}
+  50%{transform:scaleX(1);transform-origin:left}}
+
+/* Showcase – Tabs mit Nummerierung ----------------------------------------- */
+.tab-num{display:block;font-family:var(--mono);font-size:.68rem;color:var(--accent);
+  letter-spacing:.1em;margin-bottom:4px}
+
+/* Ablauf – verkettete Konstruktionslinie ----------------------------------- */
+.ablauf-timeline .erklaer-karte{position:relative}
+.ablauf-timeline .erklaer-karte:not(:last-child):after{content:"";position:absolute;top:34px;
+  right:-17px;width:18px;height:1px;background:var(--line-bright)}
+.ablauf-timeline .erklaer-nr{font-family:var(--mono);background:transparent;
+  border:1px solid var(--accent-line);color:var(--accent)}
+@media(max-width:980px){
+  .ablauf-timeline .erklaer-karte:after{display:none}
+}
+
+/* Sitewide Reveal-Szenen (data-reveal / data-scene) ------------------------ */
+[data-reveal]{opacity:0;transform:translateY(20px);
+  transition:opacity .7s cubic-bezier(.2,.65,.25,1),transform .7s cubic-bezier(.2,.65,.25,1)}
+[data-reveal].is-in{opacity:1;transform:none}
+
+/* Responsive: Bühne und Szenen vereinfachen --------------------------------
+   Unterhalb 980px wird die gepinnte Scroll-Montage bewusst abgeschaltet
+   (Performance, Lesbarkeit, kein "Totscrollen" auf kleinen Bildschirmen):
+   die Bühne fließt normal, Headline und Module zeigen sofort ihren
+   Endzustand statt sich über eine sehr lange Scrollstrecke aufzubauen. */
+@media(max-width:980px){
+  .hero{min-height:auto;overflow:visible}
+  .hero-pin{position:static;height:auto;padding:36px 0 48px}
+  .hero-grid{grid-template-columns:1fr;gap:36px}
+  .hero-visual{height:340px;order:-1;overflow:visible}
+  .core-ring-2,.core-ring-3{display:none}
+  .mod-chip{font-size:.64rem;padding:8px 12px}
+  .stage-line-a{opacity:0}
+  .stage-line-b{opacity:1;transform:none}
+  .mod-chip{opacity:1;
+    transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rot,0deg))}
+  .stage-statement{display:none}
+  .scroll-cue{display:none}
+  .scene-grid{grid-template-columns:1fr;gap:32px}
+  .scene-grid-rev{display:flex;flex-direction:column-reverse}
+  .dock-field{min-height:auto}
+}
+@media(max-width:640px){
+  .hero-visual{height:300px}
+  .core{width:130px;height:130px}
+  .core-field .mod-chip:nth-child(n+5){display:none}
+  .scene{padding:64px 0}
+  .tech-cols{grid-template-columns:1fr 1fr}
+  .statement-line{font-size:clamp(1.9rem,9vw,3rem)}
+}
+@media(prefers-reduced-motion:reduce){
+  .core-ring-2,.core-ring-3,.scroll-cue span,.ki-scan span:before{animation:none!important}
+  .stage-line-a{opacity:0}
+  .stage-line-b{opacity:1;transform:none}
+  .mod-chip{opacity:1;
+    transform:translate(-50%,-50%) translate(var(--tx,0px),var(--ty,0px)) rotate(var(--rot,0deg))}
+  .stage-statement{opacity:1}
+  .scroll-cue{display:none}
+  .dock-chip{opacity:1;transform:none;transition:none}
+  [data-reveal]{opacity:1;transform:none}
+}
