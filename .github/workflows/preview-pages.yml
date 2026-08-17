@@ -1,0 +1,49 @@
+name: Redesign Preview (GitHub Pages)
+
+# Deploys the static site from this branch to GitHub Pages as a preview.
+# Does not touch main and does not affect the production hosting (Cloudflare
+# Pages / www.hd-hahne.de) — this is a separate, independent preview URL.
+
+on:
+  push:
+    branches:
+      - claude/hahne-digital-redesign-4225as
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages-preview"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble static preview folder
+        run: |
+          mkdir -p _site
+          cp -r assets _site/assets
+          cp -r functions _site/functions
+          cp *.html _site/
+          cp robots.txt sitemap.xml _headers _site/ 2>/dev/null || true
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
