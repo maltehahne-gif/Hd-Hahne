@@ -158,14 +158,31 @@
       '<p class="demo-note">Beispielansicht mit Musterdaten. Aufbau, Felder und Abläufe werden für Ihr Unternehmen individuell entwickelt.</p>';
   }
 
+  // Wechsel zwischen den Beispielmodulen: der alte Inhalt tritt kurz zurück,
+  // der neue kommt mit leichter Bewegung wieder nach vorn. Ohne Animation
+  // (reduzierte Bewegung) wird sofort umgeschaltet.
+  var leiserWechsel = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var wechselTimer = null;
+
   function selectTab(btn, focus) {
     tabs.forEach(function (t) {
       var on = t === btn;
       t.setAttribute("aria-selected", on ? "true" : "false");
       t.setAttribute("tabindex", on ? "0" : "-1");
     });
-    renderDemo(btn.dataset.demo);
     if (focus) btn.focus();
+
+    var key = btn.dataset.demo;
+    if (!demoScreen || leiserWechsel.matches || !demoScreen.innerHTML) {
+      renderDemo(key);
+      return;
+    }
+    window.clearTimeout(wechselTimer);
+    demoScreen.classList.add("is-swapping");
+    wechselTimer = window.setTimeout(function () {
+      renderDemo(key);
+      demoScreen.classList.remove("is-swapping");
+    }, 200);
   }
 
   if (tabs.length) {
