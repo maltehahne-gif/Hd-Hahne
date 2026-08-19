@@ -1013,7 +1013,10 @@ body.is-leaving .page-fade{opacity:1}
   margin:22px 0 26px;max-width:15ch;
 }
 .modul-hero h1 em{font-style:normal;color:var(--accent-ink)}
-.modul-hero .lead{max-width:62ch}
+.modul-hero .lead{max-width:56ch}
+.modul-hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);
+  gap:clamp(24px,4vw,64px);align-items:center}
+.modul-hero-grid .sys--calm{max-width:320px}
 .modul-hero .hero-actions{margin-bottom:clamp(40px,6vw,72px)}
 .zahlband{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);
   border-top:1px solid var(--line)}
@@ -1886,6 +1889,8 @@ body.nav-open{overflow:hidden}
 @media(max-width:880px){
   .modulgrid{grid-template-columns:1fr}
   .modul-hero{padding-top:44px}
+  .modul-hero-grid{grid-template-columns:1fr}
+  .modul-hero-grid .sys--calm{max-width:260px;margin-bottom:24px}
   .modul-section{padding:52px 0}
   .steuerung{position:static;background:none;padding:0 0 10px}
   .modul h3{padding-right:0}
