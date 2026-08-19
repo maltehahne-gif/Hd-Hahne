@@ -1668,6 +1668,8 @@ body[data-modell="miete"] .nur-miete{display:inline}
   box-shadow:0 0 0 3px rgba(127,214,160,.22)}
 .kia-punkt.aus{background:var(--ink-faint);box-shadow:0 0 0 3px rgba(242,243,241,.12)}
 body.kia-offen .kia-knopf,body.kia-offen .kia-lockruf{display:none}
+/* Im geöffneten mobilen Menü tritt der Assistent zurück */
+body.nav-open .kia,body.nav-open .totop{display:none}
 .kia-fenster{width:min(400px,calc(100vw - 32px));height:min(620px,calc(100vh - 120px));
   background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);
   box-shadow:var(--shadow-lg);display:flex;flex-direction:column;overflow:hidden;
@@ -1853,8 +1855,15 @@ body.kia-offen .kia-knopf,body.kia-offen .kia-lockruf{display:none}
   .links.open a:nth-child(5){animation-delay:.25s}
   .links.open a:nth-child(6){animation-delay:.30s}
   @keyframes navIn{to{opacity:1;transform:none}}
-  .nav{background:color-mix(in srgb,var(--paper) 82%,transparent);
-    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  /* Auf kleinen Geräten ohne Weichzeichner: er kostet Rechenzeit und würde
+     die Leiste zum Bezugsrahmen des fixierten Menüs machen – dieses wäre dann
+     nur so hoch wie die Leiste selbst. Stattdessen deckt eine fast
+     undurchsichtige Fläche. */
+  .nav,.nav.is-scrolled{
+    background:rgba(11,14,16,.94);
+    backdrop-filter:none;-webkit-backdrop-filter:none;
+  }
+  body.nav-open .nav{background:var(--void);border-bottom-color:var(--line)}
   .sprach-wahl{margin-left:auto}
 }
 body.nav-open{overflow:hidden}

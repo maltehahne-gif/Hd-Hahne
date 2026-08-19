@@ -83,7 +83,8 @@
     beiScroll(function () {
       var r = liste.getBoundingClientRect();
       var hoehe = window.innerHeight || 800;
-      if (r.bottom < -200 || r.top > hoehe + 200) return;
+      // Auch außerhalb des Bildes wird der Endwert gesetzt, damit der
+      // Fortschritt beim Zurückscrollen nie auf einem alten Stand hängt.
       var start = hoehe * 0.82;
       var strecke = r.height + hoehe * 0.35;
       var p = Math.max(0, Math.min(1, (start - r.top) / strecke));
