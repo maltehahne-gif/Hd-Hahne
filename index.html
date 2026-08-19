@@ -18,7 +18,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#f4f6f7">
+<meta name="theme-color" content="#0b0e10">
 <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/style.css">
@@ -59,8 +59,15 @@
 </nav>
 
 <header id="start" class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="layer layer-grid" data-parallax="0.045"></div>
+    <div class="layer layer-glow" data-parallax="0.09"></div>
+    <div class="layer layer-horizon" data-parallax="0.13"></div>
+    <div class="layer layer-vignette"></div>
+  </div>
+
   <div class="wrap hero-grid">
-    <div class="reveal">
+    <div class="hero-copy reveal">
       <p class="eyebrow" data-t="hero.eyebrow">Digitale Lösungen für Unternehmen</p>
       <h1><span data-t="hero.titel1">Wir bauen keine Websites.</span> <em data-t="hero.titel2">Wir bauen Systeme.</em></h1>
       <p class="lead" data-t="hero.lead">Internetpräsenzen, Shopsysteme und individuelle Firmenmodule – hochwertig gestaltet, sauber strukturiert und darauf ausgelegt, Abläufe zu vereinfachen, Vertrauen aufzubauen und Kunden besser zu führen.</p>
@@ -75,38 +82,51 @@
       </div>
     </div>
 
-    <div class="visual reveal" aria-hidden="true">
-      <div class="frame">
-        <div class="screen">
-          <div class="screen-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
-          <div class="dash">
-            <div class="sidebar">
-              <div class="side-line active"></div><div class="side-line"></div><div class="side-line"></div>
-              <div class="side-line"></div><div class="side-line"></div>
-            </div>
-            <div class="mainpane">
-              <div class="metric-row">
-                <div class="mini"><small>Anfragen</small><b>28</b></div>
-                <div class="mini"><small>Projekte</small><b>12</b></div>
-                <div class="mini"><small>Quote</small><b>43 %</b></div>
-              </div>
-              <div class="chart">
-                <svg viewBox="0 0 500 160" preserveAspectRatio="none" role="presentation">
-                  <polyline points="0,132 65,118 120,126 180,92 240,101 310,66 375,74 440,34 500,42"
-                    fill="none" stroke="#0e6f7a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="table">
-                <div class="row"><b>Neue Projektanfrage</b><span>Website + CRM</span><span class="status">Heute</span></div>
-                <div class="row"><b>Angebot freigegeben</b><span>Shop-System</span><span class="status">Aktiv</span></div>
-                <div class="row"><b>Modul erweitert</b><span>Serviceportal</span><span class="status">Fertig</span></div>
-              </div>
-            </div>
-          </div>
+    <div class="hero-stage" aria-hidden="true">
+      <div class="sys" data-system="hero">
+        <canvas class="sys-canvas"></canvas>
+        <div class="sys-fallback">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="presentation">
+            <ellipse class="f-line-soft" cx="100" cy="100" rx="78" ry="30" transform="rotate(-18 100 100)"/>
+            <ellipse class="f-line-soft" cx="100" cy="100" rx="64" ry="46" transform="rotate(24 100 100)"/>
+            <ellipse class="f-accent" cx="100" cy="100" rx="50" ry="70" transform="rotate(-8 100 100)" opacity=".35"/>
+            <g class="f-line">
+              <path d="M100 62 L124 82 L100 102 L76 82 Z"/>
+              <path d="M100 102 L124 82 L124 112 L100 132 Z"/>
+              <path d="M100 102 L76 82 L76 112 L100 132 Z"/>
+            </g>
+            <path class="f-core" d="M100 62 L124 82 L100 102 L76 82 Z"/>
+            <g class="f-fill">
+              <rect x="150" y="88" width="20" height="16" rx="2"/>
+              <rect x="30" y="76" width="16" height="13" rx="2"/>
+              <rect x="92" y="18" width="15" height="12" rx="2"/>
+              <rect x="84" y="164" width="18" height="14" rx="2"/>
+            </g>
+            <g class="f-line-soft">
+              <path d="M100 100 L160 96"/><path d="M100 100 L38 82"/>
+              <path d="M100 100 L99 24"/><path d="M100 100 L93 171"/>
+            </g>
+            <g class="f-node">
+              <circle cx="160" cy="96" r="1.8"/><circle cx="38" cy="82" r="1.8"/>
+              <circle cx="99" cy="24" r="1.8"/><circle cx="93" cy="171" r="1.8"/>
+            </g>
+          </svg>
+        </div>
+        <div class="sys-hud">
+          <span class="sys-label sys-label--tl">01 / WEB</span>
+          <span class="sys-label sys-label--tr">02 / COMMERCE</span>
+          <span class="sys-label sys-label--bl">03 / OPERATIONS</span>
+          <span class="sys-label sys-label--br">04 / AI</span>
         </div>
       </div>
-      <div class="floating"><small>Digitale Plattform</small><b>Ein System. Mehr Wirkung.</b></div>
     </div>
+  </div>
+
+  <div class="wrap hero-foot" aria-hidden="true">
+    <span class="hud-line">Digital Systems / 01</span>
+    <span class="hud-line">Eckernförde · Germany</span>
+    <span class="hud-line">Web · Modules · AI</span>
+    <span class="hud-line"><i class="hud-dot"></i>System Status / Active</span>
   </div>
 </header>
 
@@ -118,79 +138,170 @@
       <div><p class="kicker" data-t="leist.kicker">Leistungen</p><h2 id="leistungen-h" data-t="leist.titel">Digitalisierung mit Substanz.</h2></div>
       <p data-t="leist.lead">Die Website ist nur die sichtbare Oberfläche. Der eigentliche Wert entsteht dort, wo Design, Prozesse, Daten und Kundenführung sauber zusammenspielen.</p>
     </div>
+
     <div class="services">
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">◗</div>
-        <h3 data-t="leist1.t">Internetpräsenzen</h3>
-        <p>Hochwertige Unternehmensseiten mit klarer Nutzerführung, responsivem Design, Kontaktstrecken, Terminlogik und einer Positionierung, die professionell wirkt.</p>
-        <p class="more">Mehr Wirkung</p>
+      <article class="service reveal" data-reveal="rise">
+        <div class="service-body">
+          <p class="service-index"><b>01</b><i></i>Web</p>
+          <h3 data-t="leist1.t">Internetpräsenzen</h3>
+          <p>Hochwertige Unternehmensseiten mit klarer Nutzerführung, responsivem Design, Kontaktstrecken, Terminlogik und einer Positionierung, die professionell wirkt.</p>
+          <p class="more">Mehr Wirkung</p>
+        </div>
+        <div class="service-visual" aria-hidden="true">
+          <svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="presentation">
+            <rect class="v-line" x="46" y="38" width="228" height="150" rx="4"/>
+            <path class="v-line-soft" d="M46 62 H274"/>
+            <g class="v-node-soft"><circle cx="58" cy="50" r="2.4"/><circle cx="68" cy="50" r="2.4"/><circle cx="78" cy="50" r="2.4"/></g>
+            <rect class="v-fill" x="60" y="76" width="90" height="46" rx="3"/>
+            <rect class="v-line-soft" x="60" y="132" width="90" height="10" rx="2" fill="none"/>
+            <rect class="v-line-soft" x="60" y="150" width="62" height="10" rx="2" fill="none"/>
+            <rect class="v-fill" x="166" y="76" width="94" height="22" rx="3"/>
+            <rect class="v-line-soft" x="166" y="108" width="94" height="8" rx="2" fill="none"/>
+            <rect class="v-line-soft" x="166" y="124" width="72" height="8" rx="2" fill="none"/>
+            <rect class="v-accent" x="166" y="146" width="56" height="20" rx="10"/>
+            <path class="v-accent v-draw v-dash" style="--len:240" d="M46 200 H274" />
+            <g class="v-node"><circle cx="46" cy="200" r="2.2"/><circle cx="274" cy="200" r="2.2"/></g>
+          </svg>
+        </div>
       </article>
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">▤</div>
-        <h3 data-t="leist2.t">Shopsysteme</h3>
-        <p>Produktwelten, Checkout, Bestellprozesse, Rechnungslogik und individuelle Produktkonfigurationen – übersichtlich für Kunden und effizient für Ihr Unternehmen.</p>
-        <p class="more">Mehr verkaufen</p>
+
+      <article class="service reveal" data-reveal="rise">
+        <div class="service-body">
+          <p class="service-index"><b>02</b><i></i>Commerce</p>
+          <h3 data-t="leist2.t">Shopsysteme</h3>
+          <p>Produktwelten, Checkout, Bestellprozesse, Rechnungslogik und individuelle Produktkonfigurationen – übersichtlich für Kunden und effizient für Ihr Unternehmen.</p>
+          <p class="more">Mehr verkaufen</p>
+        </div>
+        <div class="service-visual" aria-hidden="true">
+          <svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="presentation">
+            <g class="v-fill">
+              <rect x="40" y="52" width="60" height="52" rx="3"/>
+              <rect x="110" y="52" width="60" height="52" rx="3"/>
+              <rect x="180" y="52" width="60" height="52" rx="3"/>
+            </g>
+            <g class="v-line-soft">
+              <path d="M52 116 H88"/><path d="M122 116 H158"/><path d="M192 116 H228"/>
+            </g>
+            <path class="v-accent v-draw" style="--len:420" d="M70 104 V138 H250 V52 H262" fill="none"/>
+            <rect class="v-line" x="250" y="128" width="34" height="60" rx="3"/>
+            <path class="v-line-soft" d="M250 146 H284"/>
+            <path class="v-line-soft" d="M250 164 H284"/>
+            <g class="v-node"><circle cx="70" cy="104" r="2.4"/><circle cx="140" cy="104" r="2.4" class="v-node-soft"/><circle cx="250" cy="138" r="2.6"/></g>
+            <text x="40" y="200" class="v-cap" fill="rgba(242,243,241,.28)" font-family="ui-monospace,monospace" font-size="8" letter-spacing="2">PRODUCT · CART · CHECKOUT</text>
+          </svg>
+        </div>
       </article>
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">▦</div>
-        <h3 data-t="leist3.t">Firmenmodule</h3>
-        <p>CRM, Angebots- und Rechnungssysteme, Terminverwaltung mit Kalender-Synchronisierung, Fahrtenbuch, Serviceprozesse, Auftragsstatus oder interne Dashboards – exakt dort, wo Standardsoftware zu starr wird. Auf Wunsch auf einem eigenen Server, den wir vermitteln und einrichten.</p>
-        <p class="more">Abläufe vereinfachen</p>
+
+      <article class="service reveal" data-reveal="rise">
+        <div class="service-body">
+          <p class="service-index"><b>03</b><i></i>Operations</p>
+          <h3 data-t="leist3.t">Firmenmodule</h3>
+          <p>CRM, Angebots- und Rechnungssysteme, Terminverwaltung mit Kalender-Synchronisierung, Fahrtenbuch, Serviceprozesse, Auftragsstatus oder interne Dashboards – exakt dort, wo Standardsoftware zu starr wird. Auf Wunsch auf einem eigenen Server, den wir vermitteln und einrichten.</p>
+          <p class="more">Abläufe vereinfachen</p>
+        </div>
+        <div class="service-visual" aria-hidden="true">
+          <svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="presentation">
+            <g class="v-line-soft">
+              <path d="M160 110 L72 62"/><path d="M160 110 L248 62"/><path d="M160 110 L72 166"/>
+              <path d="M160 110 L248 166"/><path d="M160 110 L160 40"/><path d="M160 110 L160 184"/>
+              <path d="M72 62 L160 40"/><path d="M160 40 L248 62"/><path d="M248 62 L248 166"/>
+              <path d="M72 62 L72 166"/><path d="M72 166 L160 184"/><path d="M160 184 L248 166"/>
+            </g>
+            <rect class="v-fill" x="140" y="94" width="40" height="32" rx="3"/>
+            <g class="v-fill">
+              <rect x="58" y="50" width="28" height="22" rx="2"/><rect x="234" y="50" width="28" height="22" rx="2"/>
+              <rect x="58" y="156" width="28" height="22" rx="2"/><rect x="234" y="156" width="28" height="22" rx="2"/>
+              <rect x="148" y="30" width="24" height="18" rx="2"/><rect x="148" y="174" width="24" height="18" rx="2"/>
+            </g>
+            <g class="v-node v-pulse"><circle cx="72" cy="62" r="2.2"/><circle cx="248" cy="166" r="2.2"/></g>
+            <g class="v-node"><circle cx="160" cy="110" r="3"/></g>
+          </svg>
+        </div>
       </article>
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">◎</div>
-        <h3 data-t="leist4.t">Sichtbarkeit bei Google</h3>
-        <p>Eine Website nützt nur, wenn sie gefunden wird. Wir melden Ihre Seite bei den Suchmaschinen an, richten Ihr Google Unternehmensprofil ein und legen die Grundlagen, damit Sie in Ihrer Region auftauchen.</p>
-        <p class="more">Gefunden werden</p>
+
+      <article class="service reveal" data-reveal="rise">
+        <div class="service-body">
+          <p class="service-index"><b>04</b><i></i>Visibility</p>
+          <h3 data-t="leist4.t">Sichtbarkeit bei Google</h3>
+          <p>Eine Website nützt nur, wenn sie gefunden wird. Wir melden Ihre Seite bei den Suchmaschinen an, richten Ihr Google Unternehmensprofil ein und legen die Grundlagen, damit Sie in Ihrer Region auftauchen.</p>
+          <p class="more">Gefunden werden</p>
+        </div>
+        <div class="service-visual" aria-hidden="true">
+          <svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="presentation">
+            <g class="v-line-soft">
+              <circle cx="160" cy="110" r="34" fill="none"/>
+              <circle cx="160" cy="110" r="62" fill="none"/>
+              <circle cx="160" cy="110" r="90" fill="none"/>
+            </g>
+            <path class="v-line-soft" d="M70 110 H250"/>
+            <path class="v-line-soft" d="M160 20 V200"/>
+            <path class="v-accent v-draw" style="--len:200" d="M160 110 L232 62" fill="none"/>
+            <g class="v-node v-pulse"><circle cx="212" cy="76" r="2.6"/><circle cx="118" cy="152" r="2.6"/></g>
+            <g class="v-node-soft"><circle cx="196" cy="140" r="2"/><circle cx="128" cy="80" r="2"/><circle cx="168" cy="188" r="2"/></g>
+            <circle class="v-node" cx="160" cy="110" r="3.2"/>
+          </svg>
+        </div>
       </article>
-      <article class="service reveal">
-        <div class="tagmark" aria-hidden="true">✦</div>
-        <h3 data-t="leist5.t">KI-Lösungen</h3>
-        <p>Intelligente Kundenassistenten, Wissenssysteme, Produktempfehlungen und interne KI-Werkzeuge. Nicht als Showeffekt, sondern mit klarem betrieblichem Nutzen.</p>
-        <p class="more">KI sinnvoll einsetzen</p>
+
+      <article class="service reveal" data-reveal="rise">
+        <div class="service-body">
+          <p class="service-index"><b>05</b><i></i>Intelligence</p>
+          <h3 data-t="leist5.t">KI-Lösungen</h3>
+          <p>Intelligente Kundenassistenten, Wissenssysteme, Produktempfehlungen und interne KI-Werkzeuge. Nicht als Showeffekt, sondern mit klarem betrieblichem Nutzen.</p>
+          <p class="more">KI sinnvoll einsetzen</p>
+        </div>
+        <div class="service-visual" aria-hidden="true">
+          <svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="presentation">
+            <g class="v-line-soft">
+              <path d="M64 62 L160 94 L256 62"/><path d="M64 110 L160 110 L256 110"/>
+              <path d="M64 158 L160 126 L256 158"/>
+              <path d="M64 62 L64 158"/><path d="M256 62 L256 158"/>
+              <path d="M160 94 L160 126"/>
+            </g>
+            <rect class="v-fill v-drift" x="140" y="92" width="40" height="36" rx="4"/>
+            <g class="v-node-soft">
+              <circle cx="64" cy="62" r="2.4"/><circle cx="64" cy="110" r="2.4"/><circle cx="64" cy="158" r="2.4"/>
+              <circle cx="256" cy="62" r="2.4"/><circle cx="256" cy="110" r="2.4"/><circle cx="256" cy="158" r="2.4"/>
+            </g>
+            <g class="v-node v-pulse"><circle cx="160" cy="94" r="2.6"/><circle cx="160" cy="126" r="2.6"/></g>
+            <path class="v-accent v-draw" style="--len:200" d="M64 110 L160 110 L256 62" fill="none"/>
+            <text x="40" y="196" fill="rgba(242,243,241,.28)" font-family="ui-monospace,monospace" font-size="8" letter-spacing="2">INPUT · CONTEXT · ANSWER</text>
+          </svg>
+        </div>
       </article>
     </div>
   </div>
 </section>
 
-<section id="domain-teaser" aria-labelledby="domteaser-h">
+<section id="module" aria-labelledby="module-h">
   <div class="wrap">
-    <div class="teaser reveal">
+    <div class="section-head reveal">
+      <div><p class="kicker">Beispielmodule</p><h2 id="module-h">So kann Ihr System arbeiten.</h2></div>
       <div>
-        <p class="kicker">Wunschdomain</p>
-        <h2 id="domteaser-h">Ist Ihre Wunschadresse noch frei?</h2>
-        <p>Prüfen Sie es direkt hier. Ist die Adresse zu haben, merken wir sie für Ihr Angebot vor und richten sie mit ein.</p>
-        <div class="dom-box dom-box-schlank" data-domain-suche></div>
+        <p>Damit Sie nicht raten müssen: Diese Ansichten zeigen echte Bildschirme mit erfundenen Beispieldaten – und auf der Demoseite können Sie jedes Modul selbst bedienen. Klicken Sie sich links durch die Bereiche – so ungefähr würde Ihr System im Alltag aussehen.</p>
+        <p class="hero-actions"><a class="btn btn-primary" href="demo.html">Alle 47 Module ausprobieren</a> <a class="btn btn-ghost" href="anleitung.html">Anleitungen</a> <a class="btn btn-ghost" href="module.html">Preise</a></p>
       </div>
-      <div class="teaser-preis">
-        <b>10–30 €</b>
-        <span>Registrierung im Jahr,<br>direkt beim Anbieter</span>
-        <a class="btn btn-ghost" href="module.html#domain">Worauf achten?</a>
+    </div>
+    <div class="demo-wrap">
+      <div class="tabs reveal" role="tablist" aria-label="Beispielmodule" aria-orientation="vertical">
+        <button class="tab" role="tab" id="tab-crm" aria-controls="demoScreen" aria-selected="true" data-demo="crm" type="button">CRM / Kundenverwaltung<span>Kunden, Vorgänge, Wiedervorlagen</span></button>
+        <button class="tab" role="tab" id="tab-invoice" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="invoice" type="button">Angebote &amp; Rechnungen<span>Status, Dokumente, Zahlung</span></button>
+        <button class="tab" role="tab" id="tab-service" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="service" type="button">Service &amp; Termine<span>Planung, Wartung, Nachverfolgung</span></button>
+        <button class="tab" role="tab" id="tab-kalender" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="kalender" type="button">Kalender &amp; Sync<span>Automatisch im Smartphone-Kalender</span></button>
+        <button class="tab" role="tab" id="tab-fahrtenbuch" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="fahrtenbuch" type="button">Fahrtenbuch<span>Fahrten, Kilometer, Zuordnung</span></button>
+        <button class="tab" role="tab" id="tab-shop" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="shop" type="button">Shop &amp; Bestellungen<span>Produkte, Orders, Versand</span></button>
       </div>
+      <div class="demo-screen reveal" id="demoScreen" role="tabpanel" tabindex="0" aria-live="polite"></div>
     </div>
   </div>
 </section>
 
-<section id="sichtbar-teaser" aria-labelledby="teaser-h">
+<div class="statement tone-light">
+  <div class="scene-edge scene-edge--top" aria-hidden="true"></div>
+  <div class="scene-edge scene-edge--bottom" aria-hidden="true"></div>
   <div class="wrap">
-    <div class="teaser reveal">
-      <div>
-        <p class="kicker">Häufig unterschätzt</p>
-        <h2 id="teaser-h">Was nützt die schönste Website, wenn niemand sie findet?</h2>
-        <p>Wer heute einen Betrieb sucht, tippt ihn ins Handy – und ruft einen der ersten Treffer an. Eine neue Website steht dort zunächst nicht: Suchmaschinen kennen sie schlicht noch nicht. Wir melden Ihre Seite an, richten Ihr Google Unternehmensprofil ein und sorgen dafür, dass Sie zu den Begriffen auftauchen, die Ihre Kunden tatsächlich eingeben.</p>
-      </div>
-      <div class="teaser-preis">
-        <b>499 €</b>
-        <span>einmalig, netto</span>
-        <a class="btn btn-primary" href="module.html#sichtbarkeit">Warum das wichtig ist</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="statement">
-  <div class="wrap">
-    <blockquote class="reveal">„Gute Digitalisierung beginnt nicht mit Software. Sie beginnt mit der Frage: <em>Was soll einfacher, schneller oder besser werden?</em>“</blockquote>
+    <p class="statement-mark" aria-hidden="true">Haltung / 01</p>
+    <blockquote class="reveal" data-reveal="fade">„Gute Digitalisierung beginnt nicht mit Software. Sie beginnt mit der Frage: <em>Was soll einfacher, schneller oder besser werden?</em>“</blockquote>
   </div>
 </div>
 
@@ -200,42 +311,83 @@
       <div><p class="kicker" data-t="ablauf.kicker">So läuft es ab</p><h2 id="ablauf-h" data-t="ablauf.titel">In vier Schritten zum fertigen System.</h2></div>
       <p>Sie müssen sich vorab nicht in Technik einarbeiten. Wir beginnen bei Ihrem Arbeitsalltag und erklären jeden Schritt in normaler Sprache – Fachbegriffe übersetzen wir, statt sie vorauszusetzen.</p>
     </div>
-    <div class="erklaer erklaer-vier">
-      <article class="erklaer-karte reveal">
-        <div class="erklaer-nr" aria-hidden="true">1</div>
+    <ol class="process" data-process>
+      <li class="process-step reveal" data-reveal="rise">
+        <span class="process-node" aria-hidden="true"></span>
+        <span class="process-nr" aria-hidden="true">01</span>
         <h3 data-t="ablauf1.t">Gespräch</h3>
         <p>Sie erzählen, was im Alltag hakt. Kein Lastenheft nötig – ein Telefonat von 20 Minuten reicht für den Anfang. Kostenlos und unverbindlich.</p>
-      </article>
-      <article class="erklaer-karte reveal">
-        <div class="erklaer-nr" aria-hidden="true">2</div>
+      </li>
+      <li class="process-step reveal" data-reveal="rise" data-delay="1">
+        <span class="process-node" aria-hidden="true"></span>
+        <span class="process-nr" aria-hidden="true">02</span>
         <h3 data-t="ablauf2.t">Angebot</h3>
         <p>Sie bekommen einen Festpreis mit klarer Liste, was enthalten ist und was nicht. Keine Stundenzettel, keine Überraschung am Ende.</p>
-      </article>
-      <article class="erklaer-karte reveal">
-        <div class="erklaer-nr" aria-hidden="true">3</div>
+      </li>
+      <li class="process-step reveal" data-reveal="rise" data-delay="2">
+        <span class="process-node" aria-hidden="true"></span>
+        <span class="process-nr" aria-hidden="true">03</span>
         <h3 data-t="ablauf3.t">Umsetzung</h3>
         <p>Wir bauen und zeigen zwischendurch den Stand. Sie sagen, was passt und was nicht – ändern lässt sich alles, solange es noch im Bau ist.</p>
-      </article>
-      <article class="erklaer-karte reveal">
-        <div class="erklaer-nr" aria-hidden="true">4</div>
+      </li>
+      <li class="process-step reveal" data-reveal="rise" data-delay="3">
+        <span class="process-node" aria-hidden="true"></span>
+        <span class="process-nr" aria-hidden="true">04</span>
         <h3 data-t="ablauf4.t">Einweisung</h3>
         <p>Wir übernehmen Ihre vorhandenen Daten und zeigen dem Team, wie es geht. Danach bleiben wir erreichbar – auch für die Frage, die man sich nicht zu stellen traut.</p>
-      </article>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="sichtbar-teaser" aria-labelledby="teaser-h">
+  <div class="wrap">
+    <div class="teaser reveal" data-reveal="scale">
+      <div>
+        <p class="kicker">Häufig unterschätzt</p>
+        <h2 id="teaser-h">Was nützt die schönste Website, wenn niemand sie findet?</h2>
+        <p>Wer heute einen Betrieb sucht, tippt ihn ins Handy – und ruft einen der ersten Treffer an. Eine neue Website steht dort zunächst nicht: Suchmaschinen kennen sie schlicht noch nicht. Wir melden Ihre Seite an, richten Ihr Google Unternehmensprofil ein und sorgen dafür, dass Sie zu den Begriffen auftauchen, die Ihre Kunden tatsächlich eingeben.</p>
+      </div>
+      <div class="teaser-preis">
+        <b>499 €</b>
+        <span>einmalig, netto</span>
+        <a class="btn btn-primary" href="module.html#sichtbarkeit">Warum das wichtig ist</a>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="pakete" aria-labelledby="pakete-h">
+<section id="domain-teaser" aria-labelledby="domteaser-h">
+  <div class="wrap">
+    <div class="teaser reveal" data-reveal="scale">
+      <div>
+        <p class="kicker">Wunschdomain</p>
+        <h2 id="domteaser-h">Ist Ihre Wunschadresse noch frei?</h2>
+        <p>Prüfen Sie es direkt hier. Ist die Adresse zu haben, merken wir sie für Ihr Angebot vor und richten sie mit ein.</p>
+        <div class="dom-box dom-box-schlank" data-domain-suche></div>
+      </div>
+      <div class="teaser-preis">
+        <b>10–30 €</b>
+        <span>Registrierung im Jahr,<br>direkt beim Anbieter</span>
+        <a class="btn btn-ghost" href="module.html#domain">Worauf achten?</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pakete" class="tone-light" aria-labelledby="pakete-h">
+  <div class="scene-edge scene-edge--top" aria-hidden="true"></div>
+  <div class="scene-edge scene-edge--bottom" aria-hidden="true"></div>
   <div class="wrap">
     <div class="section-head reveal">
       <div><p class="kicker" data-t="pakete.kicker">Pakete</p><h2 id="pakete-h" data-t="pakete.titel">Ein klarer Einstieg.</h2></div>
       <p>Keine künstlich aufgeblähten Pakete. Der Umfang wird am tatsächlichen Nutzen ausgerichtet und kann später modular erweitert werden.</p>
     </div>
     <div class="packages">
-      <article class="package reveal">
+      <article class="package reveal" data-reveal="rise">
         <p class="label" data-t="p1.label">Start</p>
         <h3>Business Website</h3>
-        <p class="price">ab 990 € <small>einmalig</small></p>
+        <p class="price">ab 990 € <small>einmalig</small></p>
         <p data-t="p1.desc">Für Unternehmen, die professionell auftreten und Anfragen besser führen möchten.</p>
         <ul class="checklist">
           <li>individuelles Premium-Design</li>
@@ -246,10 +398,10 @@
         </ul>
         <a class="btn btn-ghost" href="#kontakt" data-t="btn.anfragen">Projekt anfragen</a>
       </article>
-      <article class="package featured reveal">
+      <article class="package featured reveal" data-reveal="rise" data-delay="1">
         <p class="label" data-t="p2.label">Empfohlen</p>
         <h3>Business System</h3>
-        <p class="price">ab 2.490 € <small>einmalig</small></p>
+        <p class="price">ab 2.490 € <small>einmalig</small></p>
         <p data-t="p2.desc">Website plus individuell abgestimmtes Firmenmodul für einen echten Prozessvorteil.</p>
         <ul class="checklist">
           <li>alles aus Business Website</li>
@@ -260,7 +412,7 @@
         </ul>
         <a class="btn btn-primary" href="#berater" data-t="btn.check">Projekt-Check starten</a>
       </article>
-      <article class="package reveal">
+      <article class="package reveal" data-reveal="rise" data-delay="2">
         <p class="label" data-t="p3.label">Individuell</p>
         <h3>Digital Platform</h3>
         <p class="price">nach Bedarf</p>
@@ -281,9 +433,9 @@
 
 <section id="server-hinweis" aria-labelledby="serverhinweis-h">
   <div class="wrap">
-    <div class="teaser teaser-server reveal">
+    <div class="teaser teaser-server reveal" data-reveal="scale">
       <div class="teaser-preis teaser-preis-links">
-        <b>899 €</b>
+        <b>899 €</b>
         <span>einmalig, netto</span>
         <a class="btn btn-ghost" href="module.html#server">Wann sich das lohnt</a>
       </div>
@@ -291,38 +443,15 @@
         <p class="kicker">Eigener Server</p>
         <h2 id="serverhinweis-h">Ihr System auf einer Maschine, die Ihnen allein gehört.</h2>
         <p>Normales Hosting teilen sich viele Kunden. Sobald echte Betriebsdaten im Spiel sind – Kunden, Aufträge, Arbeitszeiten – oder mehrere Module zusammenarbeiten, wird ein eigener Server sinnvoll. Wir klären den Bedarf, vermitteln einen passenden Anbieter in Deutschland und richten alles betriebsbereit ein: Absicherung, Zertifikate, Postfächer, Sicherungen und Überwachung.</p>
-        <p class="teaser-fein"><b>Der Vertrag läuft auf Ihren Namen.</b> Zugang und Daten gehören Ihnen, die Servermiete zahlen Sie direkt an den Anbieter – meist 15 bis 60 € im Monat. Wir verdienen an der Einrichtung, nicht an einem Aufschlag.</p>
+        <p class="teaser-fein"><b>Der Vertrag läuft auf Ihren Namen.</b> Zugang und Daten gehören Ihnen, die Servermiete zahlen Sie direkt an den Anbieter – meist 15 bis 60 € im Monat. Wir verdienen an der Einrichtung, nicht an einem Aufschlag.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<section id="module" aria-labelledby="module-h">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div><p class="kicker">Beispielmodule</p><h2 id="module-h">So kann Ihr System arbeiten.</h2></div>
-      <div>
-        <p>Damit Sie nicht raten müssen: Diese Ansichten zeigen echte Bildschirme mit erfundenen Beispieldaten – und auf der Demoseite können Sie jedes Modul selbst bedienen. Klicken Sie sich links durch die Bereiche – so ungefähr würde Ihr System im Alltag aussehen.</p>
-        <p style="margin-top:18px"><a class="btn btn-primary" href="demo.html">Alle 47 Module ausprobieren</a> <a class="btn btn-ghost" href="anleitung.html">Anleitungen</a> <a class="btn btn-ghost" href="module.html">Preise</a></p>
-      </div>
-    </div>
-    <div class="demo-wrap">
-      <div class="tabs reveal" role="tablist" aria-label="Beispielmodule" aria-orientation="vertical">
-        <button class="tab" role="tab" id="tab-crm" aria-controls="demoScreen" aria-selected="true" data-demo="crm" type="button">CRM / Kundenverwaltung<span>Kunden, Vorgänge, Wiedervorlagen</span></button>
-        <button class="tab" role="tab" id="tab-invoice" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="invoice" type="button">Angebote &amp; Rechnungen<span>Status, Dokumente, Zahlung</span></button>
-        <button class="tab" role="tab" id="tab-service" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="service" type="button">Service &amp; Termine<span>Planung, Wartung, Nachverfolgung</span></button>
-        <button class="tab" role="tab" id="tab-kalender" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="kalender" type="button">Kalender &amp; Sync<span>Automatisch im Smartphone-Kalender</span></button>
-        <button class="tab" role="tab" id="tab-fahrtenbuch" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="fahrtenbuch" type="button">Fahrtenbuch<span>Fahrten, Kilometer, Zuordnung</span></button>
-        <button class="tab" role="tab" id="tab-shop" aria-controls="demoScreen" aria-selected="false" tabindex="-1" data-demo="shop" type="button">Shop &amp; Bestellungen<span>Produkte, Orders, Versand</span></button>
-      </div>
-      <div class="demo-screen reveal" id="demoScreen" role="tabpanel" tabindex="0" aria-live="polite"></div>
     </div>
   </div>
 </section>
 
 <section id="berater" aria-labelledby="berater-h">
   <div class="wrap">
-    <div class="advisor reveal">
+    <div class="advisor reveal" data-reveal="scale">
       <div class="advisor-grid">
         <div>
           <p class="kicker">Projekt-Check</p>
@@ -330,6 +459,7 @@
           <p>Vier kurze Fragen reichen für eine erste Einordnung. Entscheidend ist nicht, welche Software Sie möchten, sondern welches Problem gelöst werden soll. Das Ergebnis wird direkt in das Kontaktformular übernommen.</p>
         </div>
         <div>
+          <p class="check-rail" aria-hidden="true"><span>01</span><i></i><span>02</span><i></i><span>03</span><i></i><span>04</span></p>
           <div class="progress" role="presentation"><span id="prog"></span></div>
           <p class="step-count" id="stepCount" aria-live="polite">Frage 1 von 4</p>
 
@@ -396,14 +526,14 @@
       <div><p class="kicker" data-t="ueberuns.kicker">Über uns</p><h2 id="ueberuns-h" data-t="ueberuns.titel">Zwei Entwickler aus Eckernförde.</h2></div>
       <p data-t="ueberuns.lead">Hahne Digital wird von Björn Hahne und Malte Hahne geführt. Wir entwickeln, betreuen und beraten selbst – ohne Zwischenstationen und ohne Vertrieb dazwischen.</p>
     </div>
-    <div class="erklaer erklaer-zwei">
-      <article class="erklaer-karte reveal">
-        <div class="erklaer-nr" aria-hidden="true">BH</div>
+    <div class="people">
+      <article class="person reveal" data-reveal="rise">
+        <span class="person-nr" aria-hidden="true">BH</span>
         <h3>Björn Hahne</h3>
         <p>Gesellschafter und Ansprechpartner bei Hahne Digital. Erreichbar telefonisch, per E-Mail oder über das Kontaktformular.</p>
       </article>
-      <article class="erklaer-karte reveal">
-        <div class="erklaer-nr" aria-hidden="true">MH</div>
+      <article class="person reveal" data-reveal="rise" data-delay="1">
+        <span class="person-nr" aria-hidden="true">MH</span>
         <h3>Malte Hahne</h3>
         <p>Gesellschafter und Ansprechpartner bei Hahne Digital. Erreichbar telefonisch, per E-Mail oder über das Kontaktformular.</p>
       </article>
@@ -429,6 +559,20 @@
           <li>keine unnötigen Funktionen</li>
           <li>später erweiterbar</li>
         </ul>
+
+        <div class="sys sys--calm" data-system="calm" aria-hidden="true">
+          <canvas class="sys-canvas"></canvas>
+          <div class="sys-fallback">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="presentation">
+              <ellipse class="f-line-soft" cx="100" cy="100" rx="72" ry="28" transform="rotate(-16 100 100)"/>
+              <ellipse class="f-line-soft" cx="100" cy="100" rx="58" ry="42" transform="rotate(22 100 100)"/>
+              <path class="f-line" d="M100 68 L120 85 L100 102 L80 85 Z"/>
+              <path class="f-core" d="M100 68 L120 85 L100 102 L80 85 Z"/>
+              <g class="f-node"><circle cx="152" cy="96" r="1.6"/><circle cx="46" cy="88" r="1.6"/><circle cx="100" cy="38" r="1.6"/></g>
+            </svg>
+          </div>
+        </div>
+
         <div class="contact-direct">
           <div><strong data-site="firma">Hahne Digital</strong> · <span data-site="inhaber">Björn Hahne</span></div>
           <div><span data-site="adresse">[Anschrift]</span></div>
@@ -450,7 +594,7 @@
           <span class="err" id="email-err"></span>
         </div>
         <div class="field">
-          <label for="phone">Telefon <span style="font-weight:400;color:var(--ink-soft)">(optional)</span></label>
+          <label for="phone">Telefon <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></label>
           <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="04351 123456">
         </div>
         <div class="field">
@@ -492,27 +636,31 @@
 </main>
 
 <footer>
-  <div class="wrap foot">
-    <div>
-      <span class="foot-brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="17" width="6" height="30" rx="3"/><rect x="34" y="17" width="6" height="30" rx="3"/><path d="M40 19 a12.5 12.5 0 0 1 0 26" fill="none" stroke-width="6" stroke-linecap="round"/><rect class="brand-bar" x="20" y="29" width="16" height="6" rx="3"/></svg></span><strong style="letter-spacing:.08em">HAHNE DIGITAL</strong></span><br>
-      Internetpräsenzen · Shops · Firmenmodule · KI<br>
-      <span style="font-size:.85rem">© <span data-year>2026</span> <span data-site="firma">Hahne Digital</span>, <span data-site="ort">Eckernförde</span></span>
+  <div class="wrap">
+    <p class="foot-wordmark" aria-hidden="true">HAHNE DIGITAL</p>
+    <div class="foot">
+      <div>
+        <span class="foot-brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="17" width="6" height="30" rx="3"/><rect x="34" y="17" width="6" height="30" rx="3"/><path d="M40 19 a12.5 12.5 0 0 1 0 26" fill="none" stroke-width="6" stroke-linecap="round"/><rect class="brand-bar" x="20" y="29" width="16" height="6" rx="3"/></svg></span><strong>HAHNE DIGITAL</strong></span><br>
+        Internetpräsenzen · Shops · Firmenmodule · KI<br>
+        <span data-site="adresse">Eckernförde</span><br>
+        <span>© <span data-year>2026</span> <span data-site="firma">Hahne Digital</span>, <span data-site="ort">Eckernförde</span></span>
+      </div>
+      <div class="foot-social">
+        <p class="foot-social-titel" data-social-titel data-t="footer.folgen">Demnächst hier</p>
+        <div class="social-leiste" data-social></div>
+        <p class="foot-social-hinweis" data-social-hinweis></p>
+      </div>
+      <nav class="footlinks" aria-label="Rechtliches">
+        <a href="module.html" data-t="footer.module">Module &amp; Preise</a>
+        <a href="demo.html">Demos</a>
+        <a href="anleitung.html">Anleitungen</a>
+        <a href="module.html#server">Eigener Server</a>
+        <a href="impressum.html" data-t="footer.impressum">Impressum</a>
+        <a href="agb.html" data-t="footer.agb">AGB</a>
+        <a href="datenschutz.html" data-t="footer.datenschutz">Datenschutz</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
     </div>
-    <div class="foot-social">
-      <p class="foot-social-titel" data-social-titel data-t="footer.folgen">Demnächst hier</p>
-      <div class="social-leiste" data-social></div>
-      <p class="foot-social-hinweis" data-social-hinweis></p>
-    </div>
-    <nav class="footlinks" aria-label="Rechtliches">
-      <a href="module.html" data-t="footer.module">Module &amp; Preise</a>
-      <a href="demo.html">Demos</a>
-      <a href="anleitung.html">Anleitungen</a>
-      <a href="module.html#server">Eigener Server</a>
-      <a href="impressum.html" data-t="footer.impressum">Impressum</a>
-      <a href="agb.html" data-t="footer.agb">AGB</a>
-      <a href="datenschutz.html" data-t="footer.datenschutz">Datenschutz</a>
-      <a href="#kontakt">Kontakt</a>
-    </nav>
   </div>
 </footer>
 
@@ -521,6 +669,8 @@
 <script defer src="assets/modules.js"></script>
 <script defer src="assets/domain.js"></script>
 <script defer src="assets/main.js"></script>
+<script defer src="assets/motion.js"></script>
+<script defer src="assets/system-3d.js"></script>
 <script defer src="assets/assistant-data.js"></script>
 <script defer src="assets/assistant-lernen.js"></script>
 <script defer src="assets/privatsphaere.js"></script>

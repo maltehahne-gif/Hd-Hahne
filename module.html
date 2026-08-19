@@ -11,7 +11,7 @@
 <meta property="og:title" content="Module &amp; Preise – Hahne Digital">
 <meta property="og:description" content="Einzeln buchbare Firmenmodule mit transparenten Richtpreisen.">
 <meta property="og:image" content="https://www.hd-hahne.de/assets/logo/og-bild.png">
-<meta name="theme-color" content="#f4f6f7">
+<meta name="theme-color" content="#0b0e10">
 <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/style.css">
@@ -40,13 +40,32 @@
 </nav>
 
 <header class="modul-hero">
-  <div class="wrap">
-    <p class="eyebrow">Module &amp; Preise</p>
-    <h1>Jedes Modul <em>einzeln buchbar.</em></h1>
-    <p class="lead">Sie zahlen nicht für ein Paket, in dem drei Viertel der Funktionen ungenutzt bleiben. Jedes Modul löst eine konkrete Aufgabe, läuft für sich – und greift auf dieselbe Datenbasis zu wie alle anderen.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="#katalog">Module auswählen</a>
-      <a class="btn btn-ghost" href="#domain">Wunschdomain prüfen</a>
+  <div class="wrap modul-hero-grid">
+    <div>
+      <p class="eyebrow">Module &amp; Preise</p>
+      <h1>Jedes Modul <em>einzeln buchbar.</em></h1>
+      <p class="lead">Sie zahlen nicht für ein Paket, in dem drei Viertel der Funktionen ungenutzt bleiben. Jedes Modul löst eine konkrete Aufgabe, läuft für sich – und greift auf dieselbe Datenbasis zu wie alle anderen.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#katalog">Module auswählen</a>
+        <a class="btn btn-ghost" href="#domain">Wunschdomain prüfen</a>
+      </div>
+    </div>
+    <div class="sys sys--calm" data-system="calm" aria-hidden="true">
+      <canvas class="sys-canvas"></canvas>
+      <div class="sys-fallback">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="presentation">
+          <ellipse class="f-line-soft" cx="100" cy="100" rx="74" ry="29" transform="rotate(-16 100 100)"/>
+          <ellipse class="f-line-soft" cx="100" cy="100" rx="60" ry="44" transform="rotate(22 100 100)"/>
+          <path class="f-line" d="M100 66 L122 84 L100 102 L78 84 Z"/>
+          <path class="f-core" d="M100 66 L122 84 L100 102 L78 84 Z"/>
+          <g class="f-fill">
+            <rect x="146" y="88" width="18" height="14" rx="2"/>
+            <rect x="36" y="80" width="15" height="12" rx="2"/>
+            <rect x="93" y="26" width="14" height="11" rx="2"/>
+          </g>
+          <g class="f-node"><circle cx="155" cy="95" r="1.6"/><circle cx="43" cy="86" r="1.6"/><circle cx="100" cy="32" r="1.6"/></g>
+        </svg>
+      </div>
     </div>
   </div>
   <div class="wrap">
@@ -526,7 +545,9 @@
 
 
 <footer>
-  <div class="wrap foot">
+  <div class="wrap">
+    <p class="foot-wordmark" aria-hidden="true">HAHNE DIGITAL</p>
+    <div class="foot">
     <div>
       <span class="foot-brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="17" width="6" height="30" rx="3"/><rect x="34" y="17" width="6" height="30" rx="3"/><path d="M40 19 a12.5 12.5 0 0 1 0 26" fill="none" stroke-width="6" stroke-linecap="round"/><rect class="brand-bar" x="20" y="29" width="16" height="6" rx="3"/></svg></span><strong style="letter-spacing:.08em">HAHNE DIGITAL</strong></span><br>
       Internetpräsenzen · Shops · Firmenmodule · KI<br>
@@ -546,6 +567,7 @@
       <a href="datenschutz.html" data-t="footer.datenschutz">Datenschutz</a>
       <a href="index.html#kontakt">Kontakt</a>
     </nav>
+    </div>
   </div>
 </footer>
 
@@ -557,6 +579,8 @@
 <script defer src="assets/angebot.js"></script>
 <script defer src="assets/domain.js"></script>
 <script defer src="assets/main.js"></script>
+<script defer src="assets/motion.js"></script>
+<script defer src="assets/system-3d.js"></script>
 <script defer src="assets/module-page.js"></script>
 <script defer src="assets/assistant-data.js"></script>
 <script defer src="assets/assistant-lernen.js"></script>

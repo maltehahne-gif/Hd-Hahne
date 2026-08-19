@@ -12,8 +12,10 @@ Web-Verzeichnis hochladen – fertig.
     robots.txt            Freigabe für Suchmaschinen
     sitemap.xml           Seitenverzeichnis für Suchmaschinen
     assets/site-config.js >>> HIER ALLE FIRMENDATEN EINTRAGEN <<<
-    assets/style.css      Gestaltung
+    assets/style.css      Gestaltung (Tokens, Komponenten, Motion, Responsive)
     assets/main.js        Navigation, Module, Projekt-Check, Formular
+    assets/motion.js      Scrollzustände: Navigation, Parallaxe, Timeline, Seitenwechsel
+    assets/system-3d.js   Signature-Objekt im Hero (prozedurales 3D auf Canvas)
     assets/modules.js     Modulkatalog inkl. Kauf- und Mietpreise
     assets/module-demos.js Beispielansichten der Module
     assets/module-page.js Katalogseite: Filter, Auswahl, Kostenschätzung
@@ -332,11 +334,58 @@ weil die Spracherkennung vom Browser stammt und bei Chrome/Edge an dessen
 Server geht. Abschalten lässt sich beides über `sprachEingabe` und
 `sprachAusgabe` in der Konfiguration.
 
+## Gestaltung und Bewegung
+
+Die Website ist als zusammenhängende, cinematische Szene aufgebaut: dunkles
+Anthrazit als Grundfläche, gezielt einzelne helle Abschnitte (Statement,
+Preise) und Petrol ausschließlich als technisches Signal.
+
+**Farben, Abstände, Radien und Bewegung stehen als CSS-Variablen ganz oben in
+`assets/style.css`.** Wer die Farbwelt ändern möchte, ändert nur diesen Block.
+Ein Abschnitt wird zur hellen Szene, indem er die Klasse `tone-light` bekommt –
+dort werden dieselben Variablen umgekehrt belegt, alle Bausteine passen sich
+automatisch an.
+
+Das Stylesheet ist von oben nach unten gegliedert: Tokens, Reset, Typografie,
+Layout, Navigation, Buttons, Hero, 3D-System, Sektionen, Leistungen, Demos,
+Prozess, Preise, Projekt-Check, Kontakt, Footer, Modulseite, Unterseiten,
+Overlays, Motion, Responsive, Barrierefreiheit.
+
+### Das Systemobjekt im Hero
+
+`assets/system-3d.js` zeichnet das Markenobjekt – einen Kern, um den sich
+Module, Orbitringe und Verbindungslinien zu einem System fügen. Bewusst **ohne
+Three.js und ohne CDN**: die Geometrie entsteht im Code, gezeichnet wird mit
+Canvas 2D (eigene Perspektivprojektion, Tiefensortierung, lichtabhängige
+Flächen). Das spart rund 600 KB, bleibt DSGVO-freundlich und läuft auch dort,
+wo WebGL fehlt.
+
+Rücksicht auf Gerät und Nutzer:
+
+* die Auflösung ist auf das Doppelte der Bildschirmpunkte begrenzt, auf
+  Smartphones auf das Anderthalbfache und mit weniger Geometrie
+* die Animation pausiert, sobald die Szene aus dem Bild scrollt oder der Tab
+  in den Hintergrund wechselt
+* alle Szenen teilen sich eine einzige Animationsschleife
+* bei `prefers-reduced-motion` wird ein einziges ruhiges Standbild gezeichnet
+* ohne Canvas bleibt die statische SVG-Komposition stehen
+
+`assets/motion.js` steuert die scrollabhängigen Zustände (Navigation,
+Hero-Parallaxe, Prozess-Timeline, weiche Seitenwechsel) – alles gebündelt in
+einem einzigen Scroll-Zuhörer und einem `requestAnimationFrame`.
+
+### Reduzierte Bewegung
+
+Bei `prefers-reduced-motion: reduce` entfallen Parallaxe, Dauerrotation,
+Scrollanimationen und die Blende zwischen den Seiten. Alle Inhalte sind dann
+sofort sichtbar, ohne dass Bedienung oder Inhalt verloren gehen.
+
 ## Datenschutz
 
 Es werden keine Cookies gesetzt, keine Analyse-Tools und keine externen
 Schriftarten oder CDNs geladen. Alle Dateien kommen vom eigenen Server –
-dadurch ist kein Cookie-Banner erforderlich.
+dadurch ist kein Cookie-Banner erforderlich. Auch das 3D-Objekt im Hero kommt
+ohne externe Bibliothek und ohne nachgeladene Modelle aus.
 
 ## Lokal starten
 
@@ -357,9 +406,14 @@ Abläufe der Website automatisiert prüft: Navigation, mobiles Menü,
 Projekt-Check, Kontaktformular (Validierung sowie erfolgreicher und
 fehlerhafter Versand – beides über abgefangene Netzwerkantworten, ohne
 echten Versand), Domainprüfung, Website-Assistent, Sprachumschaltung,
-Datenschutzdialog, Modulkatalog, Moduldemos sowie Angebot/PDF. Getestet wird
-bei den Bildschirmbreiten 390, 768, 1024 und 1440 Pixel. Es werden zu keinem
-Zeitpunkt echte Nachrichten, E-Mails oder WhatsApp-Nachrichten versendet.
+Datenschutzdialog, Modulkatalog, Moduldemos sowie Angebot/PDF. Dazu prüft
+`tests/redesign.spec.js` die Gestaltung dort, wo sie die Bedienung berührt:
+Systemobjekt und Ersatzgrafik im Hero, Navigationszustand beim Scrollen,
+Prozess-Timeline, Wechsel der Beispielmodule per Maus und Tastatur, Lesbarkeit
+der hellen Szenen, Footer, Seitenwechsel, Vollbildmenü und reduzierte Bewegung.
+Getestet wird bei den Bildschirmbreiten 390, 768, 1024 und 1440 Pixel. Es
+werden zu keinem Zeitpunkt echte Nachrichten, E-Mails oder WhatsApp-Nachrichten
+versendet.
 
 Einmalig einrichten:
 
