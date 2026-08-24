@@ -1024,9 +1024,14 @@ body.is-leaving .page-fade{opacity:1}
   border-top:1px solid var(--line)}
 .zahl{background:var(--paper);padding:24px 22px}
 .zahl b{display:block;font-size:clamp(1.5rem,2.6vw,2.2rem);letter-spacing:-.04em;color:var(--ink);
-  line-height:1;font-weight:450}
+  line-height:1;font-weight:450;font-variant-numeric:tabular-nums}
 .zahl span{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;
   text-transform:uppercase;color:var(--ink-faint);margin-top:10px;line-height:1.6}
+
+/* Kennzahlen-Leiste auf der Startseite: dieselbe Zahlband-Komponente, als
+   eigener schmaler Abschnitt zwischen Hero und Leistungen. */
+.kennzahlen{padding:0;border-bottom:1px solid var(--line)}
+.kennzahlen .zahlband{border-top:0}
 
 .modul-section{padding:clamp(60px,8vw,110px) 0}
 .modul-section.alt{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}

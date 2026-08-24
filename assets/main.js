@@ -55,6 +55,39 @@
     reveals.forEach(function (el) { el.classList.add("show"); });
   }
 
+  /* --- Kennzahlen: Zähler steigt hoch, sobald die Leiste sichtbar wird ----- */
+  var kennzahlen = $$("[data-count]");
+  if (kennzahlen.length) {
+    var leiseZahlen = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    $$("[data-count-module]").forEach(function (el) {
+      if (window.MODULE && window.MODULE.length) el.setAttribute("data-count", window.MODULE.length);
+    });
+    var zaehleHoch = function (el) {
+      var ziel = parseInt(el.getAttribute("data-count"), 10) || 0;
+      var suffix = el.getAttribute("data-count-suffix") || "";
+      if (leiseZahlen) { el.textContent = ziel + suffix; return; }
+      var start = null, dauer = 1100;
+      var schritt = function (zeit) {
+        if (start === null) start = zeit;
+        var t = Math.min(1, (zeit - start) / dauer);
+        var geglaettet = 1 - Math.pow(1 - t, 3);
+        el.textContent = Math.round(ziel * geglaettet) + suffix;
+        if (t < 1) requestAnimationFrame(schritt);
+      };
+      requestAnimationFrame(schritt);
+    };
+    if ("IntersectionObserver" in window) {
+      var zahlObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { zaehleHoch(e.target); zahlObs.unobserve(e.target); }
+        });
+      }, { threshold: .4 });
+      kennzahlen.forEach(function (el) { zahlObs.observe(el); });
+    } else {
+      kennzahlen.forEach(zaehleHoch);
+    }
+  }
+
   /* --- Aktiver Menüpunkt beim Scrollen ------------------------------------ */
   var navAnchors = $$('#navlinks a[href^="#"]');
   var sections = navAnchors.map(function (a) { return $(a.getAttribute("href")); }).filter(Boolean);
