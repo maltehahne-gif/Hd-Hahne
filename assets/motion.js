@@ -129,6 +129,58 @@
     });
   }
 
+  /* --- Zeigerlicht auf Premium-Flächen -------------------------------------
+     Nur auf Geräten mit echtem Zeiger (Maus/Trackpad) und ohne reduzierte
+     Bewegung. Ohne JavaScript oder auf Touch bleibt die Fläche unverändert –
+     die Karten sind vollständig ohne dieses Extra bedienbar.
+     Ein einziger delegierter Zuhörer statt vieler: funktioniert dadurch auch
+     für Karten, die später neu gerendert werden (z. B. der Modulkatalog nach
+     einer Suche), ohne dass Zuhörer neu angemeldet werden müssten. */
+  function initSpotlight() {
+    if (leiser.matches) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    var hängt = false, ziel = null, x = 50, y = 50;
+    document.addEventListener("pointermove", function (e) {
+      var el = e.target.closest && e.target.closest(".spotlight");
+      if (!el) return;
+      var r = el.getBoundingClientRect();
+      ziel = el;
+      x = ((e.clientX - r.left) / r.width) * 100;
+      y = ((e.clientY - r.top) / r.height) * 100;
+      if (hängt) return;
+      hängt = true;
+      requestAnimationFrame(function () {
+        if (ziel) { ziel.style.setProperty("--mx", x + "%"); ziel.style.setProperty("--my", y + "%"); }
+        hängt = false;
+      });
+    }, { passive: true });
+  }
+
+  /* --- Hero-Bühne neigt sich minimal zur Zeigerposition --------------------
+     Reine Zugabe für Maus/Trackpad: sehr kleiner Winkel, weich gedämpft. */
+  function initHeroTilt() {
+    if (leiser.matches) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    var buehne = $(".hero-stage");
+    if (!buehne) return;
+    var hängt = false, rx = 0, ry = 0;
+    buehne.addEventListener("pointermove", function (e) {
+      var r = buehne.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - .5;
+      var py = (e.clientY - r.top) / r.height - .5;
+      ry = px * 7; rx = py * -7;
+      if (hängt) return;
+      hängt = true;
+      requestAnimationFrame(function () {
+        buehne.style.transform = "perspective(1200px) rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg)";
+        hängt = false;
+      });
+    });
+    buehne.addEventListener("pointerleave", function () {
+      buehne.style.transform = "";
+    });
+  }
+
   /* --- Zusammenspiel ------------------------------------------------------- */
   function initMotionPreferences() {
     document.documentElement.classList.toggle("reduziert", leiser.matches);
@@ -143,6 +195,8 @@
     initParallax();
     initScrollScenes();
     initSectionTransitions();
+    initSpotlight();
+    initHeroTilt();
     initMotionPreferences();
   }
 

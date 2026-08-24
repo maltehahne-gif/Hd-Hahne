@@ -574,6 +574,21 @@ footer .brand-mark{width:30px;height:30px}
 @keyframes vDrift{from{transform:translateY(-2px)}to{transform:translateY(2px)}}
 
 /* ==========================================================================
+   Standards – technische Vertrauensleiste zwischen Leistungen und Beispielen
+   ========================================================================== */
+
+.standards{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.standards-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line)}
+.standard{background:var(--paper);padding:clamp(22px,3vw,30px) clamp(20px,2.6vw,26px);
+  display:flex;flex-direction:column;gap:9px}
+.standard b{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink);font-weight:500;display:flex;align-items:center;gap:10px;
+}
+.standard b:before{content:"";width:6px;height:6px;border-radius:1px;background:var(--accent-ink);flex:0 0 auto}
+.standard span{font-size:.85rem;color:var(--ink-faint);line-height:1.6}
+
+/* ==========================================================================
    Teaser (Domain, Sichtbarkeit, Server)
    ========================================================================== */
 
@@ -995,6 +1010,22 @@ footer{
   opacity:0;transition:opacity 260ms var(--ease-smooth);
 }
 body.is-leaving .page-fade{opacity:1}
+
+/* Zeigerlicht: sehr ruhiges Licht folgt dem Mauszeiger über Premium-Flächen.
+   Reines Zusatzlicht – ohne Zeiger (Touch) oder JavaScript bleibt die Fläche
+   unverändert, es geht also nie Information oder Bedienbarkeit verloren. */
+.spotlight{position:relative;isolation:isolate}
+.spotlight>.spot{
+  position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;
+  opacity:0;transition:opacity var(--duration-medium) var(--ease-out);
+  background:radial-gradient(460px circle at var(--mx,50%) var(--my,50%),var(--accent-glow),transparent 62%);
+}
+.spotlight:hover>.spot,.spotlight:focus-within>.spot{opacity:1}
+@media(hover:none){.spotlight>.spot{display:none}}
+
+/* Hero-Bühne: neigt sich in sehr kleinem Winkel zur Zeigerposition –
+   ausschließlich auf Geräten mit Maus/Trackpad, per JavaScript aktiviert. */
+.hero-stage{transition:transform 420ms var(--ease-out)}
 
 /* ==========================================================================
    17  MODULSEITE
@@ -1791,7 +1822,7 @@ body.nav-open .kia,body.nav-open .totop{display:none}
   .rechner-liste{max-height:none}
   .sicht-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .sicht-karte:nth-child(2n){border-right:0}
-  .zahlband{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .zahlband,.standards-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
 @media(max-width:1080px){

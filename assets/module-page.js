@@ -117,7 +117,7 @@
               : m.preis > 0 ? "einmalig, ab" : "monatlich kündbar";
       }
 
-      return '<article class="modul' + (gewaehlt ? " gewaehlt" : "") + '" data-id="' + m.id + '">' +
+      return '<article class="modul spotlight' + (gewaehlt ? " gewaehlt" : "") + '" data-id="' + m.id + '"><span class="spot" aria-hidden="true"></span>' +
         (m.badge ? '<span class="modul-badge">' + m.badge + "</span>" : "") +
         '<p class="modul-kat">' + katName(m.kategorie) + "</p>" +
         "<h3>" + m.name + "</h3>" +
