@@ -1027,6 +1027,59 @@ body.is-leaving .page-fade{opacity:1}
    ausschließlich auf Geräten mit Maus/Trackpad, per JavaScript aktiviert. */
 .hero-stage{transition:transform 420ms var(--ease-out)}
 
+/* Scroll-Fortschritt: eine haarfeine Linie am oberen Rand ------------------ */
+.scroll-progress{
+  position:fixed;top:0;left:0;right:0;height:2px;z-index:70;pointer-events:none;
+  background:linear-gradient(to right,var(--accent),var(--accent-ink));
+  transform:scaleX(0);transform-origin:left;
+  box-shadow:0 0 10px var(--accent-glow);
+}
+
+/* HUD-Rail: technischer Sektionsanzeiger am rechten Rand -------------------
+   Reine Orientierungshilfe (aria-hidden) – dieselben Ziele stehen vollwertig
+   in der Hauptnavigation. Unter 1280px ausgeblendet, damit der Inhalt den
+   vollen Raum behält. */
+.rail{
+  position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:55;
+  display:none;flex-direction:column;gap:2px;
+}
+@media(min-width:1280px){.rail{display:flex}}
+.rail-punkt{
+  display:flex;align-items:center;justify-content:flex-end;gap:10px;
+  padding:5px 0;font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-faint);opacity:.55;
+  transition:opacity var(--duration-medium) var(--ease-out),
+             color var(--duration-medium) var(--ease-out);
+}
+.rail-punkt:after{
+  content:"";width:18px;height:1px;background:currentColor;flex:0 0 auto;
+  transition:width var(--duration-medium) var(--ease-out);
+}
+.rail-name{
+  max-width:0;overflow:hidden;white-space:nowrap;opacity:0;
+  transition:max-width var(--duration-medium) var(--ease-out),
+             opacity var(--duration-medium) var(--ease-out);
+}
+.rail:hover .rail-name{max-width:180px;opacity:1}
+.rail-punkt:hover,.rail-punkt.an{opacity:1;color:var(--accent-ink)}
+.rail-punkt.an:after{width:30px}
+/* Über hellen Szenen kehren sich die Werte um, damit das Rail dort lesbar
+   bleibt – gesetzt aus dem Sektionsbeobachter in motion.js. */
+.rail.auf-hell .rail-punkt{color:rgba(18,24,28,.62)}
+.rail.auf-hell .rail-punkt:hover,.rail.auf-hell .rail-punkt.an{color:#0a545d}
+
+/* Technische Eckwinkel – Zielmarken an hochwertigen Flächen ---------------- */
+.brackets{position:relative}
+.brackets:before,.brackets:after{
+  content:"";position:absolute;width:14px;height:14px;pointer-events:none;
+  border-color:var(--accent-line);opacity:0;
+  transition:opacity var(--duration-medium) var(--ease-out);
+}
+.brackets:before{top:12px;left:12px;border-top:1px solid;border-left:1px solid}
+.brackets:after{bottom:12px;right:12px;border-bottom:1px solid;border-right:1px solid}
+.brackets:hover:before,.brackets:hover:after,
+.brackets:focus-within:before,.brackets:focus-within:after{opacity:1}
+
 /* ==========================================================================
    17  MODULSEITE
    ========================================================================== */
@@ -2027,7 +2080,8 @@ body.rtl .checklist li:before,body.rtl .modul-punkte li:before,body.rtl .resultb
 @media print{
   body{background:#fff;color:#000}
   body:before{display:none}
-  .nav,.totop,footer .footlinks,.steuerung,.rechner,.kia,.priv,.hero-bg,.sys,.page-fade{display:none}
+  .nav,.totop,footer .footlinks,.steuerung,.rechner,.kia,.priv,.hero-bg,.sys,.page-fade,
+  .rail,.scroll-progress{display:none}
   .foot-wordmark{color:#000;-webkit-text-stroke:0}
 }
 

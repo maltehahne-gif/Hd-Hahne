@@ -181,6 +181,131 @@
     });
   }
 
+  /* --- Decode-Effekt auf den technischen Beschriftungen ---------------------
+     Die Mono-Labels (Kicker, Eyebrow) laufen einmalig aus zufälligen Zeichen
+     in den echten Text. Bewusst nur auf diesen kurzen technischen Marken –
+     nie auf Fließtext oder Überschriften, damit nichts unleserlich wird.
+     Der echte Text steht durchgehend im DOM-Knoten, sobald der Lauf endet. */
+  var GLYPHEN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/#*+=<>_";
+  var laufende = [];        // aktuell laufende Läufe, damit sie abbrechbar sind
+
+  function decodeText(el) {
+    var ziel = el.textContent;
+    if (!ziel || ziel.length > 42) return;
+    var schritte = 0, gesamt = 14 + ziel.length;
+    var lauf = { el: el, ziel: ziel };
+    lauf.timer = window.setInterval(function () {
+      schritte++;
+      var fest = Math.floor((schritte / gesamt) * ziel.length);
+      var raus = "", i;
+      for (i = 0; i < ziel.length; i++) {
+        var z = ziel.charAt(i);
+        if (i < fest || z === " " || z === "·") raus += z;
+        else raus += GLYPHEN.charAt(Math.floor(Math.random() * GLYPHEN.length));
+      }
+      el.textContent = raus;
+      if (schritte >= gesamt) {
+        beenden(lauf);
+        el.textContent = ziel;          // immer der echte Text am Ende
+      }
+    }, 28);
+    laufende.push(lauf);
+  }
+
+  function beenden(lauf) {
+    window.clearInterval(lauf.timer);
+    var i = laufende.indexOf(lauf);
+    if (i > -1) laufende.splice(i, 1);
+  }
+
+  // Beim Sprachwechsel würde ein noch laufender Lauf den frisch übersetzten
+  // Text mit der alten Sprache überschreiben. Alle Läufe werden deshalb hier
+  // abgebrochen. Wem i18n den Text gesetzt hat (data-t), der behält den neuen
+  // Text; alle übrigen bekommen ihren echten Text zurück, damit nie eine
+  // halb verwürfelte Beschriftung stehen bleibt.
+  document.addEventListener("sprachwechsel", function () {
+    while (laufende.length) {
+      var lauf = laufende[0];
+      beenden(lauf);
+      if (!lauf.el.hasAttribute("data-t")) lauf.el.textContent = lauf.ziel;
+    }
+  });
+
+  function initScramble() {
+    if (leiser.matches) return;
+    if (!("IntersectionObserver" in window)) return;
+    var marken = $$(".kicker, .eyebrow, .statement-mark");
+    if (!marken.length) return;
+    var obs = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        obs.unobserve(e.target);
+        decodeText(e.target);
+      });
+    }, { threshold: .6 });
+    marken.forEach(function (el) { obs.observe(el); });
+  }
+
+  /* --- Scroll-Fortschritt als feine Linie über der Navigation -------------- */
+  function initScrollProgress() {
+    if (!document.body) return;
+    var linie = document.createElement("div");
+    linie.className = "scroll-progress";
+    linie.setAttribute("aria-hidden", "true");
+    document.body.appendChild(linie);
+    beiScroll(function () {
+      var doc = document.documentElement;
+      var streck = (doc.scrollHeight - window.innerHeight) || 1;
+      var p = Math.max(0, Math.min(1, window.scrollY / streck));
+      linie.style.transform = "scaleX(" + p.toFixed(4) + ")";
+    });
+  }
+
+  /* --- HUD-Rail: technischer Sektionsanzeiger am rechten Rand --------------
+     Wird aus den vorhandenen Ankern der Hauptnavigation aufgebaut, hat also
+     immer genau die Abschnitte, die es auf der Seite auch wirklich gibt.
+     Rein orientierend und daher aus dem Vorlesefluss genommen – dieselben
+     Ziele sind über die Navigation vollwertig erreichbar. */
+  function initSectionRail() {
+    var anker = $$('#navlinks a[href^="#"]');
+    if (anker.length < 3) return;
+    var ziele = [];
+    anker.forEach(function (a) {
+      var id = a.getAttribute("href").slice(1);
+      var sek = document.getElementById(id);
+      if (sek) ziele.push({ id: id, name: a.textContent.trim(), sektion: sek });
+    });
+    if (ziele.length < 3) return;
+
+    var rail = document.createElement("div");
+    rail.className = "rail";
+    rail.setAttribute("aria-hidden", "true");
+    rail.innerHTML = ziele.map(function (z, i) {
+      var nr = (i + 1 < 10 ? "0" : "") + (i + 1);
+      return '<a class="rail-punkt" href="#' + z.id + '" tabindex="-1">' +
+             '<span class="rail-nr">' + nr + "</span>" +
+             '<span class="rail-name">' + z.name + "</span></a>";
+    }).join("");
+    document.body.appendChild(rail);
+
+    var punkte = $$(".rail-punkt", rail);
+    if (!("IntersectionObserver" in window)) return;
+    var spy = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        for (var i = 0; i < ziele.length; i++) {
+          punkte[i].classList.toggle("an", ziele[i].sektion === e.target);
+        }
+        // Das Rail steht fest über der Seite, der Grund darunter wechselt
+        // zwischen dunklen und hellen Szenen. Der Messbereich dieses
+        // Beobachters liegt genau auf Höhe des Rails, taugt also als
+        // Anhaltspunkt, welche Farbwelt gerade darunter liegt.
+        rail.classList.toggle("auf-hell", !!e.target.closest(".tone-light"));
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    ziele.forEach(function (z) { spy.observe(z.sektion); });
+  }
+
   /* --- Zusammenspiel ------------------------------------------------------- */
   function initMotionPreferences() {
     document.documentElement.classList.toggle("reduziert", leiser.matches);
@@ -197,6 +322,9 @@
     initSectionTransitions();
     initSpotlight();
     initHeroTilt();
+    initScramble();
+    initScrollProgress();
+    initSectionRail();
     initMotionPreferences();
   }
 

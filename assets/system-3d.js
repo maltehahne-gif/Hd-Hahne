@@ -268,6 +268,20 @@
         breite: 1, strich: [2, 4]
       });
 
+      // Datenpaket: wandert auf der Verbindung zwischen Kern und Modul und
+      // blendet an beiden Enden weich aus – zeigt das System „in Betrieb“.
+      var takt = ((t * (0.30 + i * 0.035) + i * 0.37) % 1);
+      var paketAlpha = Math.sin(takt * Math.PI) * (0.55 + auf * 0.35);
+      if (paketAlpha > 0.02) {
+        var pz = kernPunkt[2] + (mz - kernPunkt[2]) * takt;
+        stuecke.push({
+          art: "punkt", z: pz - 0.04,
+          x: kernPunkt[0] + (mx - kernPunkt[0]) * takt,
+          y: kernPunkt[1] + (my - kernPunkt[1]) * takt,
+          r: 1.5, farbe: this.farben.akzent, alpha: paketAlpha
+        });
+      }
+
       this.koerperSammeln(m.koerper, dreh, pos, 1, stuecke, {
         fuellung: [242, 243, 241], grundAlpha: 0.055, kante: 0.26, licht: 0.75
       });
