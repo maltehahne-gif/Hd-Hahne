@@ -75,6 +75,13 @@ test.describe("mobiles Menü", () => {
     const anzahl = await links.count();
     for (let i = 0; i < anzahl - 1; i++) await page.keyboard.press("Tab");
     await expect(links.nth(anzahl - 1)).toBeFocused();
+
+    // Im geöffneten Menü steht die Handlungsaufforderung der Leiste unten
+    // fest. Sie gehört mit in die Fokusfalle – erst danach springt der Fokus
+    // wieder an den Anfang der Liste.
+    const cta = page.locator(".navin > .btn-primary");
+    await page.keyboard.press("Tab");
+    await expect(cta).toBeFocused();
     await page.keyboard.press("Tab");
     await expect(links.first()).toBeFocused();
   });

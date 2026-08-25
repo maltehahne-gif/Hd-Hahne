@@ -512,7 +512,7 @@ footer .brand-mark{width:30px;height:30px}
 .hero-stage:hover .stage-frame{border-color:var(--line-strong)}
 /* Eckwinkel: vier Zielmarken, wie an einer Zeichnungsfläche */
 .stage-frame:before,.stage-frame:after{
-  content:"";position:absolute;width:16px;height:16px;pointer-events:none;
+  content:"";position:absolute;width:26px;height:26px;pointer-events:none;
   border-color:var(--accent-line);
 }
 .stage-frame:before{top:-1px;left:-1px;border-top:1px solid;border-left:1px solid;border-top-left-radius:var(--radius)}
@@ -652,13 +652,16 @@ footer .brand-mark{width:30px;height:30px}
 }
 .section-head p{color:var(--ink-soft);max-width:56ch;margin:0;font-size:clamp(.98rem,1.05vw,1.06rem);line-height:1.72}
 
-/* Weiche Kante zwischen dunklen und hellen Szenen */
-.tone-light{position:relative}
-.scene-edge{
-  position:absolute;left:0;right:0;height:clamp(60px,9vw,140px);pointer-events:none;z-index:0;
+/* Kante zwischen dunklen und hellen Szenen: eine saubere Schnittkante mit
+   Haarlinie statt eines weichen Verlaufs. Der Verlauf legte einen grauen
+   Schleier über den oberen und unteren Rand der hellen Szene – die Kante
+   ist präziser und passt zur technischen Sprache der Seite. */
+.tone-light{
+  position:relative;
+  border-top:1px solid rgba(242,243,241,.14);
+  border-bottom:1px solid rgba(242,243,241,.14);
 }
-.scene-edge--top{top:0;background:linear-gradient(to bottom,rgba(5,7,8,.18),transparent)}
-.scene-edge--bottom{bottom:0;background:linear-gradient(to top,rgba(5,7,8,.18),transparent)}
+.scene-edge{display:none}
 .tone-light>.wrap{position:relative;z-index:1}
 
 /* ==========================================================================
@@ -739,17 +742,22 @@ footer .brand-mark{width:30px;height:30px}
 @keyframes vPulse{0%,100%{opacity:.25}50%{opacity:1}}
 .v-drift{animation:vDrift 9s var(--ease-in-out) infinite alternate}
 @keyframes vDrift{from{transform:translateY(-2px)}to{transform:translateY(2px)}}
-/* Datenpaket auf einer gezeichneten Leitung: eine einzige, kurze Bewegung
-   je Grafik – Betrieb statt Dauerfeuer. Läuft nur, wenn sichtbar. */
-.v-paket{opacity:0}
-.show .v-paket{animation:vPaket 5.2s var(--ease-in-out) infinite}
+/* Datenpaket auf einer gezeichneten Leitung: dieselbe Sprache wie im
+   Systemobjekt des Heros. Eine kurze Fahrt, dann eine Pause – Betrieb statt
+   Dauerfeuer. Startet erst, wenn die Grafik im Bild war (.show), und läuft
+   damit nie unsichtbar im Hintergrund weiter.
+   Ohne Unterstützung für offset-path bleibt schlicht ein ruhender Punkt
+   am Leitungsanfang stehen – kein kaputter Zustand. */
+.v-paket{fill:var(--accent-ink);opacity:0;offset-rotate:0deg;offset-distance:0%}
+.show .v-paket{animation:vPaket 6s var(--ease-in-out) var(--pd,0s) infinite}
 @keyframes vPaket{
   0%{opacity:0;offset-distance:0%}
-  8%{opacity:1}
-  46%{opacity:1}
-  56%{opacity:0;offset-distance:100%}
+  6%{opacity:1}
+  40%{opacity:1}
+  50%{opacity:0;offset-distance:100%}
   100%{opacity:0;offset-distance:100%}
 }
+@supports not (offset-path:path("M0 0 L1 1")){.v-paket{display:none}}
 
 /* ==========================================================================
    Kennzahlen und Standards – technische Vertrauensleisten
@@ -816,7 +824,6 @@ footer .brand-mark{width:30px;height:30px}
 .statement{
   padding:clamp(76px,13vw,164px) 0;
   position:relative;overflow:hidden;
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
 }
 .statement blockquote{
   /* Sehr langsame Tiefenbewegung aus dem Szenenfortschritt: der Satz steht
@@ -2209,8 +2216,16 @@ body.nav-open .kia,body.nav-open .totop{display:none}
      nur so hoch wie die Leiste selbst. Stattdessen deckt eine fast
      undurchsichtige Fläche. */
   .nav,.nav.is-scrolled{
-    background:rgba(11,14,16,.94);
+    background:rgba(8,11,12,.95);
     backdrop-filter:none;-webkit-backdrop-filter:none;
+  }
+  /* Im geöffneten Menü steht die Handlungsaufforderung unten fest –
+     sonst hätte die mobile Navigation gar keinen Abschluss. Die höhere
+     Spezifität hebt auch das Ausblenden unterhalb von 640 px auf. */
+  body.nav-open .nav .btn-primary{
+    display:inline-flex;position:fixed;z-index:61;
+    left:var(--gutter);right:var(--gutter);bottom:max(28px,env(safe-area-inset-bottom));
+    width:auto;padding:16px 26px;
   }
   body.nav-open .nav{background:var(--void);border-bottom-color:var(--line)}
   .sprach-wahl{margin-left:auto}

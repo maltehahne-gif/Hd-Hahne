@@ -14,8 +14,9 @@ Web-Verzeichnis hochladen – fertig.
     assets/site-config.js >>> HIER ALLE FIRMENDATEN EINTRAGEN <<<
     assets/style.css      Gestaltung (Tokens, Komponenten, Motion, Responsive)
     assets/main.js        Navigation, Module, Projekt-Check, Formular
-    assets/motion.js      Scrollzustände: Navigation, Parallaxe, Timeline, Seitenwechsel
-    assets/system-3d.js   Signature-Objekt im Hero (prozedurales 3D auf Canvas)
+    assets/motion.js      Bewegungssystem: Reveals, Scrollzustände, Microinteractions
+    assets/hero-system.js Systemarchitektur im Hero (prozedurales 3D auf Canvas)
+    assets/system-field.js Systemstrang: verbindet die Sektionen beim Scrollen
     assets/modules.js     Modulkatalog inkl. Kauf- und Mietpreise
     assets/module-demos.js Beispielansichten der Module
     assets/module-page.js Katalogseite: Filter, Auswahl, Kostenschätzung
@@ -347,18 +348,36 @@ dort werden dieselben Variablen umgekehrt belegt, alle Bausteine passen sich
 automatisch an.
 
 Das Stylesheet ist von oben nach unten gegliedert: Tokens, Reset, Typografie,
-Layout, Navigation, Buttons, Hero, 3D-System, Sektionen, Leistungen, Demos,
-Prozess, Preise, Projekt-Check, Kontakt, Footer, Modulseite, Unterseiten,
-Overlays, Motion, Responsive, Barrierefreiheit.
+Layout, Navigation, Buttons, Hero, Systemarchitektur, Sektionen, Leistungen,
+Demos, Prozess, Preise, Projekt-Check, Kontakt, Footer, Modulseite,
+Unterseiten, Overlays, Motion, Responsive, Barrierefreiheit.
 
-### Das Systemobjekt im Hero
+Jede Sektion trägt über `data-nr` eine technische Kennung („01 / Leistungen“).
+Sie steht als `::before` über der Überschrift, darunter läuft beim Erreichen
+der Sektion eine Linie durch. Damit hat jeder Abschnitt dieselbe Anmutung wie
+ein Blatt einer technischen Zeichnung – ohne zusätzliches Markup.
 
-`assets/system-3d.js` zeichnet das Markenobjekt – einen Kern, um den sich
-Module, Orbitringe und Verbindungslinien zu einem System fügen. Bewusst **ohne
-Three.js und ohne CDN**: die Geometrie entsteht im Code, gezeichnet wird mit
-Canvas 2D (eigene Perspektivprojektion, Tiefensortierung, lichtabhängige
-Flächen). Das spart rund 600 KB, bleibt DSGVO-freundlich und läuft auch dort,
-wo WebGL fehlt.
+### Die Systemarchitektur im Hero
+
+`assets/hero-system.js` zeichnet, was die Firma tatsächlich baut: eine
+geschichtete Systemarchitektur in der Bildsprache einer technischen
+Explosionszeichnung.
+
+* **Interface** – Website, Shop, Portal, App
+* **Logic** – Prozesse, Regeln, Automatisierung, Systemkern
+* **Data** – Datenhaltung, Dateien, Synchronisation
+* darunter das Bezugsraster mit dem Grundriss der Anlage
+
+Die Ebenen sind über Steigleitungen verbunden, auf jeder Ebene laufen
+rechtwinklige Leiterbahnen zwischen den Knoten, darauf wandern Datenpakete.
+Beim Scrollen fährt die Anlage auseinander. Die Legende unter der Zeichnung
+benennt die Ebenen und sagt zugleich, was in einem Projekt darin steckt – die
+Grafik erklärt sich damit selbst.
+
+Bewusst **ohne Three.js und ohne CDN**: die Geometrie entsteht im Code,
+gezeichnet wird mit Canvas 2D (eigene Perspektivprojektion, Rückseiten-
+aussortierung über die Weltnormale, Tiefensortierung). Das spart rund 600 KB,
+bleibt DSGVO-freundlich und läuft auch dort, wo WebGL fehlt.
 
 Rücksicht auf Gerät und Nutzer:
 
@@ -368,24 +387,62 @@ Rücksicht auf Gerät und Nutzer:
   in den Hintergrund wechselt
 * alle Szenen teilen sich eine einzige Animationsschleife
 * bei `prefers-reduced-motion` wird ein einziges ruhiges Standbild gezeichnet
-* ohne Canvas bleibt die statische SVG-Komposition stehen
+* ohne Canvas bleibt eine vollständige statische SVG-Zeichnung stehen
 
-`assets/motion.js` steuert die scrollabhängigen Zustände (Navigation,
-Hero-Parallaxe, Prozess-Timeline, weiche Seitenwechsel) – alles gebündelt in
-einem einzigen Scroll-Zuhörer und einem `requestAnimationFrame`.
+### Der Systemstrang
+
+`assets/system-field.js` zieht einen durchgehenden Strang durch den linken
+Seitenrand. Jede Sektion mit `data-strang` hat darauf einen Knoten: erreichte
+Abschnitte sind verbunden und aktiv, kommende liegen unverbunden davor, und
+beim Erreichen einer Sektion läuft ein Signal vom vorigen Knoten zum neuen.
+Die Seite baut sich beim Scrollen als ein System zusammen, statt aus einzelnen
+Effekten zu bestehen.
+
+* das Canvas ist nur so breit wie die gezeichnete Spalte, nicht
+  bildschirmfüllend – ein volles Canvas müsste bei jedem Scroll-Bild komplett
+  geleert werden
+* über hellen Szenen kehren sich die Farben um, damit der Strang nie abreißt
+* die Schleife läuft nur, solange ein Signal unterwegs ist; sonst wird beim
+  Scrollen lediglich neu gezeichnet
+* unterhalb von 1180 px gibt es keinen Seitenrand dafür – dort entfällt er
+
+### Das Bewegungssystem
+
+`assets/motion.js` ist die einzige Stelle, an der Bewegung entsteht: Reveals,
+Navigationszustand, Szenenfortschritt, Prozess-Timeline, Zeigerlicht,
+Magnetwirkung der Handlungsaufforderungen, Decode-Marken, Fortschrittslinie,
+Sektionsanzeiger und Seitenwechsel – gebündelt in einem einzigen Scroll-Zuhörer
+und einem `requestAnimationFrame`.
+
+Zwei Entscheidungen sind dabei wichtig und leicht zu übersehen:
+
+* **Reveals laufen als Maske (`mask-size`), nicht als `clip-path`.** Ein per
+  `clip-path` beschnittenes Element meldet dem `IntersectionObserver` eine
+  leere Schnittfläche – es würde nie ausgelöst und bliebe für immer
+  unsichtbar. Eine Maske ist ein reiner Malvorgang und stört die Messung nicht.
+* **Der Szenenfortschritt `--sp` wird nur dort gesetzt, wo er gelesen wird.**
+  Eine Custom Property auf einer ganzen Sektion stößt bei jeder Änderung die
+  Stilberechnung des gesamten Teilbaums an.
+
+Text wird für Animationen nie zerlegt. Der Decode-Effekt auf den technischen
+Marken holt seinen Zieltext aus dem Sprachsystem statt aus dem Zwischenstand
+im DOM – ein Sprachwechsel mitten im Lauf kann deshalb weder eine falsche
+Sprache wiederherstellen noch eine verwürfelte Beschriftung hinterlassen.
 
 ### Reduzierte Bewegung
 
-Bei `prefers-reduced-motion: reduce` entfallen Parallaxe, Dauerrotation,
-Scrollanimationen und die Blende zwischen den Seiten. Alle Inhalte sind dann
-sofort sichtbar, ohne dass Bedienung oder Inhalt verloren gehen.
+Bei `prefers-reduced-motion: reduce` entfallen Tiefenbewegung, Kameradrift,
+Signale auf dem Systemstrang, Datenpakete, Masken-Reveals und die Blende
+zwischen den Seiten. Die Systemarchitektur wird als fertig aufgebautes
+Standbild gezeichnet, der Strang steht vollständig da. Alle Inhalte sind sofort
+sichtbar, ohne dass Bedienung oder Inhalt verloren gehen.
 
 ## Datenschutz
 
 Es werden keine Cookies gesetzt, keine Analyse-Tools und keine externen
 Schriftarten oder CDNs geladen. Alle Dateien kommen vom eigenen Server –
-dadurch ist kein Cookie-Banner erforderlich. Auch das 3D-Objekt im Hero kommt
-ohne externe Bibliothek und ohne nachgeladene Modelle aus.
+dadurch ist kein Cookie-Banner erforderlich. Auch die Systemarchitektur im
+Hero kommt ohne externe Bibliothek und ohne nachgeladene Modelle aus.
 
 ## Lokal starten
 

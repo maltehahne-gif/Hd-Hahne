@@ -31,10 +31,23 @@
         toggleNav(false, true);
       }
     });
-    // Fokus innerhalb des geöffneten mobilen Menüs halten (einfache Fokusfalle)
-    links.addEventListener("keydown", function (e) {
+    // Fokus innerhalb des geöffneten mobilen Menüs halten.
+    // Die Handlungsaufforderung der Leiste steht im geöffneten Menü unten
+    // fest, liegt im Dokument aber neben der Linkliste – sie gehört deshalb
+    // ausdrücklich mit in die Fokusfalle, sonst wäre sie mit der Tastatur
+    // nicht erreichbar. Der Zuhörer sitzt darum an der ganzen Leiste.
+    var nav = burger.closest(".nav") || document;
+    var bedienbar = function () {
+      var liste = $$("a", links);
+      var cta = nav.querySelector ? nav.querySelector(".navin > .btn-primary") : null;
+      // Nicht über offsetParent prüfen: der Knopf steht im geöffneten Menü
+      // fest positioniert, und dafür liefert offsetParent null.
+      if (cta && getComputedStyle(cta).display !== "none") liste.push(cta);
+      return liste;
+    };
+    nav.addEventListener("keydown", function (e) {
       if (e.key !== "Tab" || !links.classList.contains("open")) return;
-      var eintraege = $$("a", links);
+      var eintraege = bedienbar();
       if (!eintraege.length) return;
       var erster = eintraege[0], letzter = eintraege[eintraege.length - 1];
       if (e.shiftKey && document.activeElement === erster) { e.preventDefault(); burger.focus(); }
