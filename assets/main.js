@@ -42,18 +42,10 @@
     });
   }
 
-  /* --- Scroll-Reveal ------------------------------------------------------ */
-  var reveals = $$(".reveal");
-  if ("IntersectionObserver" in window) {
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("show"); obs.unobserve(e.target); }
-      });
-    }, { threshold: .08 });
-    reveals.forEach(function (el) { obs.observe(el); });
-  } else {
-    reveals.forEach(function (el) { el.classList.add("show"); });
-  }
+  /* --- Scroll-Reveal ------------------------------------------------------
+     Die Reveals verantwortet ausschließlich assets/motion.js. Hier bewusst
+     kein zweiter Beobachter: zwei Steuerungen auf denselben Elementen
+     würden sich gegenseitig überholen. */
 
   /* --- Kennzahlen: Zähler steigt hoch, sobald die Leiste sichtbar wird ----- */
   var kennzahlen = $$("[data-count]");
@@ -106,9 +98,8 @@
   /* --- Nach oben ---------------------------------------------------------- */
   var toTop = $("#totop");
   if (toTop) {
-    window.addEventListener("scroll", function () {
-      toTop.classList.toggle("show", window.scrollY > 700);
-    }, { passive: true });
+    // Sichtbarkeit hängt am gebündelten Scroll-Takt in assets/motion.js;
+    // hier bleibt nur die eigentliche Handlung.
     toTop.addEventListener("click", function () {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });

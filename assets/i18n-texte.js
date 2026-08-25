@@ -90,22 +90,22 @@ window.TEXTE = {
   "leist2.t": "Shopsysteme",
   "leist2.p": "Produktwelten, Checkout, Bestellprozesse, Rechnungslogik und individuelle Produktkonfigurationen – übersichtlich für Kunden und effizient für Ihr Unternehmen.",
   "leist3.t": "Firmenmodule",
-  "leist3.p": "CRM, Angebots- und Rechnungssysteme, Terminverwaltung, Fahrtenbuch, Serviceprozesse oder interne Dashboards – exakt dort, wo Standardsoftware zu starr wird.",
+  "leist3.p": "CRM, Angebots- und Rechnungssysteme, Terminverwaltung mit Kalender-Synchronisierung, Fahrtenbuch, Serviceprozesse, Auftragsstatus oder interne Dashboards – exakt dort, wo Standardsoftware zu starr wird. Auf Wunsch auf einem eigenen Server, den wir vermitteln und einrichten.",
   "leist4.t": "Sichtbarkeit bei Google",
-  "leist4.p": "Eine Website nützt nur, wenn sie gefunden wird. Wir melden Ihre Seite bei den Suchmaschinen an und richten Ihr Unternehmensprofil ein.",
+  "leist4.p": "Eine Website nützt nur, wenn sie gefunden wird. Wir melden Ihre Seite bei den Suchmaschinen an, richten Ihr Google Unternehmensprofil ein und legen die Grundlagen, damit Sie in Ihrer Region auftauchen.",
   "leist5.t": "KI-Lösungen",
-  "leist5.p": "Intelligente Kundenassistenten, Wissenssysteme und interne KI-Werkzeuge. Nicht als Showeffekt, sondern mit klarem betrieblichem Nutzen.",
+  "leist5.p": "Intelligente Kundenassistenten, Wissenssysteme, Produktempfehlungen und interne KI-Werkzeuge. Nicht als Showeffekt, sondern mit klarem betrieblichem Nutzen.",
   "ablauf.kicker": "So läuft es ab",
   "ablauf.titel": "In vier Schritten zum fertigen System.",
-  "ablauf.lead": "Sie müssen sich vorab nicht in Technik einarbeiten. Wir beginnen bei Ihrem Arbeitsalltag und erklären jeden Schritt in normaler Sprache.",
+  "ablauf.lead": "Sie müssen sich vorab nicht in Technik einarbeiten. Wir beginnen bei Ihrem Arbeitsalltag und erklären jeden Schritt in normaler Sprache – Fachbegriffe übersetzen wir, statt sie vorauszusetzen.",
   "ablauf1.t": "Gespräch",
-  "ablauf1.p": "Sie erzählen, was im Alltag hakt. Ein Telefonat von 20 Minuten reicht für den Anfang. Kostenlos und unverbindlich.",
+  "ablauf1.p": "Sie erzählen, was im Alltag hakt. Kein Lastenheft nötig – ein Telefonat von 20 Minuten reicht für den Anfang. Kostenlos und unverbindlich.",
   "ablauf2.t": "Angebot",
-  "ablauf2.p": "Sie bekommen einen Festpreis mit klarer Liste, was enthalten ist und was nicht. Keine Überraschung am Ende.",
+  "ablauf2.p": "Sie bekommen einen Festpreis mit klarer Liste, was enthalten ist und was nicht. Keine Stundenzettel, keine Überraschung am Ende.",
   "ablauf3.t": "Umsetzung",
-  "ablauf3.p": "Wir bauen und zeigen zwischendurch den Stand. Ändern lässt sich alles, solange es noch im Bau ist.",
+  "ablauf3.p": "Wir bauen und zeigen zwischendurch den Stand. Sie sagen, was passt und was nicht – ändern lässt sich alles, solange es noch im Bau ist.",
   "ablauf4.t": "Einweisung",
-  "ablauf4.p": "Wir übernehmen Ihre Daten und zeigen dem Team, wie es geht. Danach bleiben wir erreichbar.",
+  "ablauf4.p": "Wir übernehmen Ihre vorhandenen Daten und zeigen dem Team, wie es geht. Danach bleiben wir erreichbar – auch für die Frage, die man sich nicht zu stellen traut.",
   "pakete.kicker": "Pakete",
   "pakete.titel": "Ein klarer Einstieg.",
   "pakete.lead": "Keine künstlich aufgeblähten Pakete. Der Umfang wird am tatsächlichen Nutzen ausgerichtet und kann später modular erweitert werden.",
@@ -155,7 +155,10 @@ window.TEXTE = {
   "kia.nachricht": "Nachricht schreiben …",
   "hinweis.sprache": "Diese Seite liegt vollständig auf Deutsch vor.",
   "hinweis.recht": "Impressum, Datenschutzerklärung und AGB sind aus rechtlichen Gründen nur auf Deutsch verbindlich.",
-  "hinweis.kontakt": "Schreiben Sie uns gern in Ihrer Sprache – wir antworten auf Deutsch oder Englisch."
+  "hinweis.kontakt": "Schreiben Sie uns gern in Ihrer Sprache – wir antworten auf Deutsch oder Englisch.",
+  "stage.interface": "Website, Shop, Kundenportal",
+  "stage.logic": "Prozesse, Automatisierung, KI",
+  "stage.data": "Kunden, Aufträge, Dokumente"
  },
  "en": {
   "priv.titel": "Your data stays with you",
@@ -259,7 +262,10 @@ window.TEXTE = {
   "kia.nachricht": "Write a message …",
   "hinweis.sprache": "This page is available in full in German only.",
   "hinweis.recht": "Legal notice, privacy policy and terms are legally binding in German only.",
-  "hinweis.kontakt": "Feel free to write to us in your language – we reply in German or English."
+  "hinweis.kontakt": "Feel free to write to us in your language – we reply in German or English.",
+  "stage.interface": "Website, shop, customer portal",
+  "stage.logic": "Processes, automation, AI",
+  "stage.data": "Customers, orders, documents"
  },
  "tr": {
   "priv.titel": "Verileriniz sizde kalır",
@@ -363,7 +369,10 @@ window.TEXTE = {
   "kia.nachricht": "Mesaj yazın …",
   "hinweis.sprache": "Bu sayfanın tamamı yalnızca Almanca mevcuttur.",
   "hinweis.recht": "Künye, gizlilik politikası ve genel şartlar hukuken yalnızca Almanca geçerlidir.",
-  "hinweis.kontakt": "Bize kendi dilinizde yazabilirsiniz – Almanca veya İngilizce yanıt veriyoruz."
+  "hinweis.kontakt": "Bize kendi dilinizde yazabilirsiniz – Almanca veya İngilizce yanıt veriyoruz.",
+  "stage.interface": "Web sitesi, mağaza, müşteri portalı",
+  "stage.logic": "Süreçler, otomasyon, yapay zekâ",
+  "stage.data": "Müşteriler, siparişler, belgeler"
  },
  "zh": {
   "priv.titel": "您的数据留在您手中",
@@ -467,7 +476,10 @@ window.TEXTE = {
   "kia.nachricht": "输入留言 …",
   "hinweis.sprache": "本页面仅提供完整的德语版本。",
   "hinweis.recht": "法律声明、隐私政策和一般条款仅以德语版本具有法律效力。",
-  "hinweis.kontakt": "欢迎用您的语言与我们联系——我们以德语或英语回复。"
+  "hinweis.kontakt": "欢迎用您的语言与我们联系——我们以德语或英语回复。",
+  "stage.interface": "网站、商店、客户门户",
+  "stage.logic": "流程、自动化、人工智能",
+  "stage.data": "客户、订单、文件"
  },
  "pl": {
   "priv.titel": "Twoje dane zostają u Ciebie",
@@ -571,7 +583,10 @@ window.TEXTE = {
   "kia.nachricht": "Napisz wiadomość …",
   "hinweis.sprache": "Ta strona jest w pełni dostępna tylko po niemiecku.",
   "hinweis.recht": "Nota prawna, polityka prywatności i regulamin są wiążące wyłącznie w wersji niemieckiej.",
-  "hinweis.kontakt": "Można pisać do nas w swoim języku – odpowiadamy po niemiecku lub angielsku."
+  "hinweis.kontakt": "Można pisać do nas w swoim języku – odpowiadamy po niemiecku lub angielsku.",
+  "stage.interface": "Strona, sklep, portal klienta",
+  "stage.logic": "Procesy, automatyzacja, AI",
+  "stage.data": "Klienci, zlecenia, dokumenty"
  },
  "da": {
   "priv.titel": "Dine data bliver hos dig",
@@ -675,7 +690,10 @@ window.TEXTE = {
   "kia.nachricht": "Skriv en besked …",
   "hinweis.sprache": "Denne side findes kun i fuld længde på tysk.",
   "hinweis.recht": "Kolofon, privatlivspolitik og vilkår er kun bindende på tysk.",
-  "hinweis.kontakt": "Skriv gerne på dit eget sprog – vi svarer på tysk eller engelsk."
+  "hinweis.kontakt": "Skriv gerne på dit eget sprog – vi svarer på tysk eller engelsk.",
+  "stage.interface": "Website, shop, kundeportal",
+  "stage.logic": "Processer, automatisering, AI",
+  "stage.data": "Kunder, ordrer, dokumenter"
  },
  "ar": {
   "priv.titel": "بياناتك تبقى لديك",
@@ -779,6 +797,9 @@ window.TEXTE = {
   "kia.nachricht": "اكتب رسالة …",
   "hinweis.sprache": "هذه الصفحة متوفرة كاملة باللغة الألمانية فقط.",
   "hinweis.recht": "بيانات الناشر وسياسة الخصوصية والشروط ملزمة قانونيًا بالألمانية فقط.",
-  "hinweis.kontakt": "يمكنك مراسلتنا بلغتك – ونرد بالألمانية أو الإنجليزية."
+  "hinweis.kontakt": "يمكنك مراسلتنا بلغتك – ونرد بالألمانية أو الإنجليزية.",
+  "stage.interface": "موقع إلكتروني، متجر، بوابة عملاء",
+  "stage.logic": "العمليات، الأتمتة، الذكاء الاصطناعي",
+  "stage.data": "العملاء، الطلبات، المستندات"
  }
 };
