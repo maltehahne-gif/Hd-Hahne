@@ -454,6 +454,17 @@ footer .brand-mark{width:30px;height:30px}
   box-shadow:inset 0 0 0 1px var(--accent-line);
 }
 
+/* Zwischen 981 und 1180 px stehen sechs Menüpunkte, Wortmarke, Sprachwahl
+   und Handlungsaufforderung gleichzeitig in einer Zeile. Dort rückt alles
+   enger zusammen, statt die Handlungsaufforderung zusammenzuquetschen. */
+.navin>.btn-primary{flex:0 0 auto}
+@media(min-width:981px) and (max-width:1180px){
+  .navin{gap:12px}
+  .links{font-size:.82rem;gap:0}
+  .links a{padding:9px 10px}
+  .navin>.btn-primary{padding:0 20px}
+}
+
 .burger{
   display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r-sm);
   background:transparent;cursor:pointer;place-items:center;
@@ -750,8 +761,18 @@ footer .brand-mark{width:30px;height:30px}
 }
 .stage-legend div:last-child{border-bottom:0}
 .stage-legend div:hover{background:rgba(243,245,246,.028)}
-.stage-legend div[data-ebene]:hover b{color:var(--accent-ink)}
-.stage-legend div[data-ebene]:hover b:before{background:var(--accent-ink);border-color:var(--accent-ink)}
+/* Die hervorgehobene Zeile wird über den Zustand am Rahmen gesetzt, nicht
+   über :hover – so bleiben Zeile und Zeichnung sicher im selben Zustand. */
+.stage-legend div[data-ebene]:hover b,
+[data-hervor="interface"] .stage-legend [data-ebene="interface"] b,
+[data-hervor="logic"] .stage-legend [data-ebene="logic"] b,
+[data-hervor="data"] .stage-legend [data-ebene="data"] b{color:var(--accent-ink)}
+.stage-legend div[data-ebene]:hover b:before,
+[data-hervor="interface"] .stage-legend [data-ebene="interface"] b:before,
+[data-hervor="logic"] .stage-legend [data-ebene="logic"] b:before,
+[data-hervor="data"] .stage-legend [data-ebene="data"] b:before{
+  background:var(--accent-ink);border-color:var(--accent-ink);
+}
 .stage-legend b{
   font-family:var(--mono);font-size:var(--fs-meta);letter-spacing:var(--tr-meta);
   text-transform:uppercase;font-weight:500;color:var(--ink-soft);
@@ -2642,7 +2663,7 @@ body.nav-open .kia,body.nav-open .totop{display:none}
     width:auto;padding:0 26px;
   }
   body.nav-open .nav{background:var(--void);border-bottom-color:var(--line)}
-  .sprach-wahl{margin-left:auto}
+  .brand{margin-inline-end:auto}
 }
 body.nav-open{overflow:hidden}
 
@@ -2800,7 +2821,7 @@ body.rtl .totop{left:auto;right:22px}
 body.rtl .checklist li,body.rtl .modul-punkte li,body.rtl .resultbox li{padding-left:0;padding-right:22px}
 body.rtl .checklist li:before,body.rtl .modul-punkte li:before,body.rtl .resultbox li:before{left:auto;right:0}
 @media(max-width:980px){
-  body.rtl .sprach-wahl{margin-left:0;margin-right:auto}
+  body.rtl .brand{margin-inline-end:auto}
 }
 
 /* ==========================================================================
