@@ -28,18 +28,36 @@ const mittel = (farbe) => {
 };
 
 test.describe("Hero", () => {
-  test("steht auf dem Desktop vollständig in einer Bildschirmhöhe", async ({ page }) => {
+  // Die Regel hat sich mit dem Satz geändert: eine randlose Überschrift auf
+  // Display-Größe darf den ersten Bildschirm knapp überschreiten – der Weg
+  // zur Anfrage darf es nicht. Geprüft wird deshalb die
+  // Handlungsaufforderung, nicht die Gesamthöhe auf den Pixel.
+  test("die Handlungsaufforderung steht im ersten Bild, der Hero bleibt knapp", async ({ page }) => {
     test.skip(page.viewportSize().width < 1080, "Erst ab der zweispaltigen Fassung");
     await page.goto("/index.html");
     await page.waitForTimeout(600);
     const werte = await page.evaluate(() => {
       const hero = document.querySelector(".hero").getBoundingClientRect();
-      const fuss = document.querySelector(".hero-foot").getBoundingClientRect();
-      return { unten: hero.bottom, fussUnten: fuss.bottom, fenster: window.innerHeight };
+      const cta = document.querySelector(".hero-actions .btn-primary").getBoundingClientRect();
+      return { unten: hero.bottom, ctaUnten: cta.bottom, fenster: window.innerHeight };
     });
-    // Auch die HUD-Zeile am unteren Rand gehört noch ins erste Bild.
-    expect(werte.unten).toBeLessThanOrEqual(werte.fenster + 1);
-    expect(werte.fussUnten).toBeLessThanOrEqual(werte.fenster + 1);
+    expect(werte.ctaUnten).toBeLessThanOrEqual(werte.fenster);
+    expect(werte.unten).toBeLessThanOrEqual(werte.fenster * 1.15);
+  });
+
+  test("die Überschrift verlässt die Inhaltsspalte nach links", async ({ page }) => {
+    test.skip(page.viewportSize().width < 700, "Auf schmalen Geräten fällt der Anschnitt weg");
+    await page.goto("/index.html");
+    const werte = await page.evaluate(() => {
+      const zeile = document.querySelector(".hero-titel span").getBoundingClientRect();
+      const spalte = document.querySelector(".hero-grid").getBoundingClientRect();
+      const stufe = document.querySelector(".hero-titel em").getBoundingClientRect();
+      return { zeile: zeile.left, spalte: spalte.left, stufe: stufe.left };
+    });
+    // Die erste Zeilengruppe steht links der Inhaltskante …
+    expect(werte.zeile).toBeLessThan(werte.spalte);
+    // … die zweite ist demgegenüber sichtbar eingerückt.
+    expect(werte.stufe).toBeGreaterThan(werte.zeile + 20);
   });
 
   test("die Zeichnung läuft rechts über die Inhaltsspalte hinaus", async ({ page }) => {
@@ -139,7 +157,7 @@ test.describe("Farbregel: Petrol führt, Sand markiert Geld", () => {
   });
 });
 
-test.describe("Eine Typoskala für alle Seiten", () => {
+test.describe("Ein Satz für alle Seiten", () => {
   test("Startseite und Modulseite setzen ihre Überschrift gleich groß", async ({ page }) => {
     const messen = async (seite) => {
       await page.goto(seite);
@@ -148,6 +166,67 @@ test.describe("Eine Typoskala für alle Seiten", () => {
     const start = await messen("/index.html");
     const modul = await messen("/module.html");
     expect(Math.abs(start - modul)).toBeLessThan(1);
+  });
+
+  test("auch die Modulseite setzt ihre Überschrift randlos und gestuft", async ({ page }) => {
+    test.skip(page.viewportSize().width < 700, "Auf schmalen Geräten fällt der Anschnitt weg");
+    await page.goto("/module.html");
+    const werte = await page.evaluate(() => {
+      const zeile = document.querySelector(".modul-hero .hero-titel span").getBoundingClientRect();
+      const stufe = document.querySelector(".modul-hero .hero-titel em").getBoundingClientRect();
+      const spalte = document.querySelector(".modul-hero-grid").getBoundingClientRect();
+      return { zeile: zeile.left, stufe: stufe.left, spalte: spalte.left };
+    });
+    expect(werte.zeile).toBeLessThan(werte.spalte);
+    expect(werte.stufe).toBeGreaterThan(werte.zeile + 20);
+  });
+});
+
+test.describe("Versetztes Raster", () => {
+  test("keine zwei Leistungszeilen setzen auf derselben Kante an", async ({ page }) => {
+    test.skip(page.viewportSize().width < 1080, "Der Versatz entfällt in der gestapelten Fassung");
+    await page.goto("/index.html");
+    const kanten = await page.$$eval(".services .service .service-body", (els) =>
+      els.map((e) => Math.round(e.getBoundingClientRect().left))
+    );
+    expect(kanten.length).toBe(5);
+    // Mindestens drei verschiedene Ansatzkanten über fünf Zeilen.
+    expect(new Set(kanten).size).toBeGreaterThanOrEqual(3);
+  });
+
+  test("die Zeichnungen werden abwechselnd links und rechts angeschnitten", async ({ page }) => {
+    test.skip(page.viewportSize().width < 1080, "Der Anschnitt entfällt in der gestapelten Fassung");
+    await page.goto("/index.html");
+    const werte = await page.evaluate(() => {
+      const els = [...document.querySelectorAll(".services .service .service-visual")];
+      return {
+        fenster: window.innerWidth,
+        kanten: els.map((e) => {
+          const r = e.getBoundingClientRect();
+          return { links: Math.round(r.left), rechts: Math.round(r.right) };
+        }),
+      };
+    });
+    // Ungerade Zeilen laufen nach rechts aus, gerade nach links.
+    expect(werte.kanten[0].rechts).toBeGreaterThanOrEqual(werte.fenster - 1);
+    expect(werte.kanten[1].links).toBeLessThanOrEqual(1);
+    expect(werte.kanten[2].rechts).toBeGreaterThanOrEqual(werte.fenster - 1);
+    expect(werte.kanten[3].links).toBeLessThanOrEqual(1);
+  });
+
+  test("die Modulkonsole läuft von Kante zu Kante", async ({ page }) => {
+    await page.goto("/index.html#module");
+    // Erst nach dem Aufdecken steht sie auf ihrer Endgröße: davor liegt noch
+    // die Skalierung des Reveals darauf und die Messung wäre um wenige
+    // Pixel daneben.
+    await expect(page.locator(".konsole")).toHaveClass(/show/, { timeout: 5000 });
+    await page.waitForTimeout(400);
+    const werte = await page.evaluate(() => {
+      const r = document.querySelector(".konsole").getBoundingClientRect();
+      return { links: Math.round(r.left), rechts: Math.round(r.right), fenster: window.innerWidth };
+    });
+    expect(werte.links).toBeLessThanOrEqual(1);
+    expect(werte.rechts).toBeGreaterThanOrEqual(werte.fenster - 1);
   });
 });
 
