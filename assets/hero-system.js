@@ -40,11 +40,18 @@
     var wert = getComputedStyle(wurzel).getPropertyValue(name).trim();
     return wert || ersatz;
   }
+  // Zahl aus einem Attribut, auf einen sinnvollen Bereich begrenzt.
+  function zahl(roh, ersatz, min, max) {
+    var w = parseFloat(roh);
+    if (isNaN(w)) return ersatz;
+    return w < min ? min : w > max ? max : w;
+  }
+
   function zerlegen(hex) {
     var h = (hex || "").replace("#", "");
     if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
     var n = parseInt(h, 16);
-    if (isNaN(n) || h.length !== 6) return [79, 195, 206];
+    if (isNaN(n) || h.length !== 6) return [90, 211, 222];
     return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
   }
 
@@ -162,12 +169,23 @@
     this.zeigerX = 0; this.zeigerY = 0;
     this.zielX = 0; this.zielY = 0;
     this.aufbruch = 0;                   // 0 = kompakt, 1 = Explosionszeichnung
+    // Bildausschnitt: im Hero steht die Anlage leicht rechts der Mitte und
+    // eine Spur größer, damit sie über die angeschnittene Rahmenkante
+    // hinausläuft. Beide Werte kommen aus dem Markup, damit die Bildregie
+    // beim Layout bleibt und nicht im Renderer festgeschrieben ist.
+    this.mitteX = zahl(behaelter.getAttribute("data-sys-mx"), 0.5, 0.2, 0.8);
+    this.zoom = zahl(behaelter.getAttribute("data-sys-zoom"), 1, 0.6, 1.6);
+    // Betonung je Ebene: die Legende unter der Zeichnung kann eine Ebene
+    // hervorheben, die anderen treten dann zurück. Ziel- und Ist-Wert sind
+    // getrennt, damit der Wechsel läuft statt zu springen.
+    this.betonung = [1, 1, 1];
+    this.betonungIst = [1, 1, 1];
     this.sichtbar = false;
     this.eingang = 0;                    // Aufbau-Fortschritt beim ersten Lauf
-    var a = zerlegen(token("--accent-ink", "#4fc3ce"));
-    this.akzentHex = token("--accent-ink", "#4fc3ce");
+    var a = zerlegen(token("--accent-ink", "#5ad3de"));
+    this.akzentHex = token("--accent-ink", "#5ad3de");
     this.akzent = function (alpha) { return "rgba(" + a[0] + "," + a[1] + "," + a[2] + "," + alpha + ")"; };
-    this.linie = function (alpha) { return "rgba(242,243,241," + alpha + ")"; };
+    this.linie = function (alpha) { return "rgba(243,245,246," + alpha + ")"; };
     this.stuecke = [];
     this.messen();
   }
@@ -221,8 +239,8 @@
       cosGier: Math.cos(gier), sinGier: Math.sin(gier),
       cosNick: Math.cos(nick), sinNick: Math.sin(nick),
       abstand: 7.4,
-      einheit: kurz * (this.art === "calm" ? 0.170 : 0.198) / (1 + auf * 0.13),
-      mx: this.b / 2,
+      einheit: kurz * (this.art === "calm" ? 0.170 : 0.198) * this.zoom / (1 + auf * 0.13),
+      mx: this.b * this.mitteX,
       my: this.h / 2 + kurz * 0.015
     };
   };
@@ -263,6 +281,7 @@
       var e = this.geo.ebenen[ei];
       // Aufbau von unten nach oben, damit die Anlage entsteht statt einzublenden
       var eigenEin = Math.max(0, Math.min(1, (ein - (2 - ei) * 0.15) / 0.55));
+      eigenEin *= this.betonungIst[ei];
       if (eigenEin <= 0.001) continue;
       var y = this.ebenenHoehe(ei, auf, t) + (1 - eigenEin) * 0.55;
       this.ebeneSammeln(e, y, eigenEin, kam, stuecke, auf, t);
@@ -533,7 +552,7 @@
         if (s.alpha <= 0.02) continue;
         ctx.setLineDash([]);
         ctx.globalAlpha = Math.min(1, s.alpha);
-        ctx.fillStyle = s.akzent ? this.akzentHex : "rgba(242,243,241,.92)";
+        ctx.fillStyle = s.akzent ? this.akzentHex : "rgba(243,245,246,.92)";
         ctx.font = '500 9px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
         ctx.textAlign = "right";
         ctx.textBaseline = "middle";
@@ -543,7 +562,7 @@
         ctx.textAlign = "left";
         ctx.textBaseline = "alphabetic";
         if (s.strich) {
-          ctx.strokeStyle = s.akzent ? this.akzentHex : "rgba(242,243,241,.5)";
+          ctx.strokeStyle = s.akzent ? this.akzentHex : "rgba(243,245,246,.5)";
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(s.x + 4, s.y); ctx.lineTo(s.x + 11, s.y);
@@ -585,6 +604,9 @@
       s.zeigerX += (s.zielX - s.zeigerX) * 0.045;
       s.zeigerY += (s.zielY - s.zeigerY) * 0.045;
       if (s.art === "hero") s.aufbruch += (s.aufbruchZiel() - s.aufbruch) * 0.07;
+      for (var bi = 0; bi < 3; bi++) {
+        s.betonungIst[bi] += (s.betonung[bi] - s.betonungIst[bi]) * 0.14;
+      }
       s.zeichnen();
     }
     if (!aktiv) { laeuft = false; return; }
@@ -596,6 +618,45 @@
     laeuft = true;
     letzte = performance.now();
     requestAnimationFrame(schleife);
+  }
+
+  /* --- Legende und Zeichnung verbinden -------------------------------------
+     Wer in der Legende auf „Logic“ zeigt, sieht in der Zeichnung genau diese
+     Ebene: die übrigen treten zurück. Das ist keine Dekoration, sondern die
+     Erklärung des Bildes – die Legende sagt, was die Ebene bedeutet, die
+     Zeichnung zeigt, wo sie liegt.
+
+     Die Zeilen bleiben normaler Text ohne eigenen Tastaturhalt: dieselbe
+     Zuordnung steht als Beschriftung schon in der Zeichnung, es geht also
+     keine Information verloren.                                            */
+  var EBENEN_INDEX = { interface: 0, logic: 1, data: 2 };
+
+  function legendeVerbinden(buehne, szene) {
+    var rahmen = buehne.closest ? buehne.closest(".stage-frame") : null;
+    if (!rahmen) return;
+    var zeilen = rahmen.querySelectorAll(".stage-legend [data-ebene]");
+    if (!zeilen.length) return;
+
+    function setzen(nr) {
+      for (var i = 0; i < 3; i++) szene.betonung[i] = nr === null || nr === i ? 1 : 0.28;
+      if (leiser.matches) {
+        // Ohne Bewegung wird der Zielwert sofort übernommen und einmal
+        // gezeichnet – der Nutzen bleibt, die Animation entfällt.
+        for (var j = 0; j < 3; j++) szene.betonungIst[j] = szene.betonung[j];
+        szene.zeichnen();
+      } else {
+        starten();
+      }
+    }
+
+    Array.prototype.forEach.call(zeilen, function (zeile) {
+      var nr = EBENEN_INDEX[zeile.getAttribute("data-ebene")];
+      if (nr === undefined) return;
+      zeile.addEventListener("pointerenter", function () { setzen(nr); });
+      zeile.addEventListener("pointerleave", function () { setzen(null); });
+      zeile.addEventListener("pointercancel", function () { setzen(null); });
+    });
+    rahmen.addEventListener("pointerleave", function () { setzen(null); });
   }
 
   /* --- Aufbau -------------------------------------------------------------- */
@@ -626,6 +687,8 @@
       } else {
         window.addEventListener("resize", function () { szene.messen(); szene.zeichnen(); });
       }
+
+      legendeVerbinden(buehne, szene);
 
       if ("IntersectionObserver" in window) {
         var io = new IntersectionObserver(function (eintraege) {

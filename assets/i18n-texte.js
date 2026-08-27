@@ -54,6 +54,8 @@ window.SPRACHEN = [
 
 window.TEXTE = {
  "de": {
+  "hero.fein": "20 Minuten, kostenlos, unverbindlich – und Sie wissen danach, was Ihr Vorhaben ungefähr kostet.",
+  "zitat.rolle": "Gesellschafter, Hahne Digital",
   "priv.titel": "Ihre Daten bleiben bei Ihnen",
   "priv.erlauben": "Gedächtnis erlauben",
   "priv.ablehnen": "Nur das Nötigste",
@@ -161,6 +163,8 @@ window.TEXTE = {
   "stage.data": "Kunden, Aufträge, Dokumente"
  },
  "en": {
+  "hero.fein": "20 minutes, free of charge, no obligation – and you will know roughly what your project costs.",
+  "zitat.rolle": "Partners, Hahne Digital",
   "priv.titel": "Your data stays with you",
   "priv.erlauben": "Allow memory",
   "priv.ablehnen": "Essentials only",
@@ -268,6 +272,8 @@ window.TEXTE = {
   "stage.data": "Customers, orders, documents"
  },
  "tr": {
+  "hero.fein": "20 dakika, ücretsiz ve bağlayıcı değil – ardından projenizin yaklaşık maliyetini bilirsiniz.",
+  "zitat.rolle": "Ortaklar, Hahne Digital",
   "priv.titel": "Verileriniz sizde kalır",
   "priv.erlauben": "Hafızaya izin ver",
   "priv.ablehnen": "Yalnızca gerekli olanlar",
@@ -375,6 +381,8 @@ window.TEXTE = {
   "stage.data": "Müşteriler, siparişler, belgeler"
  },
  "zh": {
+  "hero.fein": "20 分钟，免费且无义务——之后您就会知道项目大致需要多少费用。",
+  "zitat.rolle": "合伙人，Hahne Digital",
   "priv.titel": "您的数据留在您手中",
   "priv.erlauben": "允许记忆功能",
   "priv.ablehnen": "仅必要项",
@@ -482,6 +490,8 @@ window.TEXTE = {
   "stage.data": "客户、订单、文件"
  },
  "pl": {
+  "hero.fein": "20 minut, bezpłatnie i niezobowiązująco – potem wiesz, ile mniej więcej kosztuje Twój projekt.",
+  "zitat.rolle": "Wspólnicy, Hahne Digital",
   "priv.titel": "Twoje dane zostają u Ciebie",
   "priv.erlauben": "Zezwól na pamięć",
   "priv.ablehnen": "Tylko niezbędne",
@@ -589,6 +599,8 @@ window.TEXTE = {
   "stage.data": "Klienci, zlecenia, dokumenty"
  },
  "da": {
+  "hero.fein": "20 minutter, gratis og uforpligtende – bagefter ved du, hvad dit projekt cirka koster.",
+  "zitat.rolle": "Partnere, Hahne Digital",
   "priv.titel": "Dine data bliver hos dig",
   "priv.erlauben": "Tillad hukommelse",
   "priv.ablehnen": "Kun det nødvendige",
@@ -696,6 +708,8 @@ window.TEXTE = {
   "stage.data": "Kunder, ordrer, dokumenter"
  },
  "ar": {
+  "hero.fein": "‏20 دقيقة، مجاناً ودون التزام – وبعدها تعرف التكلفة التقريبية لمشروعك.",
+  "zitat.rolle": "شريكان، Hahne Digital",
   "priv.titel": "بياناتك تبقى لديك",
   "priv.erlauben": "السماح بالتذكّر",
   "priv.ablehnen": "الضروري فقط",

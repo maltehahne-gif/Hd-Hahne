@@ -414,6 +414,17 @@
       window.setTimeout(namenSetzen, 0);
     });
 
+    // Der Anzeiger erscheint erst, wenn der Hero durchgelaufen ist: dort
+    // reicht die Systemzeichnung bis an den Bildrand, zwei technische
+    // Randmarken nebeneinander wären Unruhe statt Orientierung.
+    var an = false;
+    beiScroll(function () {
+      var soll = window.scrollY > (window.innerHeight || 800) * 0.6;
+      if (soll === an) return;
+      an = soll;
+      rail.classList.toggle("sichtbar", soll);
+    });
+
     if (!("IntersectionObserver" in window)) return;
     var spy = new IntersectionObserver(function (eintraege) {
       eintraege.forEach(function (e) {
