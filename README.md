@@ -12,6 +12,7 @@ Web-Verzeichnis hochladen – fertig.
     robots.txt            Freigabe für Suchmaschinen
     sitemap.xml           Seitenverzeichnis für Suchmaschinen
     assets/site-config.js >>> HIER ALLE FIRMENDATEN EINTRAGEN <<<
+    DESIGN.md             Design-System: Farben, Typoskala, Motion, Regeln
     assets/style.css      Gestaltung (Tokens, Komponenten, Motion, Responsive)
     assets/main.js        Navigation, Module, Projekt-Check, Formular
     assets/motion.js      Bewegungssystem: Reveals, Scrollzustände, Microinteractions

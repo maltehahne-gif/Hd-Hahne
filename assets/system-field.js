@@ -41,7 +41,7 @@
     if (!ctx) { canvas.remove(); return; }
 
     var akzent = getComputedStyle(document.documentElement)
-      .getPropertyValue("--accent-ink").trim() || "#4fc3ce";
+      .getPropertyValue("--accent-ink").trim() || "#5ad3de";
 
     var b = 0, h = 0, dpr = 1, x = 0;
     var knoten = [];          // { el, y (Dokument-y), aktiv, ring }
@@ -210,7 +210,7 @@
     function grund(dokY, alpha) {
       return aufHell(dokY)
         ? "rgba(15,20,23," + alpha + ")"
-        : "rgba(242,243,241," + alpha + ")";
+        : "rgba(243,245,246," + alpha + ")";
     }
     function signal(dokY) { return aufHell(dokY) ? "#0a545d" : akzent; }
 
