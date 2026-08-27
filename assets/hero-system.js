@@ -637,8 +637,14 @@
     var zeilen = rahmen.querySelectorAll(".stage-legend [data-ebene]");
     if (!zeilen.length) return;
 
+    var NAMEN = ["interface", "logic", "data"];
+
     function setzen(nr) {
       for (var i = 0; i < 3; i++) szene.betonung[i] = nr === null || nr === i ? 1 : 0.28;
+      // Der Zustand steht auch am Rahmen: die Legende kann ihn gestalten,
+      // ohne dass der Zeiger noch auf der Zeile stehen muss.
+      if (nr === null) rahmen.removeAttribute("data-hervor");
+      else rahmen.setAttribute("data-hervor", NAMEN[nr]);
       if (leiser.matches) {
         // Ohne Bewegung wird der Zielwert sofort übernommen und einmal
         // gezeichnet – der Nutzen bleibt, die Animation entfällt.

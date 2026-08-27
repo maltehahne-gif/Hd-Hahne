@@ -76,20 +76,32 @@ test.describe("Legende und Zeichnung sind verbunden", () => {
         return summe;
       });
 
-    const neutral = await betonung();
-    await page.locator('.stage-legend [data-ebene="logic"]').hover();
-    await page.waitForTimeout(900);
-    const hervorgehoben = await betonung();
+    // Erst warten, bis der Aufbau der Zeichnung durchgelaufen ist – vorher
+    // wächst die Farbmenge ohnehin, ein Vergleich wäre bedeutungslos.
+    let vorher = 0;
+    let neutral = 0;
+    await expect
+      .poll(
+        async () => {
+          vorher = neutral;
+          neutral = await betonung();
+          return neutral > 0 && Math.abs(neutral - vorher) / neutral < 0.03;
+        },
+        { timeout: 10000, intervals: [400] }
+      )
+      .toBe(true);
 
+    const rahmen = page.locator(".stage-frame");
+    await page.locator('.stage-legend [data-ebene="logic"]').hover();
+    await expect(rahmen).toHaveAttribute("data-hervor", "logic");
     // Zwei Ebenen treten zurück: insgesamt liegt weniger Farbe im Bild.
-    expect(neutral).toBeGreaterThan(0);
-    expect(hervorgehoben).toBeLessThan(neutral);
+    await expect.poll(betonung, { timeout: 8000 }).toBeLessThan(neutral * 0.9);
+    const hervorgehoben = await betonung();
 
     // Und der Zustand geht wieder zurück, sobald der Zeiger die Bühne verlässt.
     await page.mouse.move(20, 400);
-    await page.waitForTimeout(1100);
-    const zurueck = await betonung();
-    expect(zurueck).toBeGreaterThan(hervorgehoben);
+    await expect(rahmen).not.toHaveAttribute("data-hervor", /./);
+    await expect.poll(betonung, { timeout: 8000 }).toBeGreaterThan(hervorgehoben * 1.1);
   });
 
   test("die Zeilen der Legende bleiben Text und kein zusätzlicher Tastaturhalt", async ({ page }) => {
