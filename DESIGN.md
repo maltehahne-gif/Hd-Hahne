@@ -8,16 +8,29 @@ Abschnitte bauen aus diesen Bausteinen, statt eigene Werte zu erfinden.
 
 ## 1. Design Concept
 
-**„Technische Zeichnung / Betriebssystem“**
+**„Technische Zeichnung im Aufriss“ — dunkel und radikal editorial**
 
 Hahne Digital baut Systeme, nicht Oberflächen. Die Seite behauptet das nicht
 nur, sie sieht danach aus: Maßlinien, Koordinatenmarken, Monoschrift für alles
-Technische, geschichtete Tiefe, ein Rahmen, der über den Bildrand hinausläuft,
-weil die Anlage größer ist als der gezeigte Ausschnitt.
+Technische, geschichtete Tiefe.
+
+Der entscheidende Bruch gegenüber jeder Standard-Landingpage ist die
+**Komposition**. Es gibt keine mittige Inhaltsspalte, an der alles hängt.
+Stattdessen ein zwölfspaltiges Satzraster über die volle Bildbreite:
+
+- **Kein Abschnitt beginnt dort, wo der davor begonnen hat.** Der Versatz ist
+  die Ordnung, nicht ihre Abwesenheit.
+- **Überschriften verlassen die Spalte.** Sie laufen bis an den Bildrand und
+  setzen in gestuften Zeilengruppen an verschiedenen Kanten an.
+- **Flächen werden angeschnitten.** Zeichnungen, Konsole, Kennzahlen und
+  Preise laufen von Kante zu Kante — das System ist größer als der
+  Ausschnitt, den die Seite zeigt.
+- **Zahlen sind Bauteile.** Sektionskennungen und Kennzahlen stehen als groß
+  gesetzte Elemente in der Randspalte, nicht als Beschriftung.
 
 Der Gegenentwurf ist bewusst kein „AI-Landingpage-Look“: kein Neon, kein Glas,
-keine Verlaufsflächen. Autorität entsteht aus Präzision — 1-px-Linien, ein
-einziger Akzent, große Größenkontraste, viel Ruhe.
+keine Verlaufsflächen. Autorität entsteht aus Präzision und aus Mut in der
+Anordnung — 1-px-Linien, ein einziger Akzent, harte Größenkontraste.
 
 ## 2. Visual Language
 
@@ -26,7 +39,8 @@ einziger Akzent, große Größenkontraste, viel Ruhe.
 | Fläche | Vier Stufen: `--paper` → `--surface-1/2/3`. Karten sind Fläche + 1 px Linie + `--rim`. Kein Glas außer in der Navigationsleiste. |
 | Linie | `--line` (Trennung), `--line-soft` (Innenraster), `--line-strong` (Kante). Immer 1 px. |
 | Tiefe | Genau drei Schatten (`--sh-1/2/3`). Alles andere hebt sich über Fläche und Linie ab, nicht über Schatten. |
-| Raster | Sechs Spalten, sichtbar als haarfeine Struktur hinter dem Inhalt (`body:after`) und als Teilstriche auf den Maßlinien der Sektionsköpfe. |
+| Raster | Zwölf Satzspalten (`.raster`, `--satz-spalten`) über die volle Bildbreite; sichtbar als haarfeine Sechserstruktur hinter dem Inhalt (`body:after`) und als Teilstriche auf den Maßlinien der Sektionsköpfe. Blöcke werden über `.sp-*` gesetzt. |
+| Anschnitt | `--bleed` ist der Weg von der Inhaltskante bis zum Bildrand, `--kante` der Abstand, den randloser Text zum Bildrand hält. Alles Randlose zieht sich um `--bleed` nach außen und setzt Text bei `--kante` an. `--sbw` (aus `assets/motion.js`) rechnet die Breite der Bildlaufleiste heraus — ohne sie verfehlt jeder Anschnitt den Rand um genau diese Breite. |
 | Marken | Sektionen tragen eine Kennung `NN / Gesamt`, Zeichnungen eine Revisionszeile, Statusleisten einen pulsenden Punkt. |
 | Korn | Eine statische Rauschebene über der Seite (3 % Deckung) nimmt den Flächen das Digitale. |
 
@@ -36,8 +50,8 @@ Kein Webfont — die Seite lädt nichts von fremden Servern. Die Wirkung kommt
 aus **Größenkontrast und Laufweite**, nicht aus einer Schriftlizenz.
 
 ```
---fs-display  clamp(2.9rem, 6.6vw, 5.8rem)   Wortmarken, Ausnahmen
---fs-h1       clamp(2.3rem, 4.25vw, 4.2rem)  Hero, Seitentitel
+--fs-display  clamp(2.5rem, 7.4vw, 8.5rem)   randlose Überschriften (Hero, Seitentitel)
+--fs-h1       clamp(2.05rem, 2.18rem+1.81vw, 4.2rem)  Seitentitel ohne Anschnitt
 --fs-h2       clamp(2rem, 4.3vw, 3.7rem)     Sektionsüberschriften
 --fs-h3       clamp(1.32rem, 2.2vw, 2rem)    Leistungen, Karten, Panels
 --fs-h4       clamp(1.06rem, 1.35vw, 1.26rem) Prozess, Pakete, Personen
@@ -129,19 +143,27 @@ Jeder Abschnitt endet auf einer möglichen nächsten Handlung.
 
 ## 7. Hero Concept
 
-**„Die Anlage“.** Links steht der Satz, rechts steht derselbe Satz als
-Zeichnung. Der Zeichnungsrahmen hat auf der Außenseite keine Kante und läuft
-über den Bildrand hinaus: das System ist größer als der Ausschnitt, den die
-Seite zeigt.
+**„Der Aufriss“.** Oben steht der Satz als randlose Überschrift auf
+Display-Größe: zwei Zeilengruppen, die an verschiedenen Kanten ansetzen. Die
+erste beginnt fast am Bildrand, die zweite ist deutlich eingerückt. Diese
+Stufe ist der Auftakt für das ganze Layout — ab hier beginnt kein Abschnitt
+mehr dort, wo der davor begonnen hat.
+
+Darunter teilt sich das Satzraster: links Vorspann, Handlungsaufforderung und
+Kennwerte, rechts die Systemzeichnung, deren Rahmen auf der Außenseite keine
+Kante hat und über den Bildrand hinausläuft.
 
 Unter der Zeichnung erklärt eine Legende die drei Ebenen. **Wer in der Legende
 auf „Logic“ zeigt, sieht in der Zeichnung genau diese Ebene** — die übrigen
-treten auf 28 % zurück. Das ist keine Dekoration, sondern die Erklärung des
-Bildes: die Legende sagt, was die Ebene bedeutet, die Zeichnung zeigt, wo sie
-liegt.
+treten auf 28 % zurück (Zustand als `data-hervor` am Rahmen). Das ist keine
+Dekoration, sondern die Erklärung des Bildes.
 
-Der gesamte Hero passt auf allen Desktop-Höhen in eine Bildschirmhöhe,
-inklusive Kennwerten und HUD-Zeile.
+Regel für die Höhe: **die Handlungsaufforderung steht immer im ersten Bild**,
+der Hero überschreitet eine Bildschirmhöhe um höchstens 15 %. Die HUD-Zeile
+darf am unteren Rand angeschnitten sein — sie ist das Signal, dass es
+weitergeht.
+
+Dieselbe Behandlung trägt die Modulseite. Ein Satz, alle Seiten.
 
 ## 8. Conversion Strategy
 
@@ -162,10 +184,14 @@ inklusive Kennwerten und HUD-Zeile.
 
 1. Keine neue Farbe ohne Token. Keine neue Größe außerhalb der Skala.
 2. Abstände kommen aus `--s-1 … --s-12`, Radien aus `--r-xs … --r-pill`.
-3. Jeder Effekt braucht einen Grund. Bewegung, die nichts erklärt, entfällt.
-4. Jede Komponente muss in der hellen Szene ohne Sonderregel funktionieren.
-5. Fokuszustände sind nicht verhandelbar (siehe Abschnitt 22 im Stylesheet).
-6. Kein externer Font, kein CDN, kein Tracker.
+   Randloses zieht sich um `--bleed` nach außen und setzt bei `--kante` an —
+   nie mit geschätzten Pixelwerten.
+3. Ein neuer Abschnitt setzt auf einer anderen Spalte an als der davor.
+   Gleiche Kanten in Folge sind der Fehler, den dieses Layout vermeidet.
+4. Jeder Effekt braucht einen Grund. Bewegung, die nichts erklärt, entfällt.
+5. Jede Komponente muss in der hellen Szene ohne Sonderregel funktionieren.
+6. Fokuszustände sind nicht verhandelbar (siehe Abschnitt 22 im Stylesheet).
+7. Kein externer Font, kein CDN, kein Tracker.
 
 ## 10. Assets, die die Seite weiter heben würden
 

@@ -101,7 +101,19 @@
   --gutter:clamp(20px,4.4vw,64px);
   --nav-h:76px;
   --section-y:clamp(72px,8.4vw,148px);
+  /* Das Hintergrundraster zeigt sechs Spalten – jede zweite Kante des
+     zwölfspaltigen Satzrasters. Ein Raster, zwei Auflösungen. */
   --spalten:6;
+  --satz-spalten:12;
+  --spalt:clamp(12px,1.4vw,26px);
+  /* Weg von der Inhaltskante bis zum Bildrand. Alles, was randlos laufen
+     soll, zieht sich um genau diesen Betrag nach außen. */
+  --sbw:0px;
+  --sicht:calc(100vw - var(--sbw));
+  --bleed:calc((var(--sicht) - min(var(--max),var(--sicht) - 2*var(--gutter))) / 2);
+  /* Abstand, den randloser Text zum Bildrand hält. Ein Wert für Hero,
+     Sektionsköpfe und alles Weitere – daraus entsteht die Stufenkante. */
+  --kante:clamp(14px,3.2vw,58px);
 
   /* --- Schrift ----------------------------------------------------------- */
   --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
@@ -112,7 +124,7 @@
   /* --- Typoskala: fluid, einmal definiert, überall verwendet -------------
      Der Sprung zwischen Display und Fließtext ist bewusst groß: der
      Größenkontrast trägt die Hierarchie, nicht die Farbe.                 */
-  --fs-display:clamp(2.9rem,6.6vw,5.8rem);
+  --fs-display:clamp(2.5rem,7.4vw,8.5rem);
   --fs-h1:clamp(2.05rem,2.18rem + 1.81vw,4.2rem);
   --fs-h2:clamp(2rem,4.3vw,3.7rem);
   --fs-h3:clamp(1.32rem,2.2vw,2rem);
@@ -356,6 +368,48 @@ strong,b{font-weight:500}
 .wrap{width:min(var(--max),calc(100% - 2*var(--gutter)));margin-inline:auto}
 section{padding:var(--section-y) 0;position:relative}
 
+/* --- Satzraster ----------------------------------------------------------
+   Zwölf Spalten als gemeinsame Bezugsfläche. Kein Abschnitt beginnt an
+   derselben Kante wie der davor: die Sprünge im Raster sind der Rhythmus
+   der Seite. Gesetzt wird über .sp-* (Spalte / Spannweite), damit im HTML
+   ablesbar bleibt, wo ein Block sitzt.                                    */
+.raster{
+  display:grid;
+  grid-template-columns:repeat(var(--satz-spalten),minmax(0,1fr));
+  column-gap:var(--spalt);
+  align-items:start;
+}
+.sp-1-5{grid-column:1 / span 5}
+.sp-1-6{grid-column:1 / span 6}
+.sp-1-7{grid-column:1 / span 7}
+.sp-1-8{grid-column:1 / span 8}
+.sp-1-12{grid-column:1 / -1}
+.sp-2-6{grid-column:2 / span 6}
+.sp-3-6{grid-column:3 / span 6}
+.sp-3-8{grid-column:3 / span 8}
+.sp-4-9{grid-column:4 / span 9}
+.sp-5-8{grid-column:5 / span 8}
+.sp-6-7{grid-column:6 / span 7}
+.sp-7-6{grid-column:7 / span 6}
+.sp-8-5{grid-column:8 / span 5}
+.sp-9-4{grid-column:9 / span 4}
+
+/* --- Randlos --------------------------------------------------------------
+   Überschriften und Flächen, die bis an den Bildrand laufen. Der Wert kommt
+   aus --bleed, also aus demselben Raster – nichts wird geschätzt. */
+.randlos{margin-inline:calc(-1 * var(--bleed))}
+.randlos-l{margin-inline-start:calc(-1 * var(--bleed))}
+.randlos-r{margin-inline-end:calc(-1 * var(--bleed))}
+/* Randlose Zeilen brauchen wieder einen Innenabstand, sonst klebt Text an
+   der Kante. Nur dort einsetzen, wo tatsächlich Text steht. */
+.randlos-innen{padding-inline:var(--bleed)}
+
+/* --- Überlappung ----------------------------------------------------------
+   Sektionen greifen ineinander, statt sauber untereinander zu stehen.
+   Immer mit eigener Ebene, damit die Reihenfolge bewusst bleibt. */
+.hebt{position:relative;z-index:2}
+.zieht-hoch{margin-top:calc(-1 * var(--zug,clamp(28px,5vw,88px)))}
+
 /* Zugänglichkeit ---------------------------------------------------------- */
 .skip{
   position:absolute;left:0;top:0;z-index:200;background:var(--accent);color:#fff;
@@ -587,53 +641,58 @@ footer .brand-mark{width:30px;height:30px}
   transform:translate3d(0,calc((var(--sp,.5) - .5) * 190px),0);
 }
 
-.hero-grid{
-  display:grid;
-  grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
-  gap:clamp(28px,4vw,64px);
-  align-items:center;
-  width:min(var(--max),calc(100% - 2*var(--gutter)));
-  margin-inline:auto;
-  flex:1 1 auto;
-  padding-block:clamp(16px,2.4vw,34px);
-}
+/* --- Kopfband: die Überschrift verlässt die Inhaltsspalte ----------------
+   Die beiden Zeilengruppen setzen an verschiedenen Kanten an. Diese Stufe
+   ist der Auftakt für das ganze Layout: ab hier beginnt kein Abschnitt mehr
+   dort, wo der davor begonnen hat.                                        */
+.hero-kopf{position:relative;z-index:1}
 
-.hero-copy{position:relative}
-
-.hero h1{
-  font-size:var(--fs-h1);
+.hero-titel{
+  margin:var(--s-5) calc(-1 * var(--bleed)) var(--s-4);
+  font-size:var(--fs-display);
   font-weight:400;
-  line-height:var(--lh-display);
-  letter-spacing:var(--tr-display);
-  margin:var(--s-5) 0 var(--s-4);
-  max-width:14ch;
+  line-height:.92;
+  letter-spacing:-.05em;
+  max-width:none;
+  text-wrap:initial;
 }
-/* Jede Zeile läuft einzeln hinter ihrer Kante hervor. Der Text selbst wird
-   nie zerlegt – die Sprachumschaltung tauscht ganze Textknoten aus. */
-.hero h1 span,.hero h1 em{
-  display:block;font-style:normal;
+/* Jede Zeilengruppe läuft einzeln hinter ihrer Kante hervor. Der Text wird
+   dabei nie zerlegt – die Sprachumschaltung tauscht ganze Textknoten aus. */
+.hero-titel span,.hero-titel em{
+  display:block;width:max-content;max-width:100%;font-style:normal;
   -webkit-mask-image:linear-gradient(to bottom,#000 0 100%);
   mask-image:linear-gradient(to bottom,#000 0 100%);
   -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
   -webkit-mask-size:100% 0%;mask-size:100% 0%;
-  transform:translate3d(0,.14em,0);
+  transform:translate3d(0,.12em,0);
   transition:-webkit-mask-size 1s var(--ease-entry),mask-size 1s var(--ease-entry),
              transform 1s var(--ease-entry);
 }
-.hero h1 em{transition-delay:.11s}
-.hero h1.show span,.hero h1.show em{
+/* Die Stufe: erste Gruppe fast am Bildrand, zweite deutlich eingerückt. */
+.hero-titel span{margin-inline-start:var(--kante)}
+.hero-titel em{margin-inline-start:clamp(52px,13vw,250px);transition-delay:.11s}
+.hero-titel.show span,.hero-titel.show em{
   -webkit-mask-size:100% 150%;mask-size:100% 150%;transform:none;
 }
-.hero h1 em{color:var(--ink);position:relative;padding-bottom:.08em}
-.hero h1 em:after{
-  content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+.hero-titel em{color:var(--ink);position:relative;padding-bottom:.06em;padding-inline-start:0}
+.hero-titel em:after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
   background:linear-gradient(to right,var(--accent-ink),transparent);
   transform:scaleX(0);transform-origin:left;
   animation:ruleIn var(--duration-cine) var(--ease-out) .6s forwards;
 }
 @keyframes ruleIn{to{transform:scaleX(1)}}
 
-.hero .lead{max-width:46ch}
+.hero-grid{
+  column-gap:var(--spalt);
+  row-gap:clamp(30px,4vw,52px);
+  flex:1 1 auto;
+  align-content:center;
+  padding-block:clamp(10px,1.6vw,26px);
+}
+
+.hero-copy{position:relative}
+.hero .lead{max-width:44ch}
 .hero-actions{display:flex;gap:var(--s-3);flex-wrap:wrap;margin-top:var(--s-5)}
 /* Die Zeile unter den Knöpfen nimmt die letzte Hürde vor dem Klick: was
    kostet der erste Schritt und wie lange dauert er. */
@@ -709,7 +768,6 @@ footer .brand-mark{width:30px;height:30px}
    ========================================================================== */
 
 .hero-stage{
-  --bleed:calc((100vw - min(var(--max),100vw - 2*var(--gutter))) / 2);
   --frame-pad:clamp(13px,1.4vw,20px);
   position:relative;
   perspective:1600px;
@@ -756,7 +814,7 @@ footer .brand-mark{width:30px;height:30px}
 }
 .stage-legend div{
   display:grid;grid-template-columns:12ch minmax(0,1fr);gap:var(--s-3);align-items:baseline;
-  padding:9px 4px;border-bottom:1px solid var(--line-soft);
+  padding:7px 4px;border-bottom:1px solid var(--line-soft);
   transition:background var(--t-state);
 }
 .stage-legend div:last-child{border-bottom:0}
@@ -840,7 +898,7 @@ footer .brand-mark{width:30px;height:30px}
 .stage-frame .sys{
   aspect-ratio:auto;
   max-width:none;width:auto;
-  height:clamp(258px,40vh,440px);
+  height:clamp(200px,26vh,310px);
   margin:0 calc(-1 * var(--frame-pad)) 0 0;
 }
 
@@ -848,39 +906,56 @@ footer .brand-mark{width:30px;height:30px}
    09  SEKTIONSKÖPFE & SZENENWECHSEL
    ========================================================================== */
 
+/* Der Sektionskopf ist ein Aufriss, kein Titelblock:
+   die Kennung steht als groß gesetztes Bauteil in der Randspalte und wird
+   vom Bildrand angeschnitten, darunter läuft die Maßlinie mit den
+   Teilstrichen des Rasters, und die Überschrift verlässt die
+   Inhaltsspalte nach links.                                              */
 .section-head{
-  display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);
-  gap:clamp(24px,4vw,72px);align-items:end;
-  margin-bottom:clamp(38px,5vw,80px);
-  position:relative;padding-top:52px;
+  display:grid;
+  grid-template-columns:repeat(var(--satz-spalten),minmax(0,1fr));
+  column-gap:var(--spalt);row-gap:clamp(20px,2.4vw,34px);
+  align-items:end;
+  margin:0 calc(-1 * var(--bleed)) clamp(40px,5vw,84px);
+  position:relative;padding-top:clamp(84px,10vw,158px);
 }
-/* Sektionskennung mit Maßlinie: die Linie trägt an den Spaltengrenzen
-   feine Teilstriche – dasselbe Raster, an dem das Layout hängt. */
 .section-head:before{
   content:attr(data-nr);
-  position:absolute;top:0;left:0;
-  font-family:var(--mono);font-size:var(--fs-meta);letter-spacing:var(--tr-meta);
-  text-transform:uppercase;color:var(--ink-faint);
+  position:absolute;top:0;left:var(--kante);
+  font-family:var(--mono);font-size:clamp(2rem,5vw,4.6rem);
+  letter-spacing:-.03em;line-height:.78;
+  color:transparent;-webkit-text-stroke:1px rgba(243,245,246,.15);
+  pointer-events:none;white-space:nowrap;
+}
+.tone-light .section-head:before{-webkit-text-stroke-color:rgba(14,18,20,.17)}
+@supports not (-webkit-text-stroke:1px red){
+  .section-head:before{color:var(--ink-ghost);-webkit-text-stroke:0}
 }
 .section-head:after{
-  content:"";position:absolute;top:30px;left:0;right:0;height:5px;
+  content:"";position:absolute;left:0;right:0;
+  top:clamp(52px,6vw,92px);height:5px;
   background:
-    linear-gradient(to right,var(--accent-ink) 0 74px,var(--line) 74px) top left/100% 1px no-repeat,
-    repeating-linear-gradient(to right,var(--line-strong) 0 1px,transparent 1px calc(100%/var(--spalten))) top left/100% 5px no-repeat;
+    linear-gradient(to right,var(--accent-ink) 0 var(--bleed),var(--line) var(--bleed)) top left/100% 1px no-repeat,
+    repeating-linear-gradient(to right,var(--line-strong) 0 1px,transparent 1px calc(100%/var(--satz-spalten))) top left/100% 5px no-repeat;
   transform:scaleX(0);transform-origin:left;
   transition:transform 1.1s var(--ease-out) .2s;
 }
 .section-head.show:after{transform:scaleX(1)}
-.section-head:not([data-nr]){padding-top:30px}
+.section-head:not([data-nr]){padding-top:clamp(30px,3vw,44px)}
+.section-head:not([data-nr]):before{content:none}
 .section-head:not([data-nr]):after{top:0}
+/* Die Überschrift beginnt am Bildrand, nicht an der Inhaltskante. */
 .section-head h2{
-  font-size:var(--fs-h2);font-weight:450;line-height:var(--lh-head);
-  letter-spacing:var(--tr-head);margin:0;max-width:17ch;
+  font-size:clamp(2rem,5.4vw,4.6rem);font-weight:400;line-height:.98;
+  letter-spacing:-.045em;margin:0;max-width:none;
 }
 .section-head p{
   color:var(--ink-soft);max-width:var(--mw-lead);margin:0;
   font-size:var(--fs-lead);line-height:1.68;
 }
+/* Vorspann und Überschrift stehen auf verschiedenen Spalten. */
+.section-head>*:first-child{grid-column:1 / span 7;padding-inline-start:var(--kante)}
+.section-head>*:nth-child(2){grid-column:9 / span 4;padding-inline-end:var(--bleed)}
 
 /* Kante zwischen dunklen und hellen Szenen: eine saubere Schnittkante mit
    Haarlinie statt eines weichen Verlaufs. */
@@ -901,6 +976,11 @@ footer .brand-mark{width:30px;height:30px}
 
 .kennzahlen{padding:0;border-bottom:1px solid var(--line)}
 .kennzahlen .zahlband{border-top:0}
+/* Die Leiste läuft von Kante zu Kante. Erste und letzte Zelle holen den
+   Innenabstand wieder heran, damit die Schrift auf der Inhaltskante sitzt. */
+.zahlband--randlos{margin-inline:calc(-1 * var(--bleed))}
+.zahlband--randlos>.zahl:first-child{padding-inline-start:calc(var(--bleed) + clamp(18px,2.2vw,28px))}
+.zahlband--randlos>.zahl:last-child{padding-inline-end:calc(var(--bleed) + clamp(18px,2.2vw,28px))}
 
 .zahlband{
   display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;
@@ -919,8 +999,8 @@ footer .brand-mark{width:30px;height:30px}
 .zahl:hover{background:var(--surface-1)}
 .zahl:hover:before{transform:scaleX(1)}
 .zahl b{
-  display:block;font-size:clamp(2rem,3.6vw,3.1rem);letter-spacing:var(--tr-display);
-  color:var(--ink);line-height:.98;font-weight:400;font-variant-numeric:tabular-nums;
+  display:block;font-size:clamp(2.6rem,6vw,5.6rem);letter-spacing:-.05em;
+  color:var(--ink);line-height:.9;font-weight:400;font-variant-numeric:tabular-nums;
 }
 .zahl span{
   display:block;font-family:var(--mono);font-size:var(--fs-meta);letter-spacing:.12em;
@@ -936,13 +1016,21 @@ footer .brand-mark{width:30px;height:30px}
    einer Kopfzeile aus Nummer und Bereichsmarke.
    ========================================================================== */
 
-.services{display:grid;gap:0;border-top:1px solid var(--line)}
+/* Die Leistungen sind ein Aufriss in fünf Zeilen. Keine zwei Zeilen setzen
+   auf derselben Spalte an, und die Zeichnungen werden abwechselnd links
+   und rechts vom Bildrand angeschnitten. Der Versatz ist die Ordnung –
+   nicht ihre Abwesenheit.                                                */
+.services{
+  display:block;
+  border-top:1px solid var(--line);
+  margin-inline:calc(-1 * var(--bleed));
+}
 .service{
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,.86fr);
-  gap:clamp(24px,4vw,72px);
+  grid-template-columns:repeat(var(--satz-spalten),minmax(0,1fr));
+  column-gap:var(--spalt);row-gap:clamp(24px,3vw,42px);
   align-items:center;
-  padding:clamp(38px,5vw,72px) 0;
+  padding-block:clamp(44px,5.4vw,84px);
   border-bottom:1px solid var(--line);
   position:relative;
   transition:background var(--duration-slow) var(--ease-out);
@@ -955,17 +1043,46 @@ footer .brand-mark{width:30px;height:30px}
 }
 .service:hover:after,.service:focus-within:after{transform:scaleX(1)}
 .service:hover{background:linear-gradient(to right,rgba(243,245,246,.02),transparent 66%)}
-.service:nth-child(even) .service-visual{order:-1}
+
+/* Beide Blöcke stehen in derselben Rasterzeile. Ohne diese Angabe schiebt
+   die automatische Platzierung die Zeichnung eine Zeile tiefer, sobald sie
+   links vom Text sitzt. */
+.service-body,.service-visual{grid-row:1}
+/* Grundsatz: Text links, Zeichnung rechts angeschnitten. */
+.service-body{grid-column:1 / span 5;padding-inline-start:var(--kante)}
+.service-visual{grid-column:7 / span 6}
+/* Die angeschnittene Seite verliert Kante und Rundung – sonst wirkt der
+   Anschnitt wie ein Fehler statt wie eine Entscheidung. */
+.service:nth-child(odd) .service-visual{
+  border-right:0;border-radius:var(--r-md) 0 0 var(--r-md);
+}
+.service:nth-child(even) .service-visual{
+  border-left:0;border-radius:0 var(--r-md) var(--r-md) 0;
+}
+.service:nth-child(even) .visual-cap{padding-inline-start:var(--kante)}
+.service:nth-child(odd) .visual-cap{padding-inline-end:var(--kante)}
+/* Zeile 02: gespiegelt – Zeichnung schneidet links an. */
+.service:nth-child(2) .service-visual{grid-column:1 / span 5}
+.service:nth-child(2) .service-body{grid-column:7 / span 5;padding-inline-start:0}
+/* Zeile 03: um eine Spalte eingerückt. */
+.service:nth-child(3) .service-body{grid-column:2 / span 5;padding-inline-start:0}
+.service:nth-child(3) .service-visual{grid-column:8 / span 5}
+/* Zeile 04: gespiegelt und breiter. */
+.service:nth-child(4) .service-visual{grid-column:1 / span 6}
+.service:nth-child(4) .service-body{grid-column:8 / span 5;padding-inline:0 var(--kante)}
+/* Zeile 05: zurück nach links, breiter als Zeile 01. */
+.service:nth-child(5) .service-body{grid-column:1 / span 6}
+.service:nth-child(5) .service-visual{grid-column:8 / span 5}
 
 .service-index{
-  display:flex;align-items:center;gap:var(--s-4);margin-bottom:var(--s-5);
+  display:flex;align-items:baseline;gap:var(--s-4);margin-bottom:var(--s-4);
   font-family:var(--mono);font-size:var(--fs-label);letter-spacing:var(--tr-label);
   text-transform:uppercase;color:var(--ink-faint);
 }
-/* Die Nummer trägt die Zeile: groß, in Akzentfarbe, mit fester Ziffernbreite */
+/* Die Nummer trägt die Zeile: groß gesetzt, in Akzentfarbe, feste Ziffernbreite */
 .service-index b{
-  color:var(--accent-ink);font-weight:400;font-size:clamp(1.6rem,2.6vw,2.3rem);
-  letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;
+  color:var(--accent-ink);font-weight:400;font-size:clamp(2.4rem,4.4vw,4rem);
+  letter-spacing:-.05em;line-height:.9;font-variant-numeric:tabular-nums;
 }
 .service-index i{flex:0 0 auto;width:clamp(20px,3vw,44px);height:1px;background:var(--line-strong);font-style:normal}
 .service h3{font-size:var(--fs-h3);font-weight:450;margin:0 0 var(--s-4);letter-spacing:var(--tr-head)}
@@ -992,7 +1109,7 @@ footer .brand-mark{width:30px;height:30px}
 .service:hover .service-visual{
   border-color:var(--line-strong);transform:translateY(-5px);box-shadow:var(--sh-2);
 }
-.visual-plate{position:relative;aspect-ratio:16/10;flex:1 1 auto}
+.visual-plate{position:relative;aspect-ratio:16/9;flex:1 1 auto}
 .service-visual svg{position:absolute;inset:0;width:100%;height:100%}
 .visual-plate:after{
   content:"";position:absolute;inset:0;pointer-events:none;
@@ -1006,7 +1123,8 @@ footer .brand-mark{width:30px;height:30px}
   font-family:var(--mono);font-size:var(--fs-meta);letter-spacing:.14em;text-transform:uppercase;
   color:var(--ink-faint);
 }
-.visual-cap i{font-style:normal;color:var(--accent-ink)}
+.visual-cap i{font-style:normal;color:var(--accent-ink);white-space:nowrap}
+.visual-cap span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 .v-line{fill:none;stroke:rgba(243,245,246,.24);stroke-width:.8}
 .v-line-soft{fill:none;stroke:rgba(243,245,246,.11);stroke-width:.8}
@@ -1148,10 +1266,11 @@ footer .brand-mark{width:30px;height:30px}
      eine Spur ruhiger als die Seite, die an ihm vorbeizieht. */
   transform:translate3d(0,calc((var(--sp,.5) - .5) * -44px),0);
   will-change:transform;
-  margin:0;
-  font-size:clamp(1.6rem,3.8vw,3.3rem);
-  font-weight:400;line-height:1.16;letter-spacing:var(--tr-head);
-  max-width:23ch;text-wrap:balance;
+  margin:0 0 0 calc(-1 * var(--bleed));
+  padding-inline-start:var(--kante);
+  font-size:clamp(1.7rem,4.6vw,4.2rem);
+  font-weight:400;line-height:1.06;letter-spacing:-.04em;
+  max-width:22ch;text-wrap:balance;
 }
 .statement blockquote em{font-style:normal;color:var(--accent-ink)}
 .statement-mark{
@@ -1170,11 +1289,19 @@ footer .brand-mark{width:30px;height:30px}
    Sekunden, dass hier echte Software gebaut wird.
    ========================================================================== */
 
+/* Die Konsole läuft von Kante zu Kante und schiebt sich in den Raum des
+   Sektionskopfes hinein: das Produkt unterbricht den Satz über das Produkt. */
 .konsole{
-  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
+  border-block:1px solid var(--line);border-inline:0;border-radius:0;overflow:hidden;
   background:var(--surface-1);box-shadow:var(--sh-3),var(--rim);
+  margin-inline:calc(-1 * var(--bleed));
+  margin-top:calc(-1 * clamp(18px,3.4vw,62px));
+  position:relative;z-index:2;
   transition:border-color var(--duration-slow) var(--ease-out);
 }
+.konsole-leiste{padding-inline:calc(var(--bleed) + var(--s-4)) var(--s-4)}
+.konsole .tabs{padding-inline-start:var(--bleed)}
+.konsole .demo-screen{padding-inline-end:calc(var(--bleed) + clamp(24px,2.8vw,40px))}
 .konsole:hover{border-color:var(--line-strong)}
 .konsole-leiste{
   display:flex;align-items:center;gap:var(--s-3);
@@ -1284,9 +1411,15 @@ footer .brand-mark{width:30px;height:30px}
   background:linear-gradient(to right,var(--accent),var(--accent-ink));
   transition:width var(--duration-slow) var(--ease-out);
 }
-.process-step{position:relative;padding-right:var(--s-4)}
+/* Die Textblöcke treppen nach unten, die Knoten bleiben auf der Schiene:
+   der Versatz ist sichtbar, der Fortschritt bleibt ablesbar. */
+.process-step{position:relative;padding-right:var(--s-4);padding-top:var(--versatz,0px)}
+.process-step:nth-child(2){--versatz:clamp(10px,2vw,30px)}
+.process-step:nth-child(3){--versatz:clamp(20px,4vw,60px)}
+.process-step:nth-child(4){--versatz:clamp(30px,6vw,90px)}
 .process-node{
-  position:absolute;top:-42px;left:0;width:10px;height:10px;border-radius:50%;
+  position:absolute;top:calc(-42px - var(--versatz,0px));left:0;
+  width:10px;height:10px;border-radius:50%;
   border:1px solid var(--line-strong);background:var(--paper);
   transition:border-color var(--t-state),background var(--t-state),box-shadow var(--t-state);
 }
@@ -1314,8 +1447,15 @@ footer .brand-mark{width:30px;height:30px}
 
 .packages{
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);
-  gap:0;align-items:stretch;border-top:1px solid var(--line);
+  gap:0;align-items:start;border-top:1px solid var(--line);
+  margin-inline:calc(-1 * var(--bleed));
 }
+.packages>.package:first-child{padding-inline-start:calc(var(--bleed) + clamp(22px,2.4vw,36px))}
+.packages>.package:last-child{padding-inline-end:calc(var(--bleed) + clamp(22px,2.4vw,36px))}
+/* Versetzte Grundlinien: die Empfehlung steht höher, das offene Angebot
+   tiefer – drei gleich hohe Spalten wären wieder ein Preisraster. */
+.packages>.package:nth-child(2){margin-block-start:calc(-1 * clamp(16px,2.6vw,44px))}
+.packages>.package:nth-child(3){margin-block-start:clamp(14px,2.2vw,36px)}
 .package{
   border-right:1px solid var(--line);border-bottom:1px solid var(--line);
   padding:clamp(28px,3.2vw,44px) clamp(22px,2.4vw,36px);
@@ -1557,7 +1697,8 @@ footer{
 /* Die Wortmarke steht als Zeichnungslinie, nicht als Fläche – und läuft
    nach unten aus, damit sie den Inhalt nicht erschlägt. */
 .foot-wordmark{
-  font-size:clamp(2.6rem,13.4vw,11.4rem);line-height:.84;font-weight:450;letter-spacing:-.055em;
+  margin-inline:calc(-1 * var(--bleed));padding-inline:var(--kante);
+  font-size:clamp(2.6rem,14.6vw,13rem);line-height:.82;font-weight:450;letter-spacing:-.06em;
   color:transparent;-webkit-text-stroke:1px rgba(243,245,246,.15);
   margin:0 0 clamp(34px,5vw,68px);user-select:none;
   -webkit-mask-image:linear-gradient(to bottom,#000 30%,rgba(0,0,0,.25));
@@ -1763,20 +1904,12 @@ body.is-leaving .page-fade{opacity:1}
     radial-gradient(ellipse 50% 60% at 78% 10%,rgba(79,195,206,.10),transparent 70%),
     linear-gradient(to bottom,rgba(242,243,241,.03),transparent 60%);
 }
-.modul-hero h1{
-  font-size:var(--fs-h1);font-weight:400;line-height:var(--lh-display);
-  letter-spacing:var(--tr-display);margin:var(--s-5) 0 var(--s-5);max-width:15ch;
-}
-/* Dieselbe Auszeichnung wie im Hero der Startseite: die Zeile bleibt in
-   Textfarbe und bekommt den Akzent als Unterstrich – ein Bild, eine Regel. */
-.modul-hero h1 em{
-  font-style:normal;color:var(--ink);display:inline-block;position:relative;padding-bottom:.1em;
-}
-.modul-hero h1 em:after{
-  content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
-  background:linear-gradient(to right,var(--accent-ink),transparent);
-  transform:scaleX(0);transform-origin:left;
-  animation:ruleIn var(--duration-cine) var(--ease-out) .5s forwards;
+/* Die Unterseite trägt denselben Satz wie die Startseite: randlose
+   Überschrift, gestufte Zeilengruppen, dieselbe Skala. Ein System, alle
+   Seiten – sonst wäre nur die Startseite gestaltet. */
+.modul-hero .hero-titel{margin-block:var(--s-5) var(--s-4)}
+.modul-hero .hero-titel span,.modul-hero .hero-titel em{
+  -webkit-mask-image:none;mask-image:none;transform:none;
 }
 .modul-hero .lead{max-width:56ch}
 .modul-hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);
@@ -2568,8 +2701,51 @@ body.nav-open .kia,body.nav-open .totop{display:none}
   .zahl:nth-child(2n),.standard:nth-child(2n){border-right:0}
 }
 
+/* --------------------------------------------------------------------------
+   Das Satzraster bricht in einer Stufe zusammen: unterhalb von 1080 px
+   stehen alle Blöcke wieder auf einer Kante. Der Anschnitt bleibt dort
+   erhalten, wo er trägt (Konsole, Kennzahlen, Preise), und verschwindet
+   dort, wo er nur noch Text an den Bildrand drücken würde.
+   -------------------------------------------------------------------------- */
 @media(max-width:1080px){
+  /* Sektionskopf: eine Spalte, Kennung kleiner, Vorspann darunter. */
+  .section-head{padding-top:clamp(64px,10vw,104px)}
+  .section-head>*:first-child,
+  .section-head>*:nth-child(2){grid-column:1 / -1}
+  .section-head>*:nth-child(2){padding-inline:var(--kante) var(--bleed)}
+  .section-head:before{font-size:clamp(1.9rem,6.4vw,3.2rem)}
+  .section-head:after{top:clamp(42px,7vw,72px)}
+
+  /* Leistungen: Text über Zeichnung, Anschnitt bleibt wechselseitig. */
+  .service{row-gap:var(--s-6);align-items:start}
+  .service-body,.service-visual{grid-row:auto}
+  .service-body,
+  .service:nth-child(2) .service-body,
+  .service:nth-child(3) .service-body,
+  .service:nth-child(4) .service-body,
+  .service:nth-child(5) .service-body{
+    grid-column:1 / -1;padding-inline:var(--kante);
+  }
+  .service-visual,
+  .service:nth-child(2) .service-visual,
+  .service:nth-child(3) .service-visual,
+  .service:nth-child(4) .service-visual,
+  .service:nth-child(5) .service-visual{grid-column:1 / -1}
+  .service:nth-child(n) .service-visual{border-inline:0;border-radius:0}
+  .visual-plate{aspect-ratio:16/9}
+  .visual-cap{padding-inline:var(--kante)}
+
+  /* Prozess: die Treppe entfällt, sonst reißt die vertikale Schiene. */
+  .process-step{--versatz:0px}
+
+  /* Preise: eine Spalte, keine versetzten Grundlinien. */
+  .packages>.package:nth-child(2),
+  .packages>.package:nth-child(3){margin-block-start:0}
+
   .hero{min-height:0;padding-top:clamp(32px,6vw,60px)}
+  .hero-grid{row-gap:clamp(26px,5vw,44px)}
+  .hero-copy,.hero-stage{grid-column:1 / -1}
+  .hero-titel{font-size:clamp(2.5rem,8.4vw,5.6rem)}
   .hero-grid{grid-template-columns:1fr;gap:clamp(30px,6vw,52px);align-items:start}
   .hero h1{max-width:15ch}
   .hero .lead{max-width:60ch}
@@ -2580,9 +2756,6 @@ body.nav-open .kia,body.nav-open .totop{display:none}
   .sys{max-width:460px}
   .section-head{grid-template-columns:1fr;gap:var(--s-5)}
   .section-head h2{max-width:24ch}
-  .service{grid-template-columns:1fr;gap:var(--s-6)}
-  .service:nth-child(even) .service-visual{order:0}
-  .visual-plate{aspect-ratio:16/9}
   .advisor-grid,.contact,.sicht-angebot,.modul-cta,.teaser,.teaser-server{grid-template-columns:1fr}
   .demo-wrap{grid-template-columns:1fr}
   .tabs{border-right:0;border-bottom:1px solid var(--line)}
@@ -2698,6 +2871,11 @@ body.nav-open{overflow:hidden}
 }
 
 @media(max-width:880px){
+  /* Preise stehen jetzt untereinander: der Anschnitt bleibt, die Karten
+     holen sich links und rechts denselben Rand. */
+  .packages>.package{
+    padding-inline:calc(var(--bleed) + clamp(22px,2.4vw,36px))!important;
+  }
   .modulgrid{grid-template-columns:1fr}
   .modul-hero{padding-top:44px}
   .modul-hero-grid{grid-template-columns:1fr}
@@ -2715,6 +2893,10 @@ body.nav-open{overflow:hidden}
 }
 
 @media(max-width:700px){
+  /* Kennzahlen: aus vier Spalten werden Zeilen, der Anschnitt bleibt. */
+  .zahlband--randlos>.zahl{
+    padding-inline:calc(var(--bleed) + clamp(18px,2.2vw,28px))!important;
+  }
   .proof{grid-template-columns:1fr;border-top:0}
   .proof-item{border-right:0;border-top:1px solid var(--line);padding:14px 0 14px 0!important}
   .options,.metric-row,.stats,.angebot-felder,.angebot-wege,.demo-neu-felder{grid-template-columns:1fr}

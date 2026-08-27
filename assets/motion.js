@@ -442,6 +442,25 @@
     ziele.forEach(function (z) { spy.observe(z.sektion); });
   }
 
+  /* --- Breite der Bildlaufleiste ------------------------------------------
+     100vw zählt die Bildlaufleiste mit, die Inhaltsspalte nicht. Ohne diese
+     Korrektur verfehlt jeder randlose Block den Bildrand um genau diese
+     Breite. Einmal beim Start und bei jeder Größenänderung gesetzt.       */
+  function initScrollbarBreite() {
+    var wurzel = document.documentElement;
+    var zuletzt = -1;
+    function messen() {
+      var b = window.innerWidth - wurzel.clientWidth;
+      if (b < 0) b = 0;
+      if (b === zuletzt) return;
+      zuletzt = b;
+      wurzel.style.setProperty("--sbw", b + "px");
+    }
+    messen();
+    window.addEventListener("resize", messen, { passive: true });
+    window.addEventListener("load", messen);
+  }
+
   /* --- Zusammenspiel ------------------------------------------------------- */
   function initMotionPreferences() {
     document.documentElement.classList.toggle("reduziert", leiser.matches);
@@ -450,6 +469,7 @@
   }
 
   function start() {
+    initScrollbarBreite();
     initNavState();
     initSceneProgress();
     initReveals();
